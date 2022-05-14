@@ -13,12 +13,13 @@ public class TheGame
 {
     // instance variables - replace the example below with your own
     private int x;
-    //private int map[][] = new int[20][20]; 
+    private int mapTwo[][] = new int[10][10]; 
     int[][] map =
-        { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 1, 1, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 1, 1, 0, 0, 0, 0, 0 },
+        { 
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -26,12 +27,20 @@ public class TheGame
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
         };
+        
+    private int mapThreeDime[][][] = new int[10][10][5]; 
     /**
      * Constructor for objects of class TheGame
      */
     public TheGame()
     {
         // initialise instance variables
+        for(int a = 0; a < 10; a++){
+            for(int b = 0; b < 10; b++){
+                System.out.print(map[a][b]);
+            }
+            System.out.println();
+            }
         System.out.println("you want this to run?");
         boolean thisIsRunning = false;
         int goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
@@ -42,7 +51,7 @@ public class TheGame
         }
 
         int bestie = 0;
-        while(thisIsRunning == true && bestie < 5){
+        while(thisIsRunning == true && bestie < 1){
             //System.out.println('\u000c');
             System.out.println();
             System.out.println();
@@ -63,75 +72,60 @@ public class TheGame
                 }
             }*/
 
-            for(int x = 0; x < 10; x++){
-                for(int y = 0; y< 10; y++){
-                    int living = isItAlive(x, y);
+            for(int y = 0; y < 10; y++){
+                for(int x = 0; x < 10; x++){
+                    int living = isItAlive(y, x);
                     //int living = (int)(Math.floor(Math.random()*(1-0+1)+0));
                     //System.out.println(living);
-                    map[x][y] = living;
+                    
                     if(living == 1){
                         //System.out.print(" " + map[x][y] + " ");
                         System.out.print(" 1 ");
+                        mapTwo[y][x] = living;
                     }else if (living == 0){
                         System.out.print(" 0 ");
+                        mapTwo[y][x] = living;
                     }else{
                     }
-
+                
                 }
                 System.out.println();
             }
 
-            /*
-            for(int a = 0; a < 20; a++){
-            //System.out.print("x ");
-            for(int b = 0; b < 20; b++){
-            System.out.print(" x ");
-            }
-            System.out.println();
-            }
-             */
 
             //isItAlive(4,5);
             bestie++;
         }
+        
+        for(int a = 0; a < 10; a++){
+            for(int b = 0; b < 10; b++){
+                System.out.print(mapTwo[a][b]);
+            }
+            System.out.println();
+            }
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
+    public int isItAlive(int yCoord, int xCoord)
     {
-        // put your code here
-        return x + y;
-    }
-
-    public int isItAlive(int xCoord, int yCoord)
-    {
-        if(xCoord == 0 || yCoord == 0 || xCoord == 9 || yCoord == 9){
-            System.out.print("_");
+        if(yCoord == 0 || xCoord == 0 || yCoord == 9 || xCoord == 9){
+            System.out.print(" _ ");
             return 4;
         }else{
-            //xCoord = xCoord + 1;
-            //yCoord = yCoord + 1;
-            //System.out.println(xCoord + " and " + yCoord);
-            int xCoordOneLess = xCoord - 1;
-            int topLeft = map[xCoord - 1][yCoord -1];
-            int topMiddle = map[xCoord][yCoord -1];
-            int topRight = map[xCoord + 1][yCoord -1];
-            //System.out.println(topRight);
-            int right = map[xCoord+1][yCoord];
-            int left = map[xCoord-1][yCoord];
-            int bottomLeft = map[xCoord - 1][yCoord + 1];
-            int bottomMiddle = map[xCoord][yCoord + 1];
-            int bottomRight = map[xCoord + 1][yCoord + 1];
+            //System.out.println(yCoord + " and " + xCoord);
+            int topLeft = map[yCoord - 1][xCoord -1];
+            int topMiddle = map[yCoord - 1][xCoord];
+            int topRight = map[yCoord - 1][xCoord + 1];
+            int right = map[yCoord][xCoord + 1];
+            int left = map[yCoord][xCoord - 1];
+            int bottomLeft = map[yCoord + 1][xCoord - 1];
+            int bottomMiddle = map[yCoord + 1][xCoord ];
+            int bottomRight = map[yCoord + 1][xCoord + 1];
 
             int neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
             //System.out.println(neighboursValue);
 
-            if (map[xCoord][yCoord] == 1){
+            if (map[yCoord][xCoord] == 1){
+                //System.out.println("Alive");
                 if(neighboursValue < 2){
                     //System.out.println("dead");
                     return 0;
@@ -143,7 +137,8 @@ public class TheGame
                     return 0;
                 }
 
-            }else if(map[xCoord][yCoord] == 0){
+            }else if(map[yCoord][xCoord] == 0){
+                //System.out.println("dead");
                 if(neighboursValue == 3){
                     //System.out.println("becomes alive");
                     return 1;
