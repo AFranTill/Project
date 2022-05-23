@@ -9,7 +9,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Timer;
-public class TheGame
+import java.awt.*;
+
+public class TheGame 
 {
     //VARIABLES
     private int mapTwo[][] = new int[10][10]; //control-type 2d array for a map to be used while testing.  
@@ -53,7 +55,9 @@ public class TheGame
     public TheGame()
     {
         Scanner keyboard = new Scanner(System.in);
-
+    
+        screenSize();
+        
         System.out.println("you want this to run?");
         boolean thisIsRunning = false;
         int goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
@@ -62,7 +66,7 @@ public class TheGame
         }else{
             thisIsRunning = false; //prevents the thing from running (the thign is the conway game btw)
         }
-        
+
         int numberOfGenerations = 0; //controls how many times the game loops/how many generations there are. 
 
         System.out.println("how many generations should I run?");
@@ -72,17 +76,17 @@ public class TheGame
         System.out.println("what should be the pause time between them?");
         int timeWaiting = keyboard.nextInt();
         keyboard.nextLine();
-        
+
         System.out.println("how big do you want this grid to be");
         int size = keyboard.nextInt();
         keyboard.nextLine();
         heightOfGrid = size;
         widthOfGrid = size;
-        
+
         System.out.println("how many histories should I record?");
         int numberOfHistoriesRecorded = keyboard.nextInt();
         keyboard.nextLine();
-        
+
         System.out.println("you want to populate the thing?");
         goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
         if(goingThrough == 1){ //if it's one, thats a yes, and do 
@@ -98,7 +102,6 @@ public class TheGame
         }else{ //if you recieved an invalid or a no answer
             System.out.println("ok"); // be ok with it 
         }
-        
 
         //MAIN GAME
         //this is the block which runs the printing of the game itself. It constantly calls and asks if the cell is alive, as it prints the new gen
@@ -108,7 +111,7 @@ public class TheGame
             System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
-            listeningMethod();
+            //listeningMethod(q);
 
             //the main loop which actually runs game (one loop is one generation)
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
@@ -215,36 +218,36 @@ public class TheGame
         if(yCoord == 0 || xCoord == 0 || yCoord == 9 || xCoord == 9){ //because the boundaries of the map are complicated in terms of arrays
             switch(yCoord){
                 case 0:
-                //oneAbove = boundedFence;
-                topLeft = boundedFence;
-                topMiddle = boundedFence;
-                topRight = boundedFence;
-                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
-                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
-                bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
-                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
-                bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
-                break;
+                    //oneAbove = boundedFence;
+                    topLeft = boundedFence;
+                    topMiddle = boundedFence;
+                    topRight = boundedFence;
+                    left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                    right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                    bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                    bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                    bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                    break;
                 case 9:
-                //oneBelow = boundedFence;
-                bottomLeft = boundedFence;
-                bottomMiddle = boundedFence;
-                bottomRight = boundedFence;
-                break;
+                    //oneBelow = boundedFence;
+                    bottomLeft = boundedFence;
+                    bottomMiddle = boundedFence;
+                    bottomRight = boundedFence;
+                    break;
             }
             switch(xCoord){
                 case 0:
-                //oneBefore = boundedFence;
-                topLeft = boundedFence;
-                left = boundedFence;
-                bottomLeft = boundedFence;
-                break;
+                    //oneBefore = boundedFence;
+                    topLeft = boundedFence;
+                    left = boundedFence;
+                    bottomLeft = boundedFence;
+                    break;
                 case 9:
-                //oneAfter = boundedFence;
-                topRight = boundedFence;
-                right = boundedFence;
-                bottomRight = boundedFence;
-                break;
+                    //oneAfter = boundedFence;
+                    topRight = boundedFence;
+                    right = boundedFence;
+                    bottomRight = boundedFence;
+                    break;
             }
         }else{ //if it's not a boundary condition
             oneBefore = xCoord - 1;
@@ -373,17 +376,32 @@ public class TheGame
         }
 
     }
-    
+
     public void listeningMethod(){
-         Scanner keyboard = new Scanner(System.in);
-        while(going == true){
-            String isItGoing = keyboard.nextLine();
-            String stopping = "stop";
-            if(isItGoing.equals(stopping)){
-                going = false;
-        }
+        Scanner keyboard = new Scanner(System.in);
+
+        
+
     }
-}
+    
+    public static void screenSize()
+    {
+        // getScreenSize() returns the size
+        // of the screen in pixels
+        Dimension size
+            = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        // width will store the width of the screen
+        int width = (int)size.getWidth();
+        
+        // height will store the height of the screen
+        int height = (int)size.getHeight();
+        
+        System.out.println("Current Screen resolution : "
+                           + "width : " + width
+                           + " height : " + height);
+    }
+        
 }
 
 /*
