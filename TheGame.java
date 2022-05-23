@@ -55,9 +55,9 @@ public class TheGame
     public TheGame()
     {
         Scanner keyboard = new Scanner(System.in);
-    
+
         screenSize();
-        
+
         System.out.println("you want this to run?");
         boolean thisIsRunning = false;
         int goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
@@ -106,36 +106,41 @@ public class TheGame
         //MAIN GAME
         //this is the block which runs the printing of the game itself. It constantly calls and asks if the cell is alive, as it prints the new gen
         //it runs when user has specified it should and for the amount of generations specified
-
+        String areWeDoingIt = "no";
+        
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
             System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
             //listeningMethod(q);
+            if(areWeDoingIt.equals("quit")){
+                going = false;
+            }else{
 
-            //the main loop which actually runs game (one loop is one generation)
-            for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
-                for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
-                    int living = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
-                    int h = 0; //dealing with just history = 0, or the current history/working grid. 
+                //the main loop which actually runs game (one loop is one generation)
+                for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
+                    for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
+                        int living = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
+                        int h = 0; //dealing with just history = 0, or the current history/working grid. 
 
-                    if(living == 1){ //if it's living 
-                        //System.out.print(" " + map[x][y] + " ");
-                        System.out.print(" x "); //prints out the value
-                        mapTwo[y][x] = living; // puts the value into the control group map 
-                    }else if (living == 0){ //does literally the exact same thing as above why is this an if statement. 
-                        System.out.print(" 0 ");
-                        mapTwo[y][x] = living;
-                    }else{ //else do nothing. 
+                        if(living == 1){ //if it's living 
+                            //System.out.print(" " + map[x][y] + " ");
+                            System.out.print(" x "); //prints out the value
+                            mapTwo[y][x] = living; // puts the value into the control group map 
+                        }else if (living == 0){ //does literally the exact same thing as above why is this an if statement. 
+                            System.out.print(" 0 ");
+                            mapTwo[y][x] = living;
+                        }else{ //else do nothing. 
+                        }
+
                     }
-
+                    System.out.println(); 
                 }
-                System.out.println(); 
+
+                slowPrint(timeWaiting);
+                numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
             }
-
-            slowPrint(timeWaiting);
-            numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
-
+            areWeDoingIt = keyboard.nextLine();
         }
 
         System.out.println("run history?");
@@ -380,28 +385,27 @@ public class TheGame
     public void listeningMethod(){
         Scanner keyboard = new Scanner(System.in);
 
-        
 
     }
-    
+
     public static void screenSize()
     {
         // getScreenSize() returns the size
         // of the screen in pixels
         Dimension size
-            = Toolkit.getDefaultToolkit().getScreenSize();
-        
+        = Toolkit.getDefaultToolkit().getScreenSize();
+
         // width will store the width of the screen
         int width = (int)size.getWidth();
-        
+
         // height will store the height of the screen
         int height = (int)size.getHeight();
-        
+
         System.out.println("Current Screen resolution : "
-                           + "width : " + width
-                           + " height : " + height);
+            + "width : " + width
+            + " height : " + height);
     }
-        
+
 }
 
 /*
