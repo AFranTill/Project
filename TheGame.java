@@ -75,6 +75,8 @@ public class TheGame
 
         System.out.println("what should be the pause time between them?");
         int timeWaiting = keyboard.nextInt();
+        int timeToWaitFor = (timeWaiting/4)*3;
+        timeWaiting = timeWaiting - timeToWaitFor;
         keyboard.nextLine();
 
         System.out.println("how big do you want this grid to be");
@@ -112,7 +114,7 @@ public class TheGame
             System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
-            //listeningMethod(q);
+            //listeningMethod(timeToWaitFor);
             if(areWeDoingIt.equals("quit")){
                 going = false;
             }else{
@@ -221,6 +223,9 @@ public class TheGame
         int bottomMiddle = 0;
         int bottomRight = 0;
         if(yCoord == 0 || xCoord == 0 || yCoord == 9 || xCoord == 9){ //because the boundaries of the map are complicated in terms of arrays
+            //if(yCoord == 0 &&){
+            //}else if(){}else if(){}
+            
             switch(yCoord){
                 case 0:
                     //oneAbove = boundedFence;
@@ -252,6 +257,13 @@ public class TheGame
                     topRight = boundedFence;
                     right = boundedFence;
                     bottomRight = boundedFence;
+                    
+                     bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                     bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                     topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                     left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+            topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                    
                     break;
             }
         }else{ //if it's not a boundary condition
@@ -382,11 +394,7 @@ public class TheGame
 
     }
 
-    public void listeningMethod(){
-        Scanner keyboard = new Scanner(System.in);
-
-
-    }
+    
 
     public static void screenSize()
     {
@@ -421,4 +429,18 @@ System.out.println();
 }
 --------
 
+// public void listeningMethod(int timeToWaitFor){
+        // Scanner keyboard = new Scanner(System.in);
+        // int end = timeToWaitFor - 1;
+        // for(int l = 0; l < timeToWaitFor; l++){
+            // slowPrint(1);
+            // l++;
+            // if(l == end){
+            // }
+        // }
+
+    // }
+    
  */
+
+
