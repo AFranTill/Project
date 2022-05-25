@@ -104,8 +104,8 @@ public class TheGame
         }else{ //if you recieved an invalid or a no answer
             System.out.println("ok"); // be ok with it 
             System.out.println("beginning at.."); //tells the user what's happening 
-            for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                for(int x = 0; x < widthOfGrid; x++){
+            for(int x = 0; x < widthOfGrid; x++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+                for(int y = 0; y < heightOfGrid; y++){
                     int h = 0; //only affect the first history, aka the working history, the current grid
                     //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
                     System.out.print(" " + mapThreeDime[x][y][h] + " "); //print it out nicely. 
