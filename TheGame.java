@@ -32,22 +32,22 @@ public class TheGame
     int widthOfGrid = 10; //dictates grid width
     int heightOfGrid = 10; //dictates grid width
     int numberOfHistoriesRecorded = 5; //dictates number of histories (controls the 3D part of the 3D array)
-    private int mapThreeDime[][][] = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
+    //private int mapThreeDime[][][] = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
 
-    // int[][][] mapThreeDime= //makes the 3D grid when we want to hand-populate for control and testing purposes
-    // { 
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-    // };  
-
+    int[][][] mapThreeDime= //makes the 3D grid when we want to hand-populate for control and testing purposes
+        { 
+            { {5,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {6,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {4,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {8,0,0,0,0} },
+        };  
+    int size;
     boolean going = true;
     /**
      * Constructor for objects of class TheGame
@@ -80,7 +80,7 @@ public class TheGame
         keyboard.nextLine();
 
         System.out.println("how big do you want this grid to be");
-        int size = keyboard.nextInt();
+        size = keyboard.nextInt();
         keyboard.nextLine();
         heightOfGrid = size;
         widthOfGrid = size;
@@ -103,51 +103,55 @@ public class TheGame
             }
         }else{ //if you recieved an invalid or a no answer
             System.out.println("ok"); // be ok with it 
+            System.out.println("beginning at.."); //tells the user what's happening 
+            for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+                for(int x = 0; x < widthOfGrid; x++){
+                    int h = 0; //only affect the first history, aka the working history, the current grid
+                    //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                    System.out.print(" " + mapThreeDime[x][y][h] + " "); //print it out nicely. 
+                }
+                System.out.println(); //next line 
+            }
         }
 
         //MAIN GAME
         //this is the block which runs the printing of the game itself. It constantly calls and asks if the cell is alive, as it prints the new gen
         //it runs when user has specified it should and for the amount of generations specified
-        String areWeDoingIt = "no";
-        
+
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
-            System.out.println('\u000c'); //clears the screen
+            //System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
             //listeningMethod(timeToWaitFor);
-            if(areWeDoingIt.equals("quit")){
-                going = false;
-            }else{
 
-                //the main loop which actually runs game (one loop is one generation)
-                for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
-                    for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
-                        int living = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
-                        int h = 0; //dealing with just history = 0, or the current history/working grid. 
+            //the main loop which actually runs game (one loop is one generation)
+            for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
+                for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
+                    int living = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
+                    int h = 0; //dealing with just history = 0, or the current history/working grid. 
 
-                        if(living == 1){ //if it's living 
-                            //System.out.print(" " + map[x][y] + " ");
-                            System.out.print(" x "); //prints out the value
-                            mapTwo[y][x] = living; // puts the value into the control group map 
-                        }else if (living == 0){ //does literally the exact same thing as above why is this an if statement. 
-                            System.out.print(" 0 ");
-                            mapTwo[y][x] = living;
-                        }else{ //else do nothing. 
-                        }
-
+                    if(living == 1){ //if it's living 
+                        //System.out.print(" " + map[x][y] + " ");
+                        System.out.print(" x "); //prints out the value
+                        mapTwo[y][x] = living; // puts the value into the control group map 
+                    }else if (living == 0){ //does literally the exact same thing as above why is this an if statement. 
+                        System.out.print(" 0 ");
+                        mapTwo[y][x] = living;
+                    }else{ //else do nothing. 
                     }
-                    System.out.println(); 
-                }
 
-                slowPrint(timeWaiting);
-                numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
+                }
+                System.out.println(); 
             }
-            areWeDoingIt = keyboard.nextLine();
+
+            slowPrint(timeWaiting);
+            numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
         }
+
 
         System.out.println("run history?");
 
-        goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+        goingThrough = 1; //calls the method which handles yes or no questions, assigns the value to goingthrough
         if(goingThrough == 1){
             //the following is just five for loops which all print out the grid at different points
             //this one prints out the control grid of mapTwo
@@ -222,50 +226,71 @@ public class TheGame
         int bottomLeft = 0;
         int bottomMiddle = 0;
         int bottomRight = 0;
-        if(yCoord == 0 || xCoord == 0 || yCoord == 9 || xCoord == 9){ //because the boundaries of the map are complicated in terms of arrays
-            //if(yCoord == 0 &&){
-            //}else if(){}else if(){}
-            
-            switch(yCoord){
-                case 0:
-                    //oneAbove = boundedFence;
-                    topLeft = boundedFence;
-                    topMiddle = boundedFence;
-                    topRight = boundedFence;
-                    left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
-                    right = mapThreeDime[yCoord][oneAfter][historyCurrent];
-                    bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
-                    bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
-                    bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
-                    break;
-                case 9:
-                    //oneBelow = boundedFence;
-                    bottomLeft = boundedFence;
-                    bottomMiddle = boundedFence;
-                    bottomRight = boundedFence;
-                    break;
+        int end = size - 1;
+        if(yCoord == 0 || xCoord == 0 || yCoord == end || xCoord == end){ //because the boundaries of the map are complicated in terms of arrays
+            if(yCoord == 0 && xCoord == 0 ){
+
+                bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+
+                topLeft = boundedFence;
+                topMiddle = boundedFence;
+                topRight = boundedFence;
+                left = boundedFence;
+                bottomLeft = boundedFence;
+            }else if(yCoord == end && xCoord == end){
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+
+                topRight = boundedFence;
+                right = boundedFence;
+                bottomLeft = boundedFence;
+                bottomMiddle = boundedFence;
+                bottomRight= boundedFence;
+            }else if(yCoord == 0){
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+
+                topLeft = boundedFence;
+                topMiddle = boundedFence;
+                topRight = boundedFence;
+            }else if (yCoord == end){
+                topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+
+                bottomLeft = boundedFence;
+                bottomMiddle= boundedFence;
+                bottomRight = boundedFence;
+            }else if(xCoord == 0){
+                topLeft = boundedFence;
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                left = boundedFence;
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                bottomLeft = boundedFence;
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+            }else if(xCoord == end){
+                topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                topRight = boundedFence;
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                right = boundedFence;
+                bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                bottomRight = boundedFence;
+            }else{
+                System.out.println("broken");
             }
-            switch(xCoord){
-                case 0:
-                    //oneBefore = boundedFence;
-                    topLeft = boundedFence;
-                    left = boundedFence;
-                    bottomLeft = boundedFence;
-                    break;
-                case 9:
-                    //oneAfter = boundedFence;
-                    topRight = boundedFence;
-                    right = boundedFence;
-                    bottomRight = boundedFence;
-                    
-                     bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
-                     bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
-                     topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
-                     left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
-            topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
-                    
-                    break;
-            }
+
         }else{ //if it's not a boundary condition
             oneBefore = xCoord - 1;
             oneAfter = xCoord + 1;
@@ -394,8 +419,6 @@ public class TheGame
 
     }
 
-    
-
     public static void screenSize()
     {
         // getScreenSize() returns the size
@@ -430,17 +453,16 @@ System.out.println();
 --------
 
 // public void listeningMethod(int timeToWaitFor){
-        // Scanner keyboard = new Scanner(System.in);
-        // int end = timeToWaitFor - 1;
-        // for(int l = 0; l < timeToWaitFor; l++){
-            // slowPrint(1);
-            // l++;
-            // if(l == end){
-            // }
-        // }
+// Scanner keyboard = new Scanner(System.in);
+// int end = timeToWaitFor - 1;
+// for(int l = 0; l < timeToWaitFor; l++){
+// slowPrint(1);
+// l++;
+// if(l == end){
+// }
+// }
 
-    // }
-    
+// }
+
  */
-
 
