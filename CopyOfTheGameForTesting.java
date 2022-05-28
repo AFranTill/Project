@@ -103,15 +103,15 @@ public class CopyOfTheGameForTesting
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
                 for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
                     int living = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
-                    int h = 1; //dealing with just history = 0, or the current history/working grid. 
+                    int h = 0; //dealing with just history = 0, or the current history/working grid. 
                     //System.out.print(" " + mapThreeDime[x][y][h] + " ");
 
                     if(living == 1){ //if it's living 
                         //System.out.print(" " + map[x][y] + " ");
-                        System.out.print(" " + mapThreeDime[x][y][h] + " "); //prints out the value
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //prints out the value
                         mapTwo[y][x] = living; // puts the value into the control group map 
                     }else if (living == 0){ //does literally the exact same thing as above why is this an if statement. 
-                        System.out.print(" " + mapThreeDime[x][y][h] + " ");
+                        System.out.print(" "  + mapThreeDime[y][x][h] + " ");
                         mapTwo[y][x] = living;
                     }else{ //else do nothing. 
                     }
