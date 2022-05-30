@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class TheGame here.
+ * Write a description of class TheGameTryingToDoWrappingBoundary here.
  *
  * @author Frances
  * @version Verision Five, 16.5.22
@@ -11,7 +11,7 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.awt.*;
 
-public class TheGame 
+public class TheGameTryingToDoWrappingBoundary 
 {
     //VARIABLES
     private int mapTwo[][] = new int[10][10]; //control-type 2d array for a map to be used while testing.  
@@ -37,14 +37,14 @@ public class TheGame
         { 
             { {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+            { {1,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
         };    
     int size;
     boolean going = true;
@@ -54,9 +54,9 @@ public class TheGame
     int howManyGenerationsAreWeDoing;
 
     /**
-     * Constructor for objects of class TheGame
+     * Constructor for objects of class TheGameTryingToDoWrappingBoundary
      */
-    public TheGame()
+    public TheGameTryingToDoWrappingBoundary()
     {
         Scanner keyboard = new Scanner(System.in);
 
@@ -278,15 +278,12 @@ public class TheGame
                 bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
                 right = mapThreeDime[yCoord][oneAfter][historyCurrent];
                 bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
-
-                topLeft = boundedFence;
-                topMiddle = boundedFence;
-                topRight = boundedFence;
-                left = boundedFence;
-                bottomLeft = boundedFence;
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
+                
+                topLeft = mapThreeDime[end][end][historyCurrent + 1];
+                topMiddle = mapThreeDime[end][xCoord][historyCurrent];
+                topRight = mapThreeDime[end][oneAfter][historyCurrent];
+                left = mapThreeDime[yCoord][end][historyCurrent];
+                bottomLeft = mapThreeDime[oneBelow][end][historyCurrent];
             }else if(yCoord == end && xCoord == end){
                 //System.out.print(" A "); 
 
