@@ -53,6 +53,7 @@ public class TheGame
     int timeWaiting;
     int howManyGenerationsAreWeDoing;
     int selected = 1;
+    int numberOfGenerations = 0; 
 
     /**
      * Constructor for objects of class TheGame
@@ -70,140 +71,138 @@ public class TheGame
         System.out.println("                2. Input a grid and run");
         System.out.println("                3. Run the default");
         System.out.println("                4. Quit");
-        
+
         int whatWeAreDoing = doingMenuOption(1);
         if(whatWeAreDoing == 1){
             System.out.println("reading from a file");
         }else if (whatWeAreDoing == 2){
             System.out.println("time to create a grid!!");
         }else if (whatWeAreDoing == 3){
-            System.out.println("time to create a grid!!");
+            //System.out.println("Running the default");
+            System.out.println("do you want to run the default game?");
+            goingThrough = yesOrNoQuestionMethod(0);
+            if(goingThrough == 1){
+                numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
+                timeToWaitFor = 20;
+                timeToWaitFor = (timeWaiting/4)*3;
+                timeWaiting = timeWaiting - timeToWaitFor; 
+                size = 10;
+                heightOfGrid = size;
+                widthOfGrid = size;
+                howManyGenerationsAreWeDoing = 5;
+                numberOfHistoriesRecorded  = 5;
+
+                System.out.println("you want to populate the thing?");
+                goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+                if(goingThrough == 1){ //if it's one, thats a yes, and do 
+                    System.out.println("beginning at.."); //tells the user what's happening 
+                    for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+                        for(int x = 0; x < widthOfGrid; x++){
+                            int h = 0; //only affect the first history, aka the working history, the current grid
+                            mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                            System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                        }
+                        System.out.println(); //next line 
+                    }
+                }else{ //if you recieved an invalid or a no answer
+                    System.out.println("ok"); // be ok with it 
+                    System.out.println("beginning at.."); //tells the user what's happening 
+                    for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+                        for(int x = 0; x < widthOfGrid; x++){
+                            int h = 0; //only affect the first history, aka the working history, the current grid
+                            //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                            System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                        }
+                        System.out.println(); //next line 
+                    }
+                } 
+                thisIsRunning = true;
+                runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing);
+
+                System.out.println("run history?");
+                goingThrough = 1; //calls the method which handles yes or no questions, assigns the value to goingthrough
+                if(goingThrough == 1){
+                    //the following is just five for loops which all print out the grid at different points
+                    //this one prints out the control grid of mapTwo
+                    System.out.println("what it became");
+                    for(int c = 0; c < numberOfHistoriesRecorded; c++){
+                        System.out.println("history just happned " + c);
+                        for(int a = 0; a < heightOfGrid; a++){
+                            for(int b = 0; b < widthOfGrid; b++){
+                                System.out.print(" " + mapThreeDime[a][b][c] + " ");
+                            }
+                            System.out.println();
+                        }
+                    }
+
+                }else{
+                    System.out.println("cooool");
+                }
+
+            }
         }else if(whatWeAreDoing == 4){
-            System.out.println("time to create a grid!!");
-         }
-        
-        if(hi == 1){
-            System.out.println("you want this to run?");
-            thisIsRunning = false;
-            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-            if(goingThrough == 1){ //if it's one, thats a yes, and do 
-                thisIsRunning = true; //allows the thing to run
-            }else{
-                thisIsRunning = false; //prevents the thing from running (the thign is the conway game btw)
+            System.out.println("Quitting... ");
+            if(hi == 1){
+                System.out.println("Just checking, do you want to quit?");
+                thisIsRunning = false;
+                goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+                if(goingThrough == 1){ //if it's one, thats a yes, and do 
+                    thisIsRunning = false; //so they want to quit and it stops
+                }else{
+                    thisIsRunning = true; //they don't want to quit or its invalid, deal with
+                }
             }
         }
 
-        int numberOfGenerations = 0; //controls how many times the game loops/how many generations there are. 
-        System.out.println("running the default?");
-        goingThrough = yesOrNoQuestionMethod(0);
-        if(goingThrough == 1){
-            timeToWaitFor = 20;
-            timeToWaitFor = (timeWaiting/4)*3;
-            timeWaiting = timeWaiting - timeToWaitFor; 
-            size = 10;
-            heightOfGrid = size;
-            widthOfGrid = size;
-            howManyGenerationsAreWeDoing = 5;
-            numberOfHistoriesRecorded  = 5;
+        // numberOfGenerations = 0; //controls how many times the game loops/how many generations there are. 
+        // System.out.println("running the default?");
+        // goingThrough = yesOrNoQuestionMethod(0);
+        // if(goingThrough == 1){
+        // timeToWaitFor = 20;
+        // timeToWaitFor = (timeWaiting/4)*3;
+        // timeWaiting = timeWaiting - timeToWaitFor; 
+        // size = 10;
+        // heightOfGrid = size;
+        // widthOfGrid = size;
+        // howManyGenerationsAreWeDoing = 5;
+        // numberOfHistoriesRecorded  = 5;
 
-            System.out.println("you want to populate the thing?");
-            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-            if(goingThrough == 1){ //if it's one, thats a yes, and do 
-                System.out.println("beginning at.."); //tells the user what's happening 
-                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                    for(int x = 0; x < widthOfGrid; x++){
-                        int h = 0; //only affect the first history, aka the working history, the current grid
-                        mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
-                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
-                    }
-                    System.out.println(); //next line 
-                }
-            }else{ //if you recieved an invalid or a no answer
-                System.out.println("ok"); // be ok with it 
-                System.out.println("beginning at.."); //tells the user what's happening 
-                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
-                    for(int x = 0; x < widthOfGrid; x++){
-                        int h = 0; //only affect the first history, aka the working history, the current grid
-                        //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
-                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
-                    }
-                    System.out.println(); //next line 
-                }
-            } 
+        // System.out.println("you want to populate the thing?");
+        // goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+        // if(goingThrough == 1){ //if it's one, thats a yes, and do 
+        // System.out.println("beginning at.."); //tells the user what's happening 
+        // for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+        // for(int x = 0; x < widthOfGrid; x++){
+        // int h = 0; //only affect the first history, aka the working history, the current grid
+        // mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+        // System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+        // }
+        // System.out.println(); //next line 
+        // }
+        // }else{ //if you recieved an invalid or a no answer
+        // System.out.println("ok"); // be ok with it 
+        // System.out.println("beginning at.."); //tells the user what's happening 
+        // for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+        // for(int x = 0; x < widthOfGrid; x++){
+        // int h = 0; //only affect the first history, aka the working history, the current grid
+        // //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+        // System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+        // }
+        // System.out.println(); //next line 
+        // }
+        // } 
 
-        }else{
-
-            System.out.println("how many generations should I run?");
-            howManyGenerationsAreWeDoing = keyboard.nextInt();
-            keyboard.nextLine();
-
-            System.out.println("what should be the pause time between them?");
-            timeWaiting = keyboard.nextInt();
-            timeToWaitFor = (timeWaiting/4)*3;
-            timeWaiting = timeWaiting - timeToWaitFor;
-            keyboard.nextLine();
-
-            System.out.println("how big do you want this grid to be");
-            size = keyboard.nextInt();
-            keyboard.nextLine();
-            heightOfGrid = size;
-            widthOfGrid = size;
-
-            System.out.println("how many histories should I record?");
-            numberOfHistoriesRecorded = keyboard.nextInt();
-            keyboard.nextLine();
-
-            System.out.println("you want to populate the thing?");
-            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-            if(goingThrough == 1){ //if it's one, thats a yes, and do 
-                System.out.println("beginning at.."); //tells the user what's happening 
-                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                    for(int x = 0; x < widthOfGrid; x++){
-                        int h = 0; //only affect the first history, aka the working history, the current grid
-                        mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
-                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
-                    }
-                    System.out.println(); //next line 
-                }
-            }else{ //if you recieved an invalid or a no answer
-                System.out.println("ok"); // be ok with it 
-                System.out.println("beginning at.."); //tells the user what's happening 
-                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
-                    for(int x = 0; x < widthOfGrid; x++){
-                        int h = 0; //only affect the first history, aka the working history, the current grid
-                        //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
-                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
-                    }
-                    System.out.println(); //next line 
-                }
-            }
-
-        }
+        // }else{
+        // setup(goingThrough);
+        // }
 
         //MAIN GAME
         //this is the block which runs the printing of the game itself. It constantly calls and asks if the cell is alive, as it prints the new gen
         //it runs when user has specified it should and for the amount of generations specified
-        runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing);
+        
+        
+        //runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing);
 
-        System.out.println("run history?");
-        goingThrough = 1; //calls the method which handles yes or no questions, assigns the value to goingthrough
-        if(goingThrough == 1){
-            //the following is just five for loops which all print out the grid at different points
-            //this one prints out the control grid of mapTwo
-            System.out.println("what it became");
-            for(int c = 0; c < numberOfHistoriesRecorded; c++){
-                System.out.println("history just happned " + c);
-                for(int a = 0; a < heightOfGrid; a++){
-                    for(int b = 0; b < widthOfGrid; b++){
-                        System.out.print(" " + mapThreeDime[a][b][c] + " ");
-                    }
-                    System.out.println();
-                }
-            }
-
-        }else{
-            System.out.println("cooool");
-        }
 
     }
 
@@ -543,9 +542,9 @@ public class TheGame
         String userInput = keyboard.nextLine();
         userInput = userInput.toLowerCase();
         userInput = userInput.trim();
-        
+
         System.out.println("currently you have option " + selected + " selected");
-        
+
         if (userInput.equals("1")){
             System.out.println("selected 1");
             return 1;
@@ -583,9 +582,56 @@ public class TheGame
             doingMenuOption(1);
         }
         return 0;
-        
 
-        
+    }
+
+    public void setup(int goingThrough){
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("how many generations should I run?");
+        howManyGenerationsAreWeDoing = keyboard.nextInt();
+        keyboard.nextLine();
+
+        System.out.println("what should be the pause time between them?");
+        timeWaiting = keyboard.nextInt();
+        timeToWaitFor = (timeWaiting/4)*3;
+        timeWaiting = timeWaiting - timeToWaitFor;
+        keyboard.nextLine();
+
+        System.out.println("how big do you want this grid to be");
+        size = keyboard.nextInt();
+        keyboard.nextLine();
+        heightOfGrid = size;
+        widthOfGrid = size;
+
+        System.out.println("how many histories should I record?");
+        numberOfHistoriesRecorded = keyboard.nextInt();
+        keyboard.nextLine();
+
+        System.out.println("you want to populate the thing?");
+        goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+        if(goingThrough == 1){ //if it's one, thats a yes, and do 
+            System.out.println("beginning at.."); //tells the user what's happening 
+            for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+                for(int x = 0; x < widthOfGrid; x++){
+                    int h = 0; //only affect the first history, aka the working history, the current grid
+                    mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                    System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                }
+                System.out.println(); //next line 
+            }
+        }else{ //if you recieved an invalid or a no answer
+            System.out.println("ok"); // be ok with it 
+            System.out.println("beginning at.."); //tells the user what's happening 
+            for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+                for(int x = 0; x < widthOfGrid; x++){
+                    int h = 0; //only affect the first history, aka the working history, the current grid
+                    //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                    System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                }
+                System.out.println(); //next line 
+            }
+        }
     }
 }
 

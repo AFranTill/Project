@@ -17,4 +17,6 @@ comment7.params=thisIsRunning\ numberOfGenerations\ howManyGenerationsAreWeDoing
 comment7.target=void\ runGame(boolean,\ int,\ int)
 comment8.params=whichOption
 comment8.target=int\ doingMenuOption(int)
-numComments=9
+comment9.params=goingThrough
+comment9.target=void\ setup(int)
+numComments=10
