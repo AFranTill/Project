@@ -52,6 +52,7 @@ public class TheGame
     int timeToWaitFor;
     int timeWaiting;
     int howManyGenerationsAreWeDoing;
+    int selected = 1;
 
     /**
      * Constructor for objects of class TheGame
@@ -59,16 +60,37 @@ public class TheGame
     public TheGame()
     {
         Scanner keyboard = new Scanner(System.in);
-
-        screenSize();
-
-        System.out.println("you want this to run?");
+        int hi = 0;
+        int goingThrough;
         boolean thisIsRunning = false;
-        int goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-        if(goingThrough == 1){ //if it's one, thats a yes, and do 
-            thisIsRunning = true; //allows the thing to run
-        }else{
-            thisIsRunning = false; //prevents the thing from running (the thign is the conway game btw)
+        screenSize();
+        System.out.println("                Welcome to the menu");
+        System.out.println("                There are a couple options to chose from");
+        System.out.println("                1. Read from a file");
+        System.out.println("                2. Input a grid and run");
+        System.out.println("                3. Run the default");
+        System.out.println("                4. Quit");
+        
+        int whatWeAreDoing = doingMenuOption(1);
+        if(whatWeAreDoing == 1){
+            System.out.println("reading from a file");
+        }else if (whatWeAreDoing == 2){
+            System.out.println("time to create a grid!!");
+        }else if (whatWeAreDoing == 3){
+            System.out.println("time to create a grid!!");
+        }else if(whatWeAreDoing == 4){
+            System.out.println("time to create a grid!!");
+         }
+        
+        if(hi == 1){
+            System.out.println("you want this to run?");
+            thisIsRunning = false;
+            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+            if(goingThrough == 1){ //if it's one, thats a yes, and do 
+                thisIsRunning = true; //allows the thing to run
+            }else{
+                thisIsRunning = false; //prevents the thing from running (the thign is the conway game btw)
+            }
         }
 
         int numberOfGenerations = 0; //controls how many times the game loops/how many generations there are. 
@@ -108,6 +130,7 @@ public class TheGame
                     System.out.println(); //next line 
                 }
             } 
+
         }else{
 
             System.out.println("how many generations should I run?");
@@ -160,37 +183,7 @@ public class TheGame
         //MAIN GAME
         //this is the block which runs the printing of the game itself. It constantly calls and asks if the cell is alive, as it prints the new gen
         //it runs when user has specified it should and for the amount of generations specified
-
-        while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
-            //System.out.println('\u000c'); //clears the screen
-            System.out.println("running " + numberOfGenerations); //tells user what generation they are on
-            System.out.println(); //bet you can't guess what this does
-            //listeningMethod(timeToWaitFor);
-
-            //the main loop which actually runs game (one loop is one generation)
-            for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
-                for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
-                    int notDead = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
-                    int h = 0; //dealing with just history = 0, or the current history/working grid. 
-                    //System.out.print(" " + mapThreeDime[x][y][h] + " ");
-
-                    if(notDead == 1){ //if it's living 
-                        //System.out.print(" " + map[x][y] + " ");
-                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //prints out the value
-                        mapTwo[y][x] = notDead; // puts the value into the control group map 
-                    }else if (notDead == 0){ //does literally the exact same thing as above why is this an if statement. 
-                        System.out.print(" " + mapThreeDime[y][x][h] + " ");
-                        mapTwo[y][x] = notDead;
-                    }else{ //else do nothing. 
-                    }
-
-                }
-                System.out.println(); 
-            }
-
-            slowPrint(timeWaiting);
-            numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
-        }
+        runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing);
 
         System.out.println("run history?");
         goingThrough = 1; //calls the method which handles yes or no questions, assigns the value to goingthrough
@@ -198,52 +191,16 @@ public class TheGame
             //the following is just five for loops which all print out the grid at different points
             //this one prints out the control grid of mapTwo
             System.out.println("what it became");
-            for(int a = 0; a < heightOfGrid; a++){
-                for(int b = 0; b < widthOfGrid; b++){
-                    System.out.print(" " + mapTwo[a][b] + " ");
+            for(int c = 0; c < numberOfHistoriesRecorded; c++){
+                System.out.println("history just happned " + c);
+                for(int a = 0; a < heightOfGrid; a++){
+                    for(int b = 0; b < widthOfGrid; b++){
+                        System.out.print(" " + mapThreeDime[a][b][c] + " ");
+                    }
+                    System.out.println();
                 }
-                System.out.println();
             }
 
-            //this prints out history at position one (eg int map[a][b][0,1,0,0,0]
-            // where the 1 is what it's printing for everything
-            System.out.println("history just happened (point 1)");
-            for(int a = 0; a < heightOfGrid; a++){
-                for(int b = 0; b < widthOfGrid; b++){
-                    System.out.print(" " + mapThreeDime[a][b][1] + " ");
-                }
-                System.out.println();
-            }
-
-            //this prints out history at position two (eg int map[a][b][0,0,1,0,0]
-            // where the 1 is what it's printing for everything
-            System.out.println("history just before just happened (point 2)");
-            for(int a = 0; a < heightOfGrid; a++){
-                for(int b = 0; b < widthOfGrid; b++){
-                    System.out.print(" " + mapThreeDime[a][b][2] + " ");
-                }
-                System.out.println();
-            }
-
-            //this prints out history at position three (eg int map[a][b][0,0,0,1,0]
-            // where the 1 is what it's printing for everything
-            System.out.println("history (point 3)");
-            for(int a = 0; a < heightOfGrid; a++){
-                for(int b = 0; b < widthOfGrid; b++){
-                    System.out.print(" " + mapThreeDime[a][b][3] + " ");
-                }
-                System.out.println();
-            }
-
-            //this prints out history at position four (eg int map[a][b][0,0,0,0,1]
-            // where the 1 is what it's printing for everything
-            System.out.println("history (point 4)");
-            for(int a = 0; a < heightOfGrid; a++){
-                for(int b = 0; b < widthOfGrid; b++){
-                    System.out.print(" " + mapThreeDime[a][b][4] + " ");
-                }
-                System.out.println();
-            }
         }else{
             System.out.println("cooool");
         }
@@ -548,6 +505,88 @@ public class TheGame
             + " height : " + height);
     }
 
+    public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing){
+        while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
+            //System.out.println('\u000c'); //clears the screen
+            System.out.println("running " + numberOfGenerations); //tells user what generation they are on
+            System.out.println(); //bet you can't guess what this does
+            //listeningMethod(timeToWaitFor);
+
+            //the main loop which actually runs game (one loop is one generation)
+            for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
+                for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
+                    int notDead = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
+                    int h = 0; //dealing with just history = 0, or the current history/working grid. 
+                    //System.out.print(" " + mapThreeDime[x][y][h] + " ");
+
+                    if(notDead == 1){ //if it's living 
+                        //System.out.print(" " + map[x][y] + " ");
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //prints out the value
+                        mapTwo[y][x] = notDead; // puts the value into the control group map 
+                    }else if (notDead == 0){ //does literally the exact same thing as above why is this an if statement. 
+                        System.out.print(" " + mapThreeDime[y][x][h] + " ");
+                        mapTwo[y][x] = notDead;
+                    }else{ //else do nothing. 
+                    }
+
+                }
+                System.out.println(); 
+            }
+
+            slowPrint(timeWaiting);
+            numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
+        }
+    }
+
+    public int doingMenuOption(int whichOption){
+        Scanner keyboard = new Scanner(System.in);
+        String userInput = keyboard.nextLine();
+        userInput = userInput.toLowerCase();
+        userInput = userInput.trim();
+        
+        System.out.println("currently you have option " + selected + " selected");
+        
+        if (userInput.equals("1")){
+            System.out.println("selected 1");
+            return 1;
+        }else if (userInput.equals("2")){
+            System.out.println("selected 2");
+            return 2;
+        }else if (userInput.equals("3")){
+            System.out.println("selected 3");
+            return 3;
+        }else if (userInput.equals("4")){
+            System.out.println("selected 4");
+            return 4;
+        }else if (userInput.equals("up") || userInput.equals("u")){
+            System.out.println("moved selection up");
+            if (selected == 1){
+                System.out.println("there are no further options this way");
+            }else{
+                selected--;
+            }
+            System.out.println("currently you have option " + selected + " selected");
+            doingMenuOption(1);
+        }else if (userInput.equals("down") || userInput.equals("d")){
+            System.out.println("moved selection down");
+            if (selected == 4){
+                System.out.println("there are no further options this way");
+            }else{
+                selected++;
+            }
+            System.out.println("currently you have option " + selected + " selected");
+            doingMenuOption(1);
+        }else if (userInput.equals("enter") || userInput.equals("e")){
+            return selected;
+        }else{
+            System.out.println("doesn't seem like a valid input, sorry");
+            doingMenuOption(1);
+        }
+        return 0;
+        
+
+        
+    }
 }
 
 /*
