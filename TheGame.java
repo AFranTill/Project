@@ -10,6 +10,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Timer;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
 
 public class TheGame 
 {
@@ -75,8 +78,14 @@ public class TheGame
         int whatWeAreDoing = doingMenuOption(1);
         if(whatWeAreDoing == 1){
             System.out.println("reading from a file");
+
+            //reading file stuff method calling
         }else if (whatWeAreDoing == 2){
             System.out.println("time to create a grid!!");
+
+            changeCells(true);
+
+            System.out.println("now I need to implement a run game function");
         }else if (whatWeAreDoing == 3){
             //System.out.println("Running the default");
             System.out.println("do you want to run the default game?");
@@ -199,10 +208,8 @@ public class TheGame
         //MAIN GAME
         //this is the block which runs the printing of the game itself. It constantly calls and asks if the cell is alive, as it prints the new gen
         //it runs when user has specified it should and for the amount of generations specified
-        
-        
-        //runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing);
 
+        //runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing);
 
     }
 
@@ -631,6 +638,217 @@ public class TheGame
                 }
                 System.out.println(); //next line 
             }
+        }
+    }
+
+    public void changeCells(boolean selectionScreen){
+
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("hey");
+
+        printIt(0);
+        while (selectionScreen == true){
+            int h = 0;
+            System.out.println("Please select row: ");
+            int rowSelection = keyboard.nextInt();
+
+            System.out.println("Please select column: ");
+            int columnSelection = keyboard.nextInt();
+
+            System.out.println("do you want it alive or dead?");
+            int changeTo = keyboard.nextInt();
+
+            if (mapThreeDime[rowSelection-1][columnSelection-1][h] == 0){
+                mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
+            }
+            else
+            {
+                mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
+
+            }
+
+            printIt(0);
+
+            System.out.println();
+
+            selectionScreen=false;
+        }
+    }
+
+    public void printIt(int h){
+        for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+            for(int x = 0; x < widthOfGrid; x++){
+                System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+            }
+            System.out.println(); //next line 
+        }
+    }
+
+    public void writingToAFile(){
+        Scanner keyboardInput = new Scanner(System.in);
+
+        boolean areWeWriting = true;
+        try{
+            File workingFile = new File ("thisIWillWriteTo.txt");
+
+            FileWriter newWriterThing = new FileWriter(workingFile);
+
+            newWriterThing.write("It's the end of the world.\n");
+            newWriterThing.write("And honestly, it's not that bad\n");
+            newWriterThing.write("~begins every teen dystopia~\n");
+            newWriterThing.flush();
+            newWriterThing.close();
+
+            Scanner readingThisFile = new Scanner(workingFile);
+            while (readingThisFile.hasNextLine()){
+                System.out.println(readingThisFile.nextLine());
+            }
+        }catch(IOException e){
+            System.out.println("broken");
+        }
+
+        System.out.println("please type a full file name (with the type also)");
+        System.out.println("hint = try test.txt");
+        String fileName = keyboardInput.nextLine();
+        File myFile = new File(fileName);
+        try {
+            //trying something hopefull it works
+            Scanner readTheFile = new Scanner(myFile);
+            while (readTheFile.hasNextLine()){
+                System.out.println(readTheFile.nextLine());
+            }
+        }
+        catch(IOException e){
+            //and if it doesn't work
+            e.printStackTrace();
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+        }
+    }
+
+    public void readingAFile(){
+        Scanner keyboardInput = new Scanner(System.in);
+        System.out.println("please type a full file name (with the type also)");
+        System.out.println("hint = try test.txt");
+        String fileName = keyboardInput.nextLine();
+        File myFile = new File(fileName);
+        try {
+            //trying something hopefull it works
+            Scanner readTheFile = new Scanner(myFile);
+            while (readTheFile.hasNextLine()){
+                System.out.println(readTheFile.nextLine());
+            }
+        }
+        catch(IOException e){
+            //and if it doesn't work
+            e.printStackTrace();
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+        }
+    }
+
+    public void FileWritingSecondMightBeBetter()
+    {
+        Scanner keyboardInput = new Scanner(System.in);
+
+        System.out.println("please type a full file name (with the type also)");
+        System.out.println("hint = try test.txt");
+        String fileName = keyboardInput.nextLine();
+        File myFile = new File(fileName);
+        try {
+            //trying something hopefull it works
+            Scanner readTheFile = new Scanner(myFile);
+            while (readTheFile.hasNextLine()){
+                System.out.println(readTheFile.nextLine());
+            }
+        }
+        catch(IOException e){
+            //and if it doesn't work
+            e.printStackTrace();
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+        }
+
+        boolean areWeWriting = true;
+        try{
+            File workingFile = new File ("thisIWillWriteTo.txt");
+
+            FileWriter newWriterThing = new FileWriter(workingFile);
+
+            newWriterThing.write("It's the end of the world.\n");
+            newWriterThing.write("And honestly, it's not that bad\n");
+            newWriterThing.write("~begins every teen dystopia~\n");
+            newWriterThing.flush();
+            newWriterThing.close();
+
+            Scanner readingThisFile = new Scanner(workingFile);
+            while (readingThisFile.hasNextLine()){
+                System.out.println(readingThisFile.nextLine());
+            }
+        }catch(IOException e){
+            System.out.println("broken");
+        }
+
+        System.out.println("And one last file");
+        System.out.println("btw, try 'youShouldSayPeekaboo.txt'");
+        String mightBeAFileName = keyboardInput.nextLine();
+        File nextWorkingFile = new File(mightBeAFileName);
+        boolean writingAndReading = true;
+        int numberOfLines = 0;
+        try {
+            while (writingAndReading == true){//trying something hopefull it works
+                Scanner readTheFile = new Scanner(nextWorkingFile);
+                while (readTheFile.hasNextLine()){
+                    System.out.println(readTheFile.nextLine());
+                }
+                System.out.println("Add anything? If not, say '.'");
+                String lineToAdd = keyboardInput.nextLine();
+                FileWriter currentWriterThing = new FileWriter(nextWorkingFile, true); //PASSES IT FILE NAME AND APPEND = TRUE, SO IT ADDS INSTEAD OF REWRITING (OMG IT TOOK SO LONG TO FIND OUT HOW TO DO THAT)
+                if (lineToAdd.equals(".")){
+                    //newWriterThing.flush();
+                    //newWriterThing.close();
+                    writingAndReading = false; 
+                }else{ 
+                    /*
+                    //currentWriterThing.write("hey");
+                    numberOfLines+= 1;
+                    System.out.println(numberOfLines);
+                    for(int x = 0; x >= numberOfLines; x++){
+                    currentWriterThing.write("\n");
+                    }*/
+                    currentWriterThing.write(lineToAdd+"\n");
+                    currentWriterThing.flush();
+
+                    while (readTheFile.hasNextLine()){
+                        System.out.println(readTheFile.nextLine());
+                    }               
+                }
+
+            }
+
+        }
+        catch(IOException e){
+            //and if it doesn't work
+            e.printStackTrace();
+            System.out.println(" failed ");
+        }
+
+    }
+
+    public void FileReadingSecondMightBeBetter(){
+        Scanner keyboardInput = new Scanner(System.in);
+        System.out.println("please type a full file name (with the type also)");
+        System.out.println("hint = try test.txt");
+        String fileName = keyboardInput.nextLine();
+        File myFile = new File(fileName);
+        try {
+            //trying something hopefull it works
+            Scanner readTheFile = new Scanner(myFile);
+            while (readTheFile.hasNextLine()){
+                System.out.println(readTheFile.nextLine());
+            }
+        }
+        catch(IOException e){
+            //and if it doesn't work
+            e.printStackTrace();
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
         }
     }
 }
