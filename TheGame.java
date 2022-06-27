@@ -35,8 +35,8 @@ public class TheGame
     int widthOfGrid = 10; //dictates grid width
     int heightOfGrid = 10; //dictates grid width
     int numberOfHistoriesRecorded = 5; //dictates number of histories (controls the 3D part of the 3D array)
-    // private int mapThreeDime[][][] = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
-    int[][][] mapThreeDime= //makes the 3D grid when we want to hand-populate for control and testing purposes
+    int mapThreeDime[][][];// = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
+    int[][][] mapThreeDimeMade= //makes the 3D grid when we want to hand-populate for control and testing purposes
         { 
             { {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
@@ -100,52 +100,80 @@ public class TheGame
                 widthOfGrid = size;
                 howManyGenerationsAreWeDoing = 5;
                 numberOfHistoriesRecorded  = 5;
+                //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
 
-                System.out.println("you want to populate the thing?");
-                goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-                if(goingThrough == 1){ //if it's one, thats a yes, and do 
-                    System.out.println("beginning at.."); //tells the user what's happening 
-                    for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                        for(int x = 0; x < widthOfGrid; x++){
-                            int h = 0; //only affect the first history, aka the working history, the current grid
-                            mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
-                            System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
-                        }
-                        System.out.println(); //next line 
-                    }
-                }else{ //if you recieved an invalid or a no answer
-                    System.out.println("ok"); // be ok with it 
-                    System.out.println("beginning at.."); //tells the user what's happening 
-                    for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
-                        for(int x = 0; x < widthOfGrid; x++){
-                            int h = 0; //only affect the first history, aka the working history, the current grid
-                            //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
-                            System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
-                        }
-                        System.out.println(); //next line 
-                    }
-                } 
-                thisIsRunning = true;
-                runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing);
+                
 
-                System.out.println("run history?");
-                goingThrough = 1; //calls the method which handles yes or no questions, assigns the value to goingthrough
-                if(goingThrough == 1){
-                    //the following is just five for loops which all print out the grid at different points
-                    //this one prints out the control grid of mapTwo
-                    System.out.println("what it became");
-                    for(int c = 0; c < numberOfHistoriesRecorded; c++){
-                        System.out.println("history just happned " + c);
-                        for(int a = 0; a < heightOfGrid; a++){
-                            for(int b = 0; b < widthOfGrid; b++){
-                                System.out.print(" " + mapThreeDime[a][b][c] + " ");
-                            }
-                            System.out.println();
-                        }
-                    }
+                // int[][][] mapThreeDime = //makes the 3D grid when we want to hand-populate for control and testing purposes
+                // { 
+                // { {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
+                // }; 
 
-                }else{
-                    System.out.println("cooool");
+            }else{
+                setup(goingThrough);
+                //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+                    for(int x = 0; x < widthOfGrid; x++){
+                        int h = 0; //only affect the first history, aka the working history, the current grid
+                        //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                    }
+                    System.out.println(); //next line 
+                }
+            }
+            int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                    
+            System.out.println("you want to populate the thing?");
+            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+            if(goingThrough == 1){ //if it's one, thats a yes, and do 
+                System.out.println("beginning at.."); //tells the user what's happening 
+                for(int y = 0; y < size; y++){ //nested loop, to go through the array
+                    for(int x = 0; x < size; x++){
+                        int h = 0; //only affect the first history, aka the working history, the current grid
+                        mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                    }
+                    System.out.println(); //next line 
+                }
+
+            }else{ //if you recieved an invalid or a no answer
+                System.out.println("ok"); // be ok with it 
+                System.out.println("beginning at.."); //tells the user what's happening 
+                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+                    for(int x = 0; x < widthOfGrid; x++){
+                        int h = 0; //only affect the first history, aka the working history, the current grid
+                        //mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                    }
+                    System.out.println(); //next line 
+                }
+            } 
+            thisIsRunning = true;
+            runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
+
+            System.out.println("run history?");
+            goingThrough = 1; //calls the method which handles yes or no questions, assigns the value to goingthrough
+            if(goingThrough == 1){
+                //the following is just five for loops which all print out the grid at different points
+                //this one prints out the control grid of mapTwo
+                System.out.println("what it became");
+                for(int c = 0; c < numberOfHistoriesRecorded; c++){
+                    System.out.println("history just happned " + c);
+                    for(int a = 0; a < heightOfGrid; a++){
+                        for(int b = 0; b < widthOfGrid; b++){
+                            System.out.print(" " + mapThreeDime[a][b][c] + " ");
+                        }
+                        System.out.println();
+                    }
                 }
 
             }
@@ -213,7 +241,7 @@ public class TheGame
 
     }
 
-    public int isItAlive(int yCoord, int xCoord)//pass it the coord of the point, so we know what point we're investigating
+    public int isItAlive(int yCoord, int xCoord, int[][][] mapThreeDime)//pass it the coord of the point, so we know what point we're investigating
     {
         //this is the method that is called on every point to find out if it's alive or not alive. 
         int historyCurrent = 0; //this is semantics, but for most of this, are dealing with the history value of 0, or the current grid alyout. 
@@ -390,16 +418,16 @@ public class TheGame
 
         //and now, below are the conway's rules. These are pretty much directly translated into code
         if (mapThreeDime[yCoord][xCoord][historyCurrent] == 1){ //if the selected cell is currently alive
-            //System.out.println("Alive");
+            //System.out.println("Alive"); 
             if(neighboursValue < 2 || neighboursValue > 3){ // if the neighboursValue is less than two, the cell will die (underpopulation) or if it's more than three, the cell will die (overpopulation)
                 //System.out.println("dead");
                 shallItBeAlive = 0; //assigns the shallItBeAlive the 'dead' value
-                historyReplacer(yCoord, xCoord, shallItBeAlive); //passes the dead/alvie info and the selected cell location info to the history replacer
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime); //passes the dead/alvie info and the selected cell location info to the history replacer
                 return 0; //returns the 'dead' value
             }else if(neighboursValue == 2 || neighboursValue == 3){ //if it's 2 or three, the cell remains alive 
                 //System.out.println("alive");
                 shallItBeAlive = 1; //assigns the shallItBeAlive the 'living' value
-                historyReplacer(yCoord, xCoord, shallItBeAlive); //passes the dead/alvie info and the selected cell location info to the history replacer
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime); //passes the dead/alvie info and the selected cell location info to the history replacer
                 return 1; //returns the 'alive' value 
             }
 
@@ -408,12 +436,12 @@ public class TheGame
             if(neighboursValue == 3){ // and it has three live neighbours, it becomes alive 
                 //System.out.println("becomes alive");
                 shallItBeAlive = 1; //assigns the shallItBeAlive the 'living' value
-                historyReplacer(yCoord, xCoord, shallItBeAlive);//passes the dead/alvie info and the selected cell location info to the history replacer
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime);//passes the dead/alvie info and the selected cell location info to the history replacer
                 return 1; //returns the 'alive' value 
             }else { //for every other value, it remains dead
                 //System.out.println("stays dead");
                 shallItBeAlive = 0; //assigns the shallItBeAlive the 'dead' value
-                historyReplacer(yCoord, xCoord, shallItBeAlive);//passes the dead/alvie info and the selected cell location info to the history replacer
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime);//passes the dead/alvie info and the selected cell location info to the history replacer
                 return 0; //returns the 'dead' value
             }
         }else{ //if the selected cell is neither dead nor alive, then the system prints an error 
@@ -428,7 +456,7 @@ public class TheGame
     }
 
     //this method has an awful lot of comments, and I'm sorry, but even I find this confusing, and I wrote the code. 
-    public void historyReplacer(int yCoord, int xCoord, int living){ //this moves all the histories of a given point back one.
+    public void historyReplacer(int yCoord, int xCoord, int living, int[][][] mapThreeDime){ //this moves all the histories of a given point back one.
         //the histories are c if the array is defined as int array[a][b][c]
         //they keep a record of everything a given point has been for the last few iterations
         //the var numberOfHistoriesRecorded dictates how many iteration back the histories are kept
@@ -511,7 +539,7 @@ public class TheGame
             + " height : " + height);
     }
 
-    public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing){
+    public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime){
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
             //System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
@@ -521,7 +549,7 @@ public class TheGame
             //the main loop which actually runs game (one loop is one generation)
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
                 for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
-                    int notDead = isItAlive(y, x); //calls the isItAlive method, and asks if the point is alive 
+                    int notDead = isItAlive(y, x, mapThreeDime); //calls the isItAlive method, and asks if the point is alive 
                     int h = 0; //dealing with just history = 0, or the current history/working grid. 
                     //System.out.print(" " + mapThreeDime[x][y][h] + " ");
 
@@ -615,6 +643,11 @@ public class TheGame
         numberOfHistoriesRecorded = keyboard.nextInt();
         keyboard.nextLine();
 
+        //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+
+    }
+
+    public void populateBoard(int goingThrough){
         System.out.println("you want to populate the thing?");
         goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
         if(goingThrough == 1){ //if it's one, thats a yes, and do 
