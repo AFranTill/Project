@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class TheGame here.
+ * Write a description of class TheGameInfiniteBorder here.
  *
  * @author Frances
  * @version Verision Five, 16.5.22
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.FileWriter;
 //------ 
 
-public class TheGame 
+public class TheGameInfiniteBorder 
 {
     //VARIABLES
     private int mapTwo[][] = new int[10][10]; //control-type 2d array for a map to be used while testing.  
@@ -61,9 +61,9 @@ public class TheGame
     int numberOfHistoriesRecorded = 5; //dictates number of histories (controls the 3D part of the 3D array)
 
     /**
-     * Constructor for objects of class TheGame
+     * Constructor for objects of class TheGameInfiniteBorder
      */
-    public TheGame()
+    public TheGameInfiniteBorder()
     {
         Scanner keyboard = new Scanner(System.in);
         int hi = 0;
@@ -95,7 +95,7 @@ public class TheGame
             if(goingThrough == 1){
                 numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
                 timeWaiting = 2;
-                size = 10;
+                size = 10; //here would be where wee add another variable (one based for the actual size, on for printing it) 
                 heightOfGrid = size;
                 widthOfGrid = size;
                 howManyGenerationsAreWeDoing = 5;
