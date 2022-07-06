@@ -78,6 +78,10 @@ public class TheGameInfiniteBorder
         System.out.println("                2. Input a grid and run");
         System.out.println("                3. Run the default");
         System.out.println("                4. Quit");
+        System.out.println();
+        System.out.println("you can navigate the menu by typing up (or 'u') or down (d) then pressing enter (e)");
+        System.out.println("(the arrowkeys themselves don't work, sorry)");
+        System.out.println("or simply inputting the number of your choice");
 
         int whatWeAreDoing = doingMenuOption(1);
         if(whatWeAreDoing == 1){
