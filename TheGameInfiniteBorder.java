@@ -100,7 +100,7 @@ public class TheGameInfiniteBorder
                 smallerHeightOfGrid = heightOfGrid - 5;
                 widthOfGrid = size;
                 smallerWidthOfGrid = widthOfGrid - 5;
-                howManyGenerationsAreWeDoing = 5;
+                howManyGenerationsAreWeDoing = 4;
                 numberOfHistoriesRecorded  = 5;
                 
             }else{
@@ -119,6 +119,7 @@ public class TheGameInfiniteBorder
                 //the following is just five for loops which all print out the grid at different points
                 //this one prints out the control grid of mapTwo
                 System.out.println("what it became");
+                System.out.println("remeber, this one (just below) is the most recent history, the fourth is the LEAST recent or FIRST iteration");
                 for(int c = 0; c < numberOfHistoriesRecorded; c++){
                     System.out.println("history just happned " + c);
                     for(int a = 0; a < heightOfGrid; a++){
@@ -212,33 +213,22 @@ public class TheGameInfiniteBorder
 
 
     public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime){
-        int beginning = 5;
+        int beginning = 0;
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
             System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
 
             //the main loop which actually runs game (one loop is one generation)
-            for(int y = beginning ; y < smallerHeightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
-                for(int x = beginning; x < smallerWidthOfGrid; x++){ // same as above but for x and width not height 
+            for(int y = beginning ; y < size; y++){ //this runs through the y values (and stops when reached height of the grid)
+                for(int x = beginning; x < size; x++){ // same as above but for x and width not height 
                     int notDead = isItAlive(y, x, mapThreeDime); //calls the isItAlive method, and asks if the point is alive 
                     int h = 0; //dealing with just history = 0, or the current history/working grid. 
                     //System.out.print(" " + mapThreeDime[x][y][h] + " ");
-
-                    if(notDead == 1){ //if it's living 
-                        //System.out.print(" " + map[x][y] + " ");
-                        //System.out.print(" " + mapThreeDime[y][x][h] + " ");
-                        System.out.print(" " + "X" + " ");//prints out the value
-                        //mapTwo[y][x] = notDead; // puts the value into the control group map 
-                    }else if (notDead == 0){ //does literally the exact same thing as above why is this an if statement. 
-                        //System.out.print(" " + mapThreeDime[y][x][h] + " ");
-                        System.out.print(" " + " " + " ");
-                        //mapTwo[y][x] = notDead;
-                    }else{ //else do nothing. 
-                    }
                 }
-                System.out.println(); 
+                //System.out.println(); 
             }
+            printIt(0, mapThreeDime);
             slowPrint(timeWaiting);
             numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
         }
@@ -320,12 +310,13 @@ public class TheGameInfiniteBorder
     }
 
     public void populateBoard(int[][][] mapThreeDime){
+        int beginning = 5;
         System.out.println("you want to populate the thing?");
         int goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
         if(goingThrough == 1){ //if it's one, thats a yes, and do 
             System.out.println("beginning at.."); //tells the user what's happening 
-            for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                for(int x = 0; x < widthOfGrid; x++){
+            for(int y = beginning; y < smallerHeightOfGrid; y++){ //nested loop, to go through the array
+                for(int x = beginning; x < smallerWidthOfGrid; x++){
                     int h = 0; //only affect the first history, aka the working history, the current grid
                     mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
                     System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
@@ -375,8 +366,19 @@ public class TheGameInfiniteBorder
             }
             System.out.println(); //next line 
         }
+        /*
         
-        
+                    if(notDead == 1){ //if it's living 
+                        //System.out.print(" " + map[x][y] + " ");
+                        //System.out.print(" " + mapThreeDime[y][x][h] + " ");
+                        System.out.print(" " + "X" + " ");//prints out the value
+                        //mapTwo[y][x] = notDead; // puts the value into the control group map 
+                    }else if (notDead == 0){ //does literally the exact same thing as above why is this an if statement. 
+                        //System.out.print(" " + mapThreeDime[y][x][h] + " ");
+                        System.out.print(" " + " " + " ");
+                        //mapTwo[y][x] = notDead;
+                    }else{ //else do nothing. 
+                    }*/
     }
 
     // public void writingToAFile(){
