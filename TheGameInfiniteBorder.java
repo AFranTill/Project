@@ -35,8 +35,8 @@ public class TheGameInfiniteBorder
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
         };
 
-    int mapThreeDime[][][];// = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
-    int[][][] mapThreeDimeMade= //makes the 3D grid when we want to hand-populate for control and testing purposes
+    //int mapThreeDime[][][];// = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
+    int[][][] mapThreeDime= //makes the 3D grid when we want to hand-populate for control and testing purposes
         { 
             { {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },

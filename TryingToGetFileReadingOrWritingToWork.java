@@ -81,7 +81,7 @@ public class TryingToGetFileReadingOrWritingToWork
         if(whatWeAreDoing == 1){
             System.out.println("reading from a file");
 
-            writingToAFile();
+            readingAFile(); //(it'll return the size so the do the rest) 
             //reading file stuff method calling
         }else if (whatWeAreDoing == 2){
             System.out.println("time to create a grid!!");
@@ -659,28 +659,31 @@ public class TryingToGetFileReadingOrWritingToWork
         readingAFile();
     }
 
-    public void readingAFile(){
+    
+        public int readingAFile(){
         Scanner keyboardInput = new Scanner(System.in);
-        
+
         System.out.println("reading a file");
         File myFile = new File("hasAGrid.txt");
         int awesome = 0;
+        int epic = 0;
 
-        
         try {
             Scanner readTheFile = new Scanner(myFile);
             while (readTheFile.hasNextLine()){
                 System.out.println(readTheFile.nextLine());
                 awesome++;
                 System.out.println(awesome);
-            
             }
+            return awesome;
         }catch(IOException e){
             //and if it doesn't work
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+            return -1;
         }
     }
+    
 
     public void FileWritingSecondMightBeBetter()
     {
