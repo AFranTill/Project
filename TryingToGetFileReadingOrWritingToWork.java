@@ -80,7 +80,7 @@ public class TryingToGetFileReadingOrWritingToWork
         int whatWeAreDoing = doingMenuOption(1);
         if(whatWeAreDoing == 1){
             System.out.println("reading from a file");
-            
+
             writingToAFile();
             //reading file stuff method calling
         }else if (whatWeAreDoing == 2){
@@ -101,17 +101,17 @@ public class TryingToGetFileReadingOrWritingToWork
                 widthOfGrid = size;
                 howManyGenerationsAreWeDoing = 5;
                 numberOfHistoriesRecorded  = 5;
-                
+
                 int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
             }else{
                 setup(goingThrough);
             }
             int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-            
+
             printIt(0, mapThreeDime); //prints grid
-          
+
             populateBoard(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
-            
+
             thisIsRunning = true;
             runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
 
@@ -418,7 +418,7 @@ public class TryingToGetFileReadingOrWritingToWork
     }
 
     public static void slowPrint(int timeWaiting) { //makes the computer pause for the given amount of time
-        
+
         timeWaiting = timeWaiting*1000;
         try {
             TimeUnit.MILLISECONDS.sleep(timeWaiting);
@@ -452,7 +452,6 @@ public class TryingToGetFileReadingOrWritingToWork
             System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
-            
 
             //the main loop which actually runs game (one loop is one generation)
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
@@ -657,23 +656,26 @@ public class TryingToGetFileReadingOrWritingToWork
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
         }
+        readingAFile();
     }
 
     public void readingAFile(){
         Scanner keyboardInput = new Scanner(System.in);
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
+        
+        System.out.println("reading a file");
+        File myFile = new File("hasAGrid.txt");
+        int awesome = 0;
+
+        
         try {
-            //trying something hopefull it works
             Scanner readTheFile = new Scanner(myFile);
             while (readTheFile.hasNextLine()){
-                
                 System.out.println(readTheFile.nextLine());
+                awesome++;
+                System.out.println(awesome);
+            
             }
-        }
-        catch(IOException e){
+        }catch(IOException e){
             //and if it doesn't work
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
@@ -787,5 +789,4 @@ public class TryingToGetFileReadingOrWritingToWork
         }
     }
 }
-
 
