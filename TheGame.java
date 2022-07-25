@@ -69,6 +69,7 @@ public class TheGame
         int hi = 0;
         int goingThrough;
         boolean thisIsRunning = false;
+        boolean fromAGrid = false;
         screenSize();
         System.out.println("                Welcome to the menu");
         System.out.println("                There are a couple options to chose from");
@@ -80,6 +81,12 @@ public class TheGame
         int whatWeAreDoing = doingMenuOption(1);
         if(whatWeAreDoing == 1){
             System.out.println("reading from a file");
+            fromAGrid = true;
+            
+            System.out.println("do you want to load a game from a file");
+            goingThrough = yesOrNoQuestionMethod(0);
+            setup(goingThrough, fromAGrid); 
+            //this needs to populate from a grid.out.println("reading from a file");
 
             //reading file stuff method calling
         }else if (whatWeAreDoing == 2){
@@ -103,7 +110,7 @@ public class TheGame
                 
                 int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
             }else{
-                setup(goingThrough);
+                setup(goingThrough, false);
             }
             int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
             
@@ -528,8 +535,7 @@ public class TheGame
         return 0;
 
     }
-
-    public void setup(int goingThrough){
+public void setup(int goingThrough, boolean fromAGrid){
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("how many generations should I run?");
@@ -540,11 +546,18 @@ public class TheGame
         timeWaiting = keyboard.nextInt();
         keyboard.nextLine();
 
-        System.out.println("how big do you want this grid to be");
-        size = keyboard.nextInt();
-        keyboard.nextLine();
-        heightOfGrid = size;
-        widthOfGrid = size;
+        if(fromAGrid == false){
+
+            System.out.println("how big do you want this grid to be");
+            size = keyboard.nextInt();
+            keyboard.nextLine();
+            heightOfGrid = size;
+            widthOfGrid = size;
+        }else if (fromAGrid == true){
+            size = readingAFile(); 
+            heightOfGrid = size;
+            widthOfGrid = size;
+        }
 
         System.out.println("how many histories should I record?");
         numberOfHistoriesRecorded = keyboard.nextInt();
@@ -656,23 +669,27 @@ public class TheGame
         }
     }
 
-    public void readingAFile(){
+    public int readingAFile(){
         Scanner keyboardInput = new Scanner(System.in);
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
+
+        System.out.println("reading a file");
+        File myFile = new File("hasAGrid.txt");
+        int awesome = 0;
+        int epic = 0;
+
         try {
-            //trying something hopefull it works
             Scanner readTheFile = new Scanner(myFile);
             while (readTheFile.hasNextLine()){
                 System.out.println(readTheFile.nextLine());
+                awesome++;
+                System.out.println(awesome);
             }
-        }
-        catch(IOException e){
+            return awesome;
+        }catch(IOException e){
             //and if it doesn't work
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+            return -1;
         }
     }
 

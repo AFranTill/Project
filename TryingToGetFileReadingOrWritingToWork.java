@@ -69,6 +69,7 @@ public class TryingToGetFileReadingOrWritingToWork
         int hi = 0;
         int goingThrough;
         boolean thisIsRunning = false;
+        boolean fromAGrid = false;
         screenSize();
         System.out.println("                Welcome to the menu");
         System.out.println("                There are a couple options to chose from");
@@ -80,9 +81,12 @@ public class TryingToGetFileReadingOrWritingToWork
         int whatWeAreDoing = doingMenuOption(1);
         if(whatWeAreDoing == 1){
             System.out.println("reading from a file");
+            fromAGrid = true;
 
-            readingAFile(); //(it'll return the size so the do the rest) 
-            //reading file stuff method calling
+            System.out.println("do you want to load a game from a file");
+            goingThrough = yesOrNoQuestionMethod(0);
+            setup(goingThrough, fromAGrid); 
+            populateBoardFromAFile(mapThreeDime);
         }else if (whatWeAreDoing == 2){
             System.out.println("time to create a grid!!");
 
@@ -104,7 +108,7 @@ public class TryingToGetFileReadingOrWritingToWork
 
                 int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
             }else{
-                setup(goingThrough);
+                setup(goingThrough, false);
             }
             int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
 
@@ -529,7 +533,7 @@ public class TryingToGetFileReadingOrWritingToWork
 
     }
 
-    public void setup(int goingThrough){
+    public void setup(int goingThrough, boolean fromAGrid){
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("how many generations should I run?");
@@ -540,11 +544,18 @@ public class TryingToGetFileReadingOrWritingToWork
         timeWaiting = keyboard.nextInt();
         keyboard.nextLine();
 
-        System.out.println("how big do you want this grid to be");
-        size = keyboard.nextInt();
-        keyboard.nextLine();
-        heightOfGrid = size;
-        widthOfGrid = size;
+        if(fromAGrid == false){
+
+            System.out.println("how big do you want this grid to be");
+            size = keyboard.nextInt();
+            keyboard.nextLine();
+            heightOfGrid = size;
+            widthOfGrid = size;
+        }else if (fromAGrid == true){
+            size = readingAFile(); 
+            heightOfGrid = size;
+            widthOfGrid = size;
+        }
 
         System.out.println("how many histories should I record?");
         numberOfHistoriesRecorded = keyboard.nextInt();
@@ -659,10 +670,8 @@ public class TryingToGetFileReadingOrWritingToWork
         readingAFile();
     }
 
-    
-        public int readingAFile(){
+    public int readingAFile(){
         Scanner keyboardInput = new Scanner(System.in);
-
         System.out.println("reading a file");
         File myFile = new File("hasAGrid.txt");
         int awesome = 0;
@@ -683,113 +692,39 @@ public class TryingToGetFileReadingOrWritingToWork
             return -1;
         }
     }
-    
 
-    public void FileWritingSecondMightBeBetter()
-    {
+    public void populateBoardFromAFile(int[][][] mapThreeDime){
         Scanner keyboardInput = new Scanner(System.in);
+        System.out.println("reading a file");
+        String hi = "hi";
+        System.out.println(hi.charAt(0));
+        File myFile = new File("hasAGrid.txt");
+        int awesome = 0;
+        int epic = 0;
 
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
         try {
-            //trying something hopefull it works
             Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNextLine()){
-                System.out.println(readTheFile.nextLine());
-            }
-        }
-        catch(IOException e){
-            //and if it doesn't work
-            e.printStackTrace();
-            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
-        }
-
-        boolean areWeWriting = true;
-        try{
-            File workingFile = new File ("thisIWillWriteTo.txt");
-
-            FileWriter newWriterThing = new FileWriter(workingFile);
-
-            newWriterThing.write("It's the end of the world.\n");
-            newWriterThing.write("And honestly, it's not that bad\n");
-            newWriterThing.write("~begins every teen dystopia~\n");
-            newWriterThing.flush();
-            newWriterThing.close();
-
-            Scanner readingThisFile = new Scanner(workingFile);
-            while (readingThisFile.hasNextLine()){
-                System.out.println(readingThisFile.nextLine());
+            while (readTheFile.hasNext()){
+                //System.out.println(readTheFile.nextInt());
+                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+                    for(int x = 0; x < widthOfGrid; x++){
+                        int h = 0; //only affect the first history, aka the working history, the current grid
+                        //System.out.print(" " + readTheFile.charAt(x) + " ");
+                        mapThreeDime[y][x][h] = Integer.parseInt(readTheFile.next()); //assign it a random number (either one or zero)
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                    }
+                    System.out.println(); //next line 
+                }
+                
             }
         }catch(IOException e){
-            System.out.println("broken");
-        }
-
-        System.out.println("And one last file");
-        System.out.println("btw, try 'youShouldSayPeekaboo.txt'");
-        String mightBeAFileName = keyboardInput.nextLine();
-        File nextWorkingFile = new File(mightBeAFileName);
-        boolean writingAndReading = true;
-        int numberOfLines = 0;
-        try {
-            while (writingAndReading == true){//trying something hopefull it works
-                Scanner readTheFile = new Scanner(nextWorkingFile);
-                while (readTheFile.hasNextLine()){
-                    System.out.println(readTheFile.nextLine());
-                }
-                System.out.println("Add anything? If not, say '.'");
-                String lineToAdd = keyboardInput.nextLine();
-                FileWriter currentWriterThing = new FileWriter(nextWorkingFile, true); //PASSES IT FILE NAME AND APPEND = TRUE, SO IT ADDS INSTEAD OF REWRITING (OMG IT TOOK SO LONG TO FIND OUT HOW TO DO THAT)
-                if (lineToAdd.equals(".")){
-                    //newWriterThing.flush();
-                    //newWriterThing.close();
-                    writingAndReading = false; 
-                }else{ 
-                    /*
-                    //currentWriterThing.write("hey");
-                    numberOfLines+= 1;
-                    System.out.println(numberOfLines);
-                    for(int x = 0; x >= numberOfLines; x++){
-                    currentWriterThing.write("\n");
-                    }*/
-                    currentWriterThing.write(lineToAdd+"\n");
-                    currentWriterThing.flush();
-
-                    while (readTheFile.hasNextLine()){
-                        System.out.println(readTheFile.nextLine());
-                    }               
-                }
-
-            }
-
-        }
-        catch(IOException e){
-            //and if it doesn't work
-            e.printStackTrace();
-            System.out.println(" failed ");
-        }
-
-    }
-
-    public void FileReadingSecondMightBeBetter(){
-        Scanner keyboardInput = new Scanner(System.in);
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
-        try {
-            //trying something hopefull it works
-            Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNextLine()){
-                System.out.println(readTheFile.nextLine());
-            }
-        }
-        catch(IOException e){
             //and if it doesn't work
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+
         }
+
     }
+
 }
 

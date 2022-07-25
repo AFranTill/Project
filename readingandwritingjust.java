@@ -108,52 +108,6 @@ public class readingandwritingjust
         }
     }
 
-    public void writingToAFile(){
-        Scanner keyboardInput = new Scanner(System.in);
-        int awesome = 0;
-        boolean areWeWriting = true;
-        System.out.println("we are doing the writingToAFile method");
-        try{
-            File workingFile = new File ("thisIWillWriteTo.txt");
-
-            FileWriter newWriterThing = new FileWriter(workingFile);
-
-            newWriterThing.write("It's the end of the world.\n");
-            newWriterThing.write("And honestly, it's not that bad\n");
-            newWriterThing.write("~begins every teen dystopia~\n");
-            newWriterThing.flush();
-            newWriterThing.close();
-
-            Scanner readingThisFile = new Scanner(workingFile);
-            while (readingThisFile.hasNextLine()){
-                System.out.println(readingThisFile.nextLine());
-                awesome++;
-                System.out.println(awesome);
-            }
-        }catch(IOException e){
-            System.out.println("broken");
-        }
-
-        //THIS CODE BREAKS AND DOESNT WORK. Possibly because of a lack of files under that name
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
-        try {
-            //trying something hopefull it works
-            Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNextLine()){
-                System.out.println(readTheFile.nextLine());
-            }
-        }
-        catch(IOException e){
-            //and if it doesn't work
-            e.printStackTrace();
-            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
-        }
-
-    }
-
     public int readingAFile(){
         Scanner keyboardInput = new Scanner(System.in);
 
@@ -166,6 +120,31 @@ public class readingandwritingjust
             Scanner readTheFile = new Scanner(myFile);
             while (readTheFile.hasNextLine()){
                 System.out.println(readTheFile.nextLine());
+                awesome++;
+                System.out.println(awesome);
+            }
+            return awesome;
+        }catch(IOException e){
+            //and if it doesn't work
+            e.printStackTrace();
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+            return -1;
+        }
+    }
+    
+    public int gettingTheString(){
+        Scanner keyboardInput = new Scanner(System.in);
+
+        System.out.println("reading a file");
+        File myFile = new File("hasAGrid.txt");
+        int awesome = 0;
+        int epic = 0;
+        String thing;
+        try {
+            Scanner readTheFile = new Scanner(myFile);
+            while (readTheFile.hasNextLine()){
+                thing = readTheFile.nextLine();
+                System.out.println(thing);
                 awesome++;
                 System.out.println(awesome);
             }
