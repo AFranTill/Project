@@ -86,6 +86,7 @@ public class TryingToGetFileReadingOrWritingToWork
             System.out.println("do you want to load a game from a file");
             goingThrough = yesOrNoQuestionMethod(0);
             setup(goingThrough, fromAGrid); 
+            int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
             populateBoardFromAFile(mapThreeDime);
         }else if (whatWeAreDoing == 2){
             System.out.println("time to create a grid!!");
@@ -424,10 +425,9 @@ public class TryingToGetFileReadingOrWritingToWork
     public static void slowPrint(int timeWaiting) { //makes the computer pause for the given amount of time
 
         timeWaiting = timeWaiting*1000;
-        try {
+        try{
             TimeUnit.MILLISECONDS.sleep(timeWaiting);
-        }
-        catch (Exception e) {
+        }catch (Exception e) {
 
         }
 
@@ -604,11 +604,8 @@ public class TryingToGetFileReadingOrWritingToWork
 
             if (mapThreeDime[rowSelection-1][columnSelection-1][h] == 0){
                 mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
-            }
-            else
-            {
+            }else{
                 mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
-
             }
 
             printIt(0, mapThreeDime);
@@ -675,7 +672,6 @@ public class TryingToGetFileReadingOrWritingToWork
         System.out.println("reading a file");
         File myFile = new File("hasAGrid.txt");
         int awesome = 0;
-        int epic = 0;
 
         try {
             Scanner readTheFile = new Scanner(myFile);
@@ -696,11 +692,7 @@ public class TryingToGetFileReadingOrWritingToWork
     public void populateBoardFromAFile(int[][][] mapThreeDime){
         Scanner keyboardInput = new Scanner(System.in);
         System.out.println("reading a file");
-        String hi = "hi";
-        System.out.println(hi.charAt(0));
         File myFile = new File("hasAGrid.txt");
-        int awesome = 0;
-        int epic = 0;
 
         try {
             Scanner readTheFile = new Scanner(myFile);
@@ -709,13 +701,11 @@ public class TryingToGetFileReadingOrWritingToWork
                 for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
                     for(int x = 0; x < widthOfGrid; x++){
                         int h = 0; //only affect the first history, aka the working history, the current grid
-                        //System.out.print(" " + readTheFile.charAt(x) + " ");
-                        mapThreeDime[y][x][h] = Integer.parseInt(readTheFile.next()); //assign it a random number (either one or zero)
+                        mapThreeDime[y][x][h] = readTheFile.nextInt();
                         System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
                     }
                     System.out.println(); //next line 
                 }
-                
             }
         }catch(IOException e){
             //and if it doesn't work

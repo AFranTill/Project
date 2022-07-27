@@ -82,13 +82,12 @@ public class TheGame
         if(whatWeAreDoing == 1){
             System.out.println("reading from a file");
             fromAGrid = true;
-            
+
             System.out.println("do you want to load a game from a file");
             goingThrough = yesOrNoQuestionMethod(0);
             setup(goingThrough, fromAGrid); 
-            //this needs to populate from a grid.out.println("reading from a file");
-
-            //reading file stuff method calling
+            int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+            populateBoardFromAFile(mapThreeDime);
         }else if (whatWeAreDoing == 2){
             System.out.println("time to create a grid!!");
 
@@ -107,17 +106,17 @@ public class TheGame
                 widthOfGrid = size;
                 howManyGenerationsAreWeDoing = 5;
                 numberOfHistoriesRecorded  = 5;
-                
+
                 int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
             }else{
                 setup(goingThrough, false);
             }
             int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-            
+
             printIt(0, mapThreeDime); //prints grid
-          
+
             populateBoard(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
-            
+
             thisIsRunning = true;
             runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
 
@@ -424,7 +423,7 @@ public class TheGame
     }
 
     public static void slowPrint(int timeWaiting) { //makes the computer pause for the given amount of time
-        
+
         timeWaiting = timeWaiting*1000;
         try {
             TimeUnit.MILLISECONDS.sleep(timeWaiting);
@@ -458,7 +457,6 @@ public class TheGame
             System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
-            
 
             //the main loop which actually runs game (one loop is one generation)
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
@@ -535,7 +533,8 @@ public class TheGame
         return 0;
 
     }
-public void setup(int goingThrough, boolean fromAGrid){
+
+    public void setup(int goingThrough, boolean fromAGrid){
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("how many generations should I run?");
@@ -606,11 +605,8 @@ public void setup(int goingThrough, boolean fromAGrid){
 
             if (mapThreeDime[rowSelection-1][columnSelection-1][h] == 0){
                 mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
-            }
-            else
-            {
+            }else{
                 mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
-
             }
 
             printIt(0, mapThreeDime);
@@ -628,54 +624,11 @@ public void setup(int goingThrough, boolean fromAGrid){
         }
     }
 
-    public void writingToAFile(){
-        Scanner keyboardInput = new Scanner(System.in);
-
-        boolean areWeWriting = true;
-        try{
-            File workingFile = new File ("thisIWillWriteTo.txt");
-
-            FileWriter newWriterThing = new FileWriter(workingFile);
-
-            newWriterThing.write("It's the end of the world.\n");
-            newWriterThing.write("And honestly, it's not that bad\n");
-            newWriterThing.write("~begins every teen dystopia~\n");
-            newWriterThing.flush();
-            newWriterThing.close();
-
-            Scanner readingThisFile = new Scanner(workingFile);
-            while (readingThisFile.hasNextLine()){
-                System.out.println(readingThisFile.nextLine());
-            }
-        }catch(IOException e){
-            System.out.println("broken");
-        }
-
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
-        try {
-            //trying something hopefull it works
-            Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNextLine()){
-                System.out.println(readTheFile.nextLine());
-            }
-        }
-        catch(IOException e){
-            //and if it doesn't work
-            e.printStackTrace();
-            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
-        }
-    }
-
     public int readingAFile(){
         Scanner keyboardInput = new Scanner(System.in);
-
         System.out.println("reading a file");
         File myFile = new File("hasAGrid.txt");
         int awesome = 0;
-        int epic = 0;
 
         try {
             Scanner readTheFile = new Scanner(myFile);
@@ -799,6 +752,32 @@ public void setup(int goingThrough, boolean fromAGrid){
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
         }
     }
-}
 
+    public void populateBoardFromAFile(int[][][] mapThreeDime){
+        Scanner keyboardInput = new Scanner(System.in);
+        System.out.println("reading a file");
+        File myFile = new File("hasAGrid.txt");
+
+        try {
+            Scanner readTheFile = new Scanner(myFile);
+            while (readTheFile.hasNext()){
+                //System.out.println(readTheFile.nextInt());
+                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+                    for(int x = 0; x < widthOfGrid; x++){
+                        int h = 0; //only affect the first history, aka the working history, the current grid
+                        mapThreeDime[y][x][h] = readTheFile.nextInt();
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                    }
+                    System.out.println(); //next line 
+                }
+            }
+        }catch(IOException e){
+            //and if it doesn't work
+            e.printStackTrace();
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+
+        }
+
+    }
+}
 
