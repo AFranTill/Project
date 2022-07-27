@@ -175,142 +175,59 @@ public class TheGame
         int neighboursValue = 0;
         if(yCoord == 0 || xCoord == 0 || yCoord == end || xCoord == end){ //because the boundaries of the map are complicated in terms of arrays
 
+            topLeft = boundedFence;
+            topMiddle = boundedFence;
+            topRight = boundedFence;
+            left = boundedFence;
+            bottomLeft = boundedFence;
+            bottomRight = boundedFence;
+            right = boundedFence;
+            bottomMiddle = boundedFence;
             if(yCoord == 0 && xCoord == 0 ){
-                //System.out.print(" C "); 
-
                 bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
                 right = mapThreeDime[yCoord][oneAfter][historyCurrent];
                 bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
-
-                topLeft = boundedFence;
-                topMiddle = boundedFence;
-                topRight = boundedFence;
-                left = boundedFence;
-                bottomLeft = boundedFence;
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
             }else if(yCoord == end && xCoord == end){
-                //System.out.print(" A "); 
-
                 left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
                 topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
                 topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
-
-                topRight = boundedFence;
-                right = boundedFence;
-                bottomLeft = boundedFence;
-                bottomMiddle = boundedFence;
-                bottomRight = boundedFence;
-
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
             }else if(yCoord == 0 && xCoord == end){
-                //System.out.print(" L "); 
-
                 left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
                 bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
                 bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
-
-                topRight = boundedFence;
-                right = boundedFence;
-                topMiddle = boundedFence;
-                topLeft = boundedFence;
-                bottomRight = boundedFence;
-
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
             }else if(yCoord == end && xCoord == 0){
-                //System.out.print(" B "); 
-
                 right = mapThreeDime[yCoord][oneAfter][historyCurrent];
                 topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
                 topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
-
-                topLeft = boundedFence;
-                left = boundedFence;
-                bottomLeft = boundedFence;
-                bottomMiddle = boundedFence;
-                bottomRight = boundedFence;
-
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
-
             }else if(yCoord == 0){
-                // System.out.print(" Q "); 
-
                 left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
                 right = mapThreeDime[yCoord][oneAfter][historyCurrent];
                 bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
                 bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
                 bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
-
-                topLeft = boundedFence;
-                topMiddle = boundedFence;
-                topRight = boundedFence;
-
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
             }else if (yCoord == end){
-                //System.out.print(" Y "); 
-
                 topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
                 topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
                 topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
                 left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
                 right = mapThreeDime[yCoord][oneAfter][historyCurrent];
-
-                bottomLeft = boundedFence;
-                bottomMiddle= boundedFence;
-                bottomRight = boundedFence;
-
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
             }else if(xCoord == 0){
-                //System.out.print(" R "); 
-
-                topLeft = boundedFence;
                 topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
                 topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
-                left = boundedFence;
                 right = mapThreeDime[yCoord][oneAfter][historyCurrent];
-                bottomLeft = boundedFence;
                 bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
                 bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
-
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
             }else if(xCoord == end){
-                //System.out.print(" J "); 
-
                 topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
                 topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
-                topRight = boundedFence;
                 left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
-                right = boundedFence;
                 bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
                 bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
-                bottomRight = boundedFence;
-
-                // neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
-                // System.out.print(" " + neighboursValue + " ");
-                // return 4;
             }else{
                 System.out.println("broken");
             }
 
         }else{ //if it's not a boundary condition
-            oneBefore = xCoord - 1;
-            oneAfter = xCoord + 1;
-            oneAbove  = yCoord - 1;
-            oneBelow = yCoord + 1;
-
             //what the next, huge & ineffecient block of code is doing, is essentially get all the values of the surronding squares and adding them together
             //these are the top row, so they have a y value of one less, and varying x values to cover all three x values above the selected cell
             topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
@@ -361,9 +278,6 @@ public class TheGame
             return 2; //returns an unreal value for this context (neither dead or alive, will break the code (hopefull) so the error is conveyed)
         }
         //this is a return statement for if none of the above options happen. It is an unreal statement (in context) and will break the code
-
-        //return 3;
-
         return 3;
     }
 
@@ -431,7 +345,6 @@ public class TheGame
         catch (Exception e) {
 
         }
-
     }
 
     public static void screenSize()
@@ -454,7 +367,7 @@ public class TheGame
 
     public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime){
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
-            System.out.println('\u000c'); //clears the screen
+            //System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
 
@@ -580,14 +493,22 @@ public class TheGame
                 System.out.println(); //next line 
             }
         }else{ //if you recieved an invalid or a no answer
-            System.out.println("ok"); // be ok with it 
-            System.out.println("beginning at.."); //tells the user what's happening 
-            printIt(0, mapThreeDime);
+            System.out.println("you want to populate the with the standard?");
+            int goingThroughAgain = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+            if(goingThroughAgain == 1){
+                mapThreeDime = mapThreeDimeMade;
+                printIt(0, mapThreeDime);
+                slowPrint(10);
+            }else{ //if you recieved an invalid or a no answer
+                System.out.println("ok"); // be ok with it 
+                System.out.println("beginning at.."); //tells the user what's happening 
+                printIt(0, mapThreeDime);
+            }
         }
+
     }
 
     public void changeCells(boolean selectionScreen){ //add comments 
-
         Scanner keyboard = new Scanner(System.in);
         System.out.println("hey");
 
