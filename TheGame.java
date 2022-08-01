@@ -74,6 +74,7 @@ public class TheGame
     boolean going = true;
     boolean thisIsRunning = false;
     boolean fromAGrid = false;
+    boolean selectionScreen;
     //----
 
     /**
@@ -132,16 +133,16 @@ public class TheGame
                 }else{
                     setup(goingThrough, false);
                 }
-                
+
                 // if(fileType == 1){
-                    // populateBoardWithThings(mapThreeDime, 0, 0);
-                    // populateBoardWithThings(mapThreeDime, 0, 6);
-                    // populateBoardWithThings(mapThreeDime, 0, 7);
-                    // populateBoardWithThings(mapThreeDime, 0, 8);
-                    // populateBoardWithThings(mapThreeDime, 0, 9);
+                // populateBoardWithThings(mapThreeDime, 0, 0);
+                // populateBoardWithThings(mapThreeDime, 0, 6);
+                // populateBoardWithThings(mapThreeDime, 0, 7);
+                // populateBoardWithThings(mapThreeDime, 0, 8);
+                // populateBoardWithThings(mapThreeDime, 0, 9);
 
                 // }else if(fileType == 2){
-                    // populateBoardWithRandom(mapThreeDime);
+                // populateBoardWithRandom(mapThreeDime);
                 // } else if(fileType == 3){
 
                 // }else if(fileType == 4){
@@ -150,25 +151,15 @@ public class TheGame
 
                 // }            
             }
-            
+
             int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
             boolean doingThis = true;
-            while(doingThis == true){
-                System.out.println("would you like to edit the grid?");
-                int editingStill = yesOrNoQuestionMethod(1);
-                boolean selectionScreen;
-                if(editingStill == 1){
-                selectionScreen= true;
-                changeCells(selectionScreen, mapThreeDime); 
-            }else if (editingStill == 0){
-                selectionScreen = false;
-            }
-        }
-                
-                // printIt(0, mapThreeDime); //prints grid
-                // populateBoardWithRandom(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
-                // System.out.println();
-                // printIt(0, mapThreeDime);
+
+            changeCells(doingThis, mapThreeDime); 
+            // printIt(0, mapThreeDime); //prints grid
+            // populateBoardWithRandom(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
+            // System.out.println();
+            // printIt(0, mapThreeDime);
 
             thisIsRunning = true;
             runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
@@ -561,28 +552,41 @@ public class TheGame
 
     public void changeCells(boolean selectionScreen, int[][][] mapThreeDime){ //add comments 
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("hey");
+        System.out.println("running change cells");
+        
+        System.out.println("would you like to edit the grid?");
+        int editingStill = yesOrNoQuestionMethod(1);
 
         printIt(0, mapThreeDime);
-        while (selectionScreen == true){
+        while (editingStill == 1){
+            selectionScreen = true;
             int h = 0;
-            System.out.println("Please select row: ");
-            int rowSelection = keyboard.nextInt();
 
-            System.out.println("Please select column: ");
-            int columnSelection = keyboard.nextInt();
+            if(editingStill == 1){     
+                System.out.println("Please select row: ");
+                int rowSelection = keyboard.nextInt();
 
-            System.out.println("do you want it alive or dead?");
-            int changeTo = keyboard.nextInt();
+                System.out.println("Please select column: ");
+                int columnSelection = keyboard.nextInt();
 
-            if (mapThreeDime[rowSelection-1][columnSelection-1][h] == 0){
-                mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
-            }else{
-                mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
+                System.out.println("do you want it alive (1) or dead (0)?");
+                int changeTo = keyboard.nextInt();
+
+                if (mapThreeDime[rowSelection-1][columnSelection-1][h] == 0){
+                    mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
+                }else{
+                    mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
+                }
+
+                printIt(0, mapThreeDime);
+                System.out.println();
+                
+                System.out.println("would you like to keep editing the grid?");
+                editingStill = yesOrNoQuestionMethod(1);
+            }else if (editingStill == 0){
+                selectionScreen = false;
             }
 
-            printIt(0, mapThreeDime);
-            System.out.println();
         }
     }
 

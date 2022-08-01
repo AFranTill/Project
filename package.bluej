@@ -1,12 +1,8 @@
 #BlueJ package file
 editor.fx.0.height=1047
-editor.fx.0.width=1074
-editor.fx.0.x=973
+editor.fx.0.width=1603
+editor.fx.0.x=-5
 editor.fx.0.y=0
-editor.fx.1.height=1056
-editor.fx.1.width=2576
-editor.fx.1.x=-8
-editor.fx.1.y=-8
 objectbench.height=184
 objectbench.width=1116
 package.divider.horizontal=0.6
@@ -59,8 +55,8 @@ target5.name=TheGameTryingToDoWrappingBoundary
 target5.showInterface=false
 target5.type=ClassTarget
 target5.width=280
-target5.x=630
-target5.y=230
+target5.x=640
+target5.y=220
 target6.height=70
 target6.name=CopyOfTheGameForTesting
 target6.showInterface=false
