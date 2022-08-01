@@ -4,6 +4,8 @@
  *
  * @author Frances
  * @version Verision I'm not even sure, 1.8.22
+ * 
+ * The scope of the array is messed up, and the different options for the user preloaded files aren't working, and need to be edited.
  */
 
 //IMPORTS
