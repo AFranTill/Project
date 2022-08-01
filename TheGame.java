@@ -67,6 +67,7 @@ public class TheGame
     int widthOfGrid = 10; //dictates grid width
     int heightOfGrid = 10; //dictates grid width
     int numberOfHistoriesRecorded = 5; //dictates number of histories (controls the 3D part of the 3D array)
+    int fileType;
     //------
 
     //BOOLEAN VARIABLES
@@ -115,7 +116,7 @@ public class TheGame
                 System.out.println("                3. Glider ");
                 System.out.println("                4. something Else ");
 
-                int fileType = doingWhichLoadedFile(1); 
+                fileType = doingWhichLoadedFile(1); 
 
                 System.out.println("do you want to run the default game?");
                 goingThrough = yesOrNoQuestionMethod(0);
@@ -131,30 +132,43 @@ public class TheGame
                 }else{
                     setup(goingThrough, false);
                 }
+                
+                // if(fileType == 1){
+                    // populateBoardWithThings(mapThreeDime, 0, 0);
+                    // populateBoardWithThings(mapThreeDime, 0, 6);
+                    // populateBoardWithThings(mapThreeDime, 0, 7);
+                    // populateBoardWithThings(mapThreeDime, 0, 8);
+                    // populateBoardWithThings(mapThreeDime, 0, 9);
 
-                int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                // }else if(fileType == 2){
+                    // populateBoardWithRandom(mapThreeDime);
+                // } else if(fileType == 3){
 
-                if(fileType == 1){
-                    populateBoardWithThings(mapThreeDime, 0, 0);
-                    populateBoardWithThings(mapThreeDime, 0, 6);
-                    populateBoardWithThings(mapThreeDime, 0, 7);
-                    populateBoardWithThings(mapThreeDime, 0, 8);
-                    populateBoardWithThings(mapThreeDime, 0, 9);
+                // }else if(fileType == 4){
 
-                }else if(fileType == 2){
-                    populateBoardWithRandom(mapThreeDime);
-                } else if(fileType == 3){
+                // }else{
 
-                }else if(fileType == 4){
-
-                }else{
-
-                }
+                // }            
+            }
+            
+            int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+            boolean doingThis = true;
+            while(doingThis == true){
+                System.out.println("would you like to edit the grid?");
+                int editingStill = yesOrNoQuestionMethod(1);
+                boolean selectionScreen;
+                if(editingStill == 1){
+                selectionScreen= true;
+                changeCells(selectionScreen, mapThreeDime); 
+            }else if (editingStill == 0){
+                selectionScreen = false;
+            }
+        }
+                
                 // printIt(0, mapThreeDime); //prints grid
                 // populateBoardWithRandom(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
                 // System.out.println();
                 // printIt(0, mapThreeDime);
-            }
 
             thisIsRunning = true;
             runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
@@ -545,7 +559,7 @@ public class TheGame
         }
     }
 
-    public void changeCells(boolean selectionScreen){ //add comments 
+    public void changeCells(boolean selectionScreen, int[][][] mapThreeDime){ //add comments 
         Scanner keyboard = new Scanner(System.in);
         System.out.println("hey");
 
@@ -569,7 +583,6 @@ public class TheGame
 
             printIt(0, mapThreeDime);
             System.out.println();
-            selectionScreen=false;
         }
     }
 
