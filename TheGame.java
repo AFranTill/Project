@@ -3,7 +3,7 @@
  * Write a description of class TheGame here.
  *
  * @author Frances
- * @version Verision Five, 16.5.22
+ * @version Verision I'm not even sure, 1.8.22
  */
 
 //IMPORTS
@@ -20,7 +20,10 @@ import java.io.FileWriter;
 public class TheGame 
 {
     //VARIABLES
+
+    //ARRAYS
     private int mapTwo[][] = new int[10][10]; //control-type 2d array for a map to be used while testing.  
+
     int[][] map = //previous map used, 2D, array creator
         { 
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -36,7 +39,9 @@ public class TheGame
         };
 
     int mapThreeDime[][][];// = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
+
     int[][][] mapThreeDimeMade= //makes the 3D grid when we want to hand-populate for control and testing purposes
+
         { 
             { {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
@@ -49,9 +54,10 @@ public class TheGame
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
         };    
+    //---------
 
+    //INTERGER VARIABLES
     int size;
-    boolean going = true;
     int timeWaiting;
     int howManyGenerationsAreWeDoing;
     int selected = 1;
@@ -59,85 +65,100 @@ public class TheGame
     int widthOfGrid = 10; //dictates grid width
     int heightOfGrid = 10; //dictates grid width
     int numberOfHistoriesRecorded = 5; //dictates number of histories (controls the 3D part of the 3D array)
+    //------
+
+    //BOOLEAN VARIABLES
+    boolean going = true;
+    boolean thisIsRunning = false;
+    boolean fromAGrid = false;
+    //----
 
     /**
      * Constructor for objects of class TheGame
      */
     public TheGame()
     {
-        Scanner keyboard = new Scanner(System.in);
-        int hi = 0;
+        Scanner keyboard = new Scanner(System.in); // intialises the scanner
         int goingThrough;
-        boolean thisIsRunning = false;
-        boolean fromAGrid = false;
-        screenSize();
+
+        //MENU/START-UP TEXT
         System.out.println("                Welcome to the menu");
         System.out.println("                There are a couple options to chose from");
         System.out.println("                1. Read from a file");
-        System.out.println("                2. Input a grid and run");
-        System.out.println("                3. Run the default");
-        System.out.println("                4. Quit");
+        System.out.println("                2. Load a grid");
+        System.out.println("                3. Quit");
 
-        int whatWeAreDoing = doingMenuOption(1);
-        if(whatWeAreDoing == 1){
-            System.out.println("reading from a file");
-            fromAGrid = true;
+        //DECIDE
+        int whatWeAreDoing = doingMenuOption(1); // deciding which menu option you've selected 
 
-            System.out.println("do you want to load a game from a file");
-            goingThrough = yesOrNoQuestionMethod(0);
-            setup(goingThrough, fromAGrid); 
-            int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-            populateBoardFromAFile(mapThreeDime);
-        }else if (whatWeAreDoing == 2){
-            System.out.println("time to create a grid!!");
+        //GAME IF STATEMENT
+        if(whatWeAreDoing == 1 || whatWeAreDoing == 2){ // IF YOU WANT TO PLAY THE GAME
 
-            changeCells(true);
+            if(whatWeAreDoing == 1){ // if we are loading a file specifcally from a file
+                System.out.println("reading from a file");
+                fromAGrid = true; // lets the game know it's from a grid
+                System.out.println("do you want to load a game from a file");
+                goingThrough = yesOrNoQuestionMethod(0);
 
-            System.out.println("now I need to implement a run game function");
-        }else if (whatWeAreDoing == 3){
-            //System.out.println("Running the default");
-            System.out.println("do you want to run the default game?");
-            goingThrough = yesOrNoQuestionMethod(0);
-            if(goingThrough == 1){
-                numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
-                timeWaiting = 2;
-                size = 10;
-                heightOfGrid = size;
-                widthOfGrid = size;
-                howManyGenerationsAreWeDoing = 5;
-                numberOfHistoriesRecorded  = 5;
+                setup(goingThrough, fromAGrid); 
+                int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                populateBoardFromAFile(mapThreeDime);
+
+            }else if (whatWeAreDoing == 2){ // if you are loading a file 
+
+                System.out.println("                Welcome to the menu of grid options to load");
+                System.out.println("                There are a couple options to chose from");
+                System.out.println("                1. Default (for trialling/testing)");
+                System.out.println("                2. Random grid of ones and zeroes");
+                System.out.println("                3. Glider ");
+                System.out.println("                4. something Else ");
+
+                int fileType = doingWhichLoadedFile(1); 
+
+                System.out.println("do you want to run the default game?");
+                goingThrough = yesOrNoQuestionMethod(0);
+                if(goingThrough == 1){
+                    numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
+                    timeWaiting = 2;
+                    size = 10;
+                    heightOfGrid = size;
+                    widthOfGrid = size;
+                    howManyGenerationsAreWeDoing = 1;
+                    numberOfHistoriesRecorded  = 5;
+                    //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                }else{
+                    setup(goingThrough, false);
+                }
 
                 int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-            }else{
-                setup(goingThrough, false);
+
+                if(fileType == 1){
+                    populateBoardWithThings(mapThreeDime, 0, 0);
+                    populateBoardWithThings(mapThreeDime, 0, 6);
+                    populateBoardWithThings(mapThreeDime, 0, 7);
+                    populateBoardWithThings(mapThreeDime, 0, 8);
+                    populateBoardWithThings(mapThreeDime, 0, 9);
+
+                }else if(fileType == 2){
+                    populateBoardWithRandom(mapThreeDime);
+                } else if(fileType == 3){
+
+                }else if(fileType == 4){
+
+                }else{
+
+                }
+                // printIt(0, mapThreeDime); //prints grid
+                // populateBoardWithRandom(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
+                // System.out.println();
+                // printIt(0, mapThreeDime);
             }
-            int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-
-            printIt(0, mapThreeDime); //prints grid
-
-            populateBoard(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
 
             thisIsRunning = true;
             runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
+            runHistories(mapThreeDime);
 
-            System.out.println("run history?");
-            goingThrough = 1; //calls the method which handles yes or no questions, assigns the value to goingthrough
-            if(goingThrough == 1){
-                //the following is just five for loops which all print out the grid at different points
-                //this one prints out the control grid of mapTwo
-                System.out.println("what it became");
-                for(int c = 0; c < numberOfHistoriesRecorded; c++){
-                    System.out.println("history just happned " + c);
-                    for(int a = 0; a < heightOfGrid; a++){
-                        for(int b = 0; b < widthOfGrid; b++){
-                            System.out.print(" " + mapThreeDime[a][b][c] + " ");
-                        }
-                        System.out.println();
-                    }
-                }
-
-            }
-        }else if(whatWeAreDoing == 4){
+        }else if(whatWeAreDoing == 3){
             System.out.println("Quitting... ");
 
             System.out.println("Just checking, do you want to quit?");
@@ -149,7 +170,6 @@ public class TheGame
                 System.out.println("I've receieved you don't know what to quit, but the next bit isn't coded yet");
                 thisIsRunning = true; //they don't want to quit or its invalid, deal with
             }
-
         }
     }
 
@@ -312,7 +332,6 @@ public class TheGame
                 assign = toMove; //assign is equal to the value we are moving around.
                 toMove = mapThreeDime[yCoord][xCoord][h]; //now we get the next value that we'll move around, and assign that to toMove
                 mapThreeDime[yCoord][xCoord][h] = assign; //and we write over that just-collected value with assign value. 
-
             }
         }
     }
@@ -321,7 +340,6 @@ public class TheGame
         Scanner keyboard = new Scanner(System.in); //initializes scanner
 
         //takes userInput, mainuplates it into the simplest form, so it can compare to the simplest form in the if statement
-
         String userInput = keyboard.nextLine(); //creates 'userInput' as a string variable, assigns it the just receieved input
         userInput = userInput.toLowerCase(); //converts it to lowercase
         userInput = userInput.trim(); //removes whitespace
@@ -330,39 +348,18 @@ public class TheGame
             return 1;
         }else if (userInput.equals("no")||userInput.equals("n")){ //if it receives no
             return 2;
-        }else { //if it gets an invalid answer
+        }else{ //if it gets an invalid answer
             return 3;
         }
-
     }
 
     public static void slowPrint(int timeWaiting) { //makes the computer pause for the given amount of time
-
         timeWaiting = timeWaiting*1000;
-        try {
+        try{
             TimeUnit.MILLISECONDS.sleep(timeWaiting);
-        }
-        catch (Exception e) {
+        }catch (Exception e){
 
         }
-    }
-
-    public static void screenSize()
-    {
-        // getScreenSize() returns the size
-        // of the screen in pixels
-        Dimension size
-        = Toolkit.getDefaultToolkit().getScreenSize();
-
-        // width will store the width of the screen
-        int width = (int)size.getWidth();
-
-        // height will store the height of the screen
-        int height = (int)size.getHeight();
-
-        System.out.println("Current Screen resolution : "
-            + "width : " + width
-            + " height : " + height);
     }
 
     public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime){
@@ -370,14 +367,12 @@ public class TheGame
             //System.out.println('\u000c'); //clears the screen
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
-
             //the main loop which actually runs game (one loop is one generation)
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
                 for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
                     int notDead = isItAlive(y, x, mapThreeDime); //calls the isItAlive method, and asks if the point is alive 
                     int h = 0; //dealing with just history = 0, or the current history/working grid. 
                     //System.out.print(" " + mapThreeDime[x][y][h] + " ");
-
                     if(notDead == 1){ //if it's living 
                         //System.out.print(" " + map[x][y] + " ");
                         //System.out.print(" " + mapThreeDime[y][x][h] + " ");
@@ -389,11 +384,9 @@ public class TheGame
                         //mapTwo[y][x] = notDead;
                     }else{ //else do nothing. 
                     }
-
                 }
                 System.out.println(); 
             }
-
             slowPrint(timeWaiting);
             numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
         }
@@ -444,7 +437,53 @@ public class TheGame
             doingMenuOption(1);
         }
         return 0;
+    }
 
+    public int doingWhichLoadedFile(int whichOption){
+        Scanner keyboard = new Scanner(System.in);
+        String userInput = keyboard.nextLine();
+        userInput = userInput.toLowerCase();
+        userInput = userInput.trim();
+
+        System.out.println("currently you have option " + selected + " selected");
+
+        if (userInput.equals("1")){
+            System.out.println("selected 1");
+            return 1;
+        }else if (userInput.equals("2")){
+            System.out.println("selected 2");
+            return 2;
+        }else if (userInput.equals("3")){
+            System.out.println("selected 3");
+            return 3;
+        }else if (userInput.equals("4")){
+            System.out.println("selected 4");
+            return 4;
+        }else if (userInput.equals("up") || userInput.equals("u")){
+            System.out.println("moved selection up");
+            if (selected == 1){
+                System.out.println("there are no further options this way");
+            }else{
+                selected--;
+            }
+            System.out.println("currently you have option " + selected + " selected");
+            doingMenuOption(1);
+        }else if (userInput.equals("down") || userInput.equals("d")){
+            System.out.println("moved selection down");
+            if (selected == 4){
+                System.out.println("there are no further options this way");
+            }else{
+                selected++;
+            }
+            System.out.println("currently you have option " + selected + " selected");
+            doingMenuOption(1);
+        }else if (userInput.equals("enter") || userInput.equals("e")){
+            return selected;
+        }else{
+            System.out.println("doesn't seem like a valid input, sorry");
+            doingMenuOption(1);
+        }
+        return 0;
     }
 
     public void setup(int goingThrough, boolean fromAGrid){
@@ -459,7 +498,6 @@ public class TheGame
         keyboard.nextLine();
 
         if(fromAGrid == false){
-
             System.out.println("how big do you want this grid to be");
             size = keyboard.nextInt();
             keyboard.nextLine();
@@ -474,12 +512,9 @@ public class TheGame
         System.out.println("how many histories should I record?");
         numberOfHistoriesRecorded = keyboard.nextInt();
         keyboard.nextLine();
-
-        //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-
     }
 
-    public void populateBoard(int[][][] mapThreeDime){
+    public void populateBoardWithRandom(int[][][] mapThreeDime){
         System.out.println("you want to populate the thing?");
         int goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
         if(goingThrough == 1){ //if it's one, thats a yes, and do 
@@ -493,19 +528,19 @@ public class TheGame
                 System.out.println(); //next line 
             }
         }else{ //if you recieved an invalid or a no answer
-            System.out.println("you want to populate the with the standard?");
-            int goingThroughAgain = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-            if(goingThroughAgain == 1){
-                mapThreeDime = mapThreeDimeMade;
-                printIt(0, mapThreeDime);
-                slowPrint(10);
-            }else{ //if you recieved an invalid or a no answer
-                System.out.println("ok"); // be ok with it 
-                System.out.println("beginning at.."); //tells the user what's happening 
-                printIt(0, mapThreeDime);
+
+        }
+    }
+
+    public void populateBoardWithThings(int[][][] mapThreeDime,int xToChange, int yToChange){
+        int h = 0;
+        for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+            for(int x = 0; x < widthOfGrid; x++){
+                if(x == xToChange && y == yToChange){
+                    mapThreeDime[y][x][h] = 1;
+                }
             }
         }
-
     }
 
     public void changeCells(boolean selectionScreen){ //add comments 
@@ -567,113 +602,6 @@ public class TheGame
         }
     }
 
-    public void FileWritingSecondMightBeBetter()
-    {
-        Scanner keyboardInput = new Scanner(System.in);
-
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
-        try {
-            //trying something hopefull it works
-            Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNextLine()){
-                System.out.println(readTheFile.nextLine());
-            }
-        }
-        catch(IOException e){
-            //and if it doesn't work
-            e.printStackTrace();
-            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
-        }
-
-        boolean areWeWriting = true;
-        try{
-            File workingFile = new File ("thisIWillWriteTo.txt");
-
-            FileWriter newWriterThing = new FileWriter(workingFile);
-
-            newWriterThing.write("It's the end of the world.\n");
-            newWriterThing.write("And honestly, it's not that bad\n");
-            newWriterThing.write("~begins every teen dystopia~\n");
-            newWriterThing.flush();
-            newWriterThing.close();
-
-            Scanner readingThisFile = new Scanner(workingFile);
-            while (readingThisFile.hasNextLine()){
-                System.out.println(readingThisFile.nextLine());
-            }
-        }catch(IOException e){
-            System.out.println("broken");
-        }
-
-        System.out.println("And one last file");
-        System.out.println("btw, try 'youShouldSayPeekaboo.txt'");
-        String mightBeAFileName = keyboardInput.nextLine();
-        File nextWorkingFile = new File(mightBeAFileName);
-        boolean writingAndReading = true;
-        int numberOfLines = 0;
-        try {
-            while (writingAndReading == true){//trying something hopefull it works
-                Scanner readTheFile = new Scanner(nextWorkingFile);
-                while (readTheFile.hasNextLine()){
-                    System.out.println(readTheFile.nextLine());
-                }
-                System.out.println("Add anything? If not, say '.'");
-                String lineToAdd = keyboardInput.nextLine();
-                FileWriter currentWriterThing = new FileWriter(nextWorkingFile, true); //PASSES IT FILE NAME AND APPEND = TRUE, SO IT ADDS INSTEAD OF REWRITING (OMG IT TOOK SO LONG TO FIND OUT HOW TO DO THAT)
-                if (lineToAdd.equals(".")){
-                    //newWriterThing.flush();
-                    //newWriterThing.close();
-                    writingAndReading = false; 
-                }else{ 
-                    /*
-                    //currentWriterThing.write("hey");
-                    numberOfLines+= 1;
-                    System.out.println(numberOfLines);
-                    for(int x = 0; x >= numberOfLines; x++){
-                    currentWriterThing.write("\n");
-                    }*/
-                    currentWriterThing.write(lineToAdd+"\n");
-                    currentWriterThing.flush();
-
-                    while (readTheFile.hasNextLine()){
-                        System.out.println(readTheFile.nextLine());
-                    }               
-                }
-
-            }
-
-        }
-        catch(IOException e){
-            //and if it doesn't work
-            e.printStackTrace();
-            System.out.println(" failed ");
-        }
-
-    }
-
-    public void FileReadingSecondMightBeBetter(){
-        Scanner keyboardInput = new Scanner(System.in);
-        System.out.println("please type a full file name (with the type also)");
-        System.out.println("hint = try test.txt");
-        String fileName = keyboardInput.nextLine();
-        File myFile = new File(fileName);
-        try {
-            //trying something hopefull it works
-            Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNextLine()){
-                System.out.println(readTheFile.nextLine());
-            }
-        }
-        catch(IOException e){
-            //and if it doesn't work
-            e.printStackTrace();
-            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
-        }
-    }
-
     public void populateBoardFromAFile(int[][][] mapThreeDime){
         Scanner keyboardInput = new Scanner(System.in);
         System.out.println("reading a file");
@@ -697,6 +625,24 @@ public class TheGame
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
 
+        }
+
+    }
+
+    public void runHistories(int[][][] mapThreeDime){
+        System.out.println("run history?");
+        System.out.println("remeber, this one (just below) is the most recent history, the fourth is the LEAST recent or FIRST iteration");
+        //the following is just five for loops which all print out the grid at different points
+        //this one prints out the control grid of mapTwo
+        System.out.println("what it became");
+        for(int c = 0; c < numberOfHistoriesRecorded; c++){
+            System.out.println("history just happned " + c);
+            for(int a = 0; a < heightOfGrid; a++){
+                for(int b = 0; b < widthOfGrid; b++){
+                    System.out.print(" " + mapThreeDime[a][b][c] + " ");
+                }
+                System.out.println();
+            }
         }
 
     }
