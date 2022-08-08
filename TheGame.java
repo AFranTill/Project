@@ -105,8 +105,9 @@ public class TheGame
                 goingThrough = yesOrNoQuestionMethod(0);
 
                 setup(goingThrough, fromAGrid); 
-                int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-                populateBoardFromAFile(mapThreeDime);
+                fileType = 0; 
+                // int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                // populateBoardFromAFile(mapThreeDime);
 
             }else if (whatWeAreDoing == 2){ // if you are loading a file 
 
@@ -132,39 +133,8 @@ public class TheGame
                     //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
                 }else{
                     setup(goingThrough, false);
-                }
-
-                // if(fileType == 1){
-                // populateBoardWithThings(mapThreeDime, 0, 0);
-                // populateBoardWithThings(mapThreeDime, 0, 6);
-                // populateBoardWithThings(mapThreeDime, 0, 7);
-                // populateBoardWithThings(mapThreeDime, 0, 8);
-                // populateBoardWithThings(mapThreeDime, 0, 9);
-
-                // }else if(fileType == 2){
-                // populateBoardWithRandom(mapThreeDime);
-                // } else if(fileType == 3){
-
-                // }else if(fileType == 4){
-
-                // }else{
-
-                // }            
+                }           
             }
-
-            int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-            boolean doingThis = true;
-
-            changeCells(doingThis, mapThreeDime); 
-            // printIt(0, mapThreeDime); //prints grid
-            // populateBoardWithRandom(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
-            // System.out.println();
-            // printIt(0, mapThreeDime);
-
-            thisIsRunning = true;
-            runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
-            runHistories(mapThreeDime);
-
         }else if(whatWeAreDoing == 3){
             System.out.println("Quitting... ");
 
@@ -178,6 +148,34 @@ public class TheGame
                 thisIsRunning = true; //they don't want to quit or its invalid, deal with
             }
         }
+
+        int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+        boolean doingThis = true;
+
+        switch (fileType){
+            case 0:
+                populateBoardFromAFile(mapThreeDime);
+                break;
+            case 1:
+                break;
+            case 2:
+                populateBoardWithRandom(mapThreeDime);
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+
+        changeCells(doingThis, mapThreeDime); 
+        // printIt(0, mapThreeDime); //prints grid
+        // populateBoardWithRandom(mapThreeDime);//calls the method which handles yes or no questions, assigns the value to goingthrough
+        // System.out.println();
+        // printIt(0, mapThreeDime);
+
+        thisIsRunning = true;
+        runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
+        runHistories(mapThreeDime);
     }
 
     public int isItAlive(int yCoord, int xCoord, int[][][] mapThreeDime)//pass it the coord of the point, so we know what point we're investigating
