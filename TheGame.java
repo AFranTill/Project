@@ -68,6 +68,7 @@ public class TheGame
     int heightOfGrid = 10; //dictates grid width
     int numberOfHistoriesRecorded = 5; //dictates number of histories (controls the 3D part of the 3D array)
     int fileType;
+    int boundaryType;
     //------
 
     //BOOLEAN VARIABLES
@@ -130,6 +131,7 @@ public class TheGame
                     widthOfGrid = size;
                     howManyGenerationsAreWeDoing = 1;
                     numberOfHistoriesRecorded  = 5;
+                    boundaryType = 1;
                     //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
                 }else{
                     setup(goingThrough, false);
@@ -174,11 +176,11 @@ public class TheGame
         // printIt(0, mapThreeDime);
 
         thisIsRunning = true;
-        runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime);
+        runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime, boundaryType);
         runHistories(mapThreeDime);
     }
 
-    public int isItAlive(int yCoord, int xCoord, int[][][] mapThreeDime)//pass it the coord of the point, so we know what point we're investigating
+    public int finiteBoundary(int yCoord, int xCoord, int[][][] mapThreeDime)//pass it the coord of the point, so we know what point we're investigating
     {
         //this is the method that is called on every point to find out if it's alive or not alive. 
         int historyCurrent = 0; //this is semantics, but for most of this, are dealing with the history value of 0, or the current grid alyout. 
@@ -305,6 +307,196 @@ public class TheGame
         //this is a return statement for if none of the above options happen. It is an unreal statement (in context) and will break the code
         return 3;
     }
+    
+    public int wrappingBoundary(int yCoord, int xCoord, int[][][] mapThreeDime)//pass it the coord of the point, so we know what point we're investigating
+    {
+        //this is the method that is called on every point to find out if it's alive or not alive. 
+        int historyCurrent = 0; //this is semantics, but for most of this, are dealing with the history value of 0, or the current grid alyout. 
+        int shallItBeAlive; //creates a value that will be passed to the history replacer, and become living. This will only be assigned a value at the very end, just before the return statement. 
+        int boundedFence = 0;
+        int oneBefore = xCoord - 1;
+        int oneAfter = xCoord + 1;
+        int oneAbove  = yCoord - 1;
+        int oneBelow = yCoord + 1;
+        int topLeft = 0;
+        int topMiddle = 0;
+        int topRight = 0;
+        int left = 0;
+        int right = 0;
+        int bottomLeft = 0;
+        int bottomMiddle = 0;
+        int bottomRight = 0;
+        int end = size - 1;
+        int neighboursValue = 0;
+        if(yCoord == 0 || xCoord == 0 || yCoord == end || xCoord == end){ //because the boundaries of the map are complicated in terms of arrays
+
+            if(yCoord == 0 && xCoord == 0 ){
+                //System.out.print(" C "); 
+
+                bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                //weird conditions
+                topLeft = mapThreeDime[end][end][historyCurrent];
+                topMiddle = mapThreeDime[end][xCoord][historyCurrent];
+                topRight = mapThreeDime[end][oneAfter][historyCurrent];
+                left = mapThreeDime[yCoord][end][historyCurrent];
+                bottomLeft = mapThreeDime[oneBelow][end][historyCurrent];
+            }else if(yCoord == end && xCoord == end){
+                //System.out.print(" A "); 
+
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                //weird conditons
+                bottomRight = mapThreeDime[0][0][historyCurrent+1];
+                topRight = mapThreeDime[oneAbove][0][historyCurrent + 1];
+                right = mapThreeDime[yCoord][0][historyCurrent + 1];
+                bottomLeft = mapThreeDime[0][oneBefore][historyCurrent + 1];
+                bottomMiddle = mapThreeDime[0][xCoord ][historyCurrent + 1];
+
+            }else if(yCoord == 0 && xCoord == end){
+                //System.out.print(" L "); 
+
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                //weird conditons
+                topLeft = mapThreeDime[end][oneBefore][historyCurrent];
+                topMiddle = mapThreeDime[end][xCoord][historyCurrent];
+                topRight = mapThreeDime[end][0][historyCurrent];
+                right = mapThreeDime[yCoord][0][historyCurrent + 1];
+                bottomRight = mapThreeDime[oneBelow][0][historyCurrent];
+
+            }else if(yCoord == end && xCoord == 0){
+                //System.out.print(" B "); 
+
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                //weird conditons
+
+                topLeft = mapThreeDime[oneAbove][end][historyCurrent + 1];
+                left = mapThreeDime[yCoord][end][historyCurrent];
+                bottomLeft = mapThreeDime[0][end][historyCurrent + 1];
+                bottomMiddle = mapThreeDime[0][xCoord ][historyCurrent + 1];
+                bottomRight = mapThreeDime[0][oneAfter][historyCurrent + 1];
+
+            }else if(yCoord == 0){
+                // System.out.print(" Q "); 
+
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                //weird conditons
+                topLeft = mapThreeDime[end][oneBefore][historyCurrent];
+                topMiddle = mapThreeDime[end][xCoord][historyCurrent];
+                topRight = mapThreeDime[end][oneAfter][historyCurrent];
+
+            }else if (yCoord == end){
+                //System.out.print(" Y "); 
+
+                topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                //weird conditons
+                bottomLeft = mapThreeDime[0][oneBefore][historyCurrent + 1];
+                bottomMiddle = mapThreeDime[0][xCoord ][historyCurrent + 1];
+                bottomRight = mapThreeDime[0][oneAfter][historyCurrent + 1];
+            }else if(xCoord == 0){
+                //System.out.print(" R "); 
+
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                //weird conditons
+                topLeft = mapThreeDime[oneAbove][end][historyCurrent + 1];
+                left = mapThreeDime[yCoord][end][historyCurrent];
+                bottomLeft = mapThreeDime[oneBelow][end][historyCurrent];
+
+            }else if(xCoord == end){
+                //System.out.print(" J "); 
+
+                topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                //weird conditons
+                bottomRight = mapThreeDime[oneBelow][0][historyCurrent];
+                right = mapThreeDime[yCoord][0][historyCurrent + 1];
+                topRight = mapThreeDime[oneAbove][0][historyCurrent + 1];
+            }else{
+                System.out.println("broken");
+            }
+
+        }else{ //if it's not a boundary condition
+            oneBefore = xCoord - 1;
+            oneAfter = xCoord + 1;
+            oneAbove  = yCoord - 1;
+            oneBelow = yCoord + 1;
+
+            //what the next, huge & ineffecient block of code is doing, is essentially get all the values of the surronding squares and adding them together
+            //these are the top row, so they have a y value of one less, and varying x values to cover all three x values above the selected cell
+            topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+            topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+            topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+            //for the two below, they have the same y value but different x values, as they are in the same row but not same column
+            left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+            //for the four above, we have already been throguh and tested their aliveness, and add that to their history, so we are actuall drawing on the history one in the past
+            right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+            //these are all in the row below, so they have vrying x values and all a y value of one more, for the row just below
+            bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+            bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+            bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+        }
+        //and then we add them all together 
+        neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
+
+        //and now, below are the conway's rules. These are pretty much directly translated into code
+        if (mapThreeDime[yCoord][xCoord][historyCurrent] == 1){ //if the selected cell is currently alive
+            //System.out.println("Alive");
+            if(neighboursValue < 2 || neighboursValue > 3){ // if the neighboursValue is less than two, the cell will die (underpopulation) or if it's more than three, the cell will die (overpopulation)
+                //System.out.println("dead");
+                shallItBeAlive = 0; //assigns the shallItBeAlive the 'dead' value
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime); //passes the dead/alvie info and the selected cell location info to the history replacer
+                return 0; //returns the 'dead' value
+            }else if(neighboursValue == 2 || neighboursValue == 3){ //if it's 2 or three, the cell remains alive 
+                //System.out.println("alive");
+                shallItBeAlive = 1; //assigns the shallItBeAlive the 'living' value
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime); //passes the dead/alvie info and the selected cell location info to the history replacer
+                return 1; //returns the 'alive' value 
+            }
+
+        }else if(mapThreeDime[yCoord][xCoord][historyCurrent] == 0){ //if the selected cell is currently dead
+            //System.out.println("dead");
+            if(neighboursValue == 3){ // and it has three live neighbours, it becomes alive 
+                //System.out.println("becomes alive");
+                shallItBeAlive = 1; //assigns the shallItBeAlive the 'living' value
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime);//passes the dead/alvie info and the selected cell location info to the history replacer
+                return 1; //returns the 'alive' value 
+            }else { //for every other value, it remains dead
+                //System.out.println("stays dead");
+                shallItBeAlive = 0; //assigns the shallItBeAlive the 'dead' value
+                historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime);//passes the dead/alvie info and the selected cell location info to the history replacer
+                return 0; //returns the 'dead' value
+            }
+        }else{ //if the selected cell is neither dead nor alive, then the system prints an error 
+            System.out.println("error");
+            return 2; //returns an unreal value for this context (neither dead or alive, will break the code (hopefull) so the error is conveyed)
+        }
+        //this is a return statement for if none of the above options happen. It is an unreal statement (in context) and will break the code
+
+        //return 3;
+
+        return 3;
+    }
 
     //this method has an awful lot of comments, and I'm sorry, but even I find this confusing, and I wrote the code. 
     public void historyReplacer(int yCoord, int xCoord, int living, int[][][] mapThreeDime){ //this moves all the histories of a given point back one.
@@ -367,15 +559,20 @@ public class TheGame
         }
     }
 
-    public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime){
+    public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime, int boundaryType){
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
             //System.out.println('\u000c'); //clears the screen
+            int notDead = -1;
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); //bet you can't guess what this does
             //the main loop which actually runs game (one loop is one generation)
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
                 for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
-                    int notDead = isItAlive(y, x, mapThreeDime); //calls the isItAlive method, and asks if the point is alive 
+                    if(boundaryType == 1){
+                        notDead = finiteBoundary(y, x, mapThreeDime); //calls the isItAlive method, and asks if the point is alive 
+                    }else if(boundaryType == 2){
+                        notDead = wrappingBoundary(y, x, mapThreeDime);
+                    }
                     int h = 0; //dealing with just history = 0, or the current history/working grid. 
                     //System.out.print(" " + mapThreeDime[x][y][h] + " ");
                     if(notDead == 1){ //if it's living 
@@ -495,12 +692,11 @@ public class TheGame
         Scanner keyboard = new Scanner(System.in);
 
         howManyGenerationsAreWeDoing = returnInteger("how many generations should I run? (max = 1000, min = 1)", 1, 1000);
-        keyboard.nextLine();
 
         timeWaiting = returnInteger("what should be the pause time between them? It's in seconds. Min is 0 seconds and the max is 60s (one min)", 0, 60);
-        keyboard.nextLine();
+    
+        boundaryType = returnInteger("what bounary do you want? Type 1 for finite, 2 for wrapping, and 3 for infinite", 1, 3);
         if(fromAGrid == false){
-            System.out.println("how big do you want this grid to be");
             size = returnInteger("how big do you want this grid to be. min is 5 x 5 and max is 100 x 100", 5, 100);
             keyboard.nextLine();
             heightOfGrid = size;
@@ -512,7 +708,6 @@ public class TheGame
         }
 
         numberOfHistoriesRecorded = returnInteger("how many histories should I record? Min = 5, Max = 20", 5, 20);
-        keyboard.nextLine();
     }
 
     public void populateBoardWithRandom(int[][][] mapThreeDime){
