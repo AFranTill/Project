@@ -496,17 +496,14 @@ public class TheGame
     public void setup(int goingThrough, boolean fromAGrid){
         Scanner keyboard = new Scanner(System.in);
 
-        System.out.println("how many generations should I run?");
-        howManyGenerationsAreWeDoing = keyboard.nextInt();
+        howManyGenerationsAreWeDoing = returnInteger("how many generations should I run? (max = 1000, min = 1)", 1, 1000);
         keyboard.nextLine();
 
-        System.out.println("what should be the pause time between them?");
-        timeWaiting = keyboard.nextInt();
+        timeWaiting = returnInteger("what should be the pause time between them? It's in seconds. Min is 0 seconds and the max is 60s (one min)", 0, 60);
         keyboard.nextLine();
-
         if(fromAGrid == false){
             System.out.println("how big do you want this grid to be");
-            size = keyboard.nextInt();
+            size = returnInteger("how big do you want this grid to be. min is 5 x 5 and max is 100 x 100", 5, 100);
             keyboard.nextLine();
             heightOfGrid = size;
             widthOfGrid = size;
@@ -516,8 +513,7 @@ public class TheGame
             widthOfGrid = size;
         }
 
-        System.out.println("how many histories should I record?");
-        numberOfHistoriesRecorded = keyboard.nextInt();
+        numberOfHistoriesRecorded = returnInteger("how many histories should I record? Min = 5, Max = 20", 5, 20);
         keyboard.nextLine();
     }
 
@@ -553,7 +549,8 @@ public class TheGame
     public void changeCells(boolean selectionScreen, int[][][] mapThreeDime){ //add comments 
         Scanner keyboard = new Scanner(System.in);
         System.out.println("running change cells");
-        
+        int lastRow = 1;
+
         System.out.println("would you like to edit the grid?");
         int editingStill = yesOrNoQuestionMethod(1);
 
@@ -563,14 +560,11 @@ public class TheGame
             int h = 0;
 
             if(editingStill == 1){     
-                System.out.println("Please select row: ");
-                int rowSelection = keyboard.nextInt();
+                int rowSelection = returnInteger("Please select row: ", lastRow, size);
 
-                System.out.println("Please select column: ");
-                int columnSelection = keyboard.nextInt();
+                int columnSelection = returnInteger("Please select column: ", lastRow, size);
 
-                System.out.println("do you want it alive (1) or dead (0)?");
-                int changeTo = keyboard.nextInt();
+                int changeTo = returnInteger("do you want it alive (1) or dead (0)?", 0, 1) ;
 
                 if (mapThreeDime[rowSelection-1][columnSelection-1][h] == 0){
                     mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
@@ -580,7 +574,7 @@ public class TheGame
 
                 printIt(0, mapThreeDime);
                 System.out.println();
-                
+
                 System.out.println("would you like to keep editing the grid?");
                 editingStill = yesOrNoQuestionMethod(1);
             }else if (editingStill == 0){
@@ -664,6 +658,26 @@ public class TheGame
             }
         }
 
+    }
+
+    public int returnInteger(String question, int minParameter, int maxParameter){
+        Scanner keyboard = new Scanner(System.in);
+        int intReceived = 0;
+        try {
+            System.out.println(question);
+            intReceived = keyboard.nextInt();
+            if(intReceived >= minParameter && intReceived <= maxParameter){
+                return intReceived;
+            }else{
+                System.out.println("Sorry, that doesn't seem quite right? Check you inputted a number that fits the parameters.");
+                intReceived = returnInteger(question, minParameter, maxParameter);
+                return intReceived;
+            }
+        }catch(Exception e){
+            System.out.println("Sorry, that doesn't seem quite right? Check you inputted a number that fits the parameters.");
+            intReceived = returnInteger(question, minParameter, maxParameter);
+            return intReceived;
+        }
     }
 }
 
