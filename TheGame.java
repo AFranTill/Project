@@ -84,7 +84,7 @@ public class TheGame
     int bottomMiddle = 0;
     int bottomRight = 0;
     int neighboursValue = 0;
-
+    int cellCount = -1; //HELP (remove when donedebuggin)
     //-------
 
     //BOOLEAN VARIABLES
@@ -207,47 +207,79 @@ public class TheGame
         System.out.println("Do you want to save your game to a file?");
     }
 
+    //<<<<<<< HEAD
     public int finiteBoundary(int yCoord, int xCoord, int[][][] mapThreeDime){
         int end = size - 1;
         historyCurrent = 0;
-        int toAdd;
+        int toAdd = 0;
         int historyPrevious = historyCurrent + 1;
         neighboursValue = 0;
+        cellCount++;
         //if(yCoord == 0 || xCoord == 0 || yCoord == end || xCoord == end){ 
-            for(int yCoordModifier = -1; yCoordModifier < 1; yCoordModifier++){
-                for(int xCoordModifier = -1; xCoordModifier < 1; xCoordModifier++){
-                    int newYCoord = yCoordModifier + yCoord;
-                    int newXCoord = xCoordModifier + xCoord;
-                    // System.out.println("newYCoord " + newYCoord);
-                    // System.out.println("newxCoord " + newXCoord);
-                    if(newYCoord < 0 || newXCoord  < 0){
-                        neighboursValue = neighboursValue + boundedFence;
-                    }else{
-                        if(yCoordModifier == -1 || (yCoordModifier == 0 && xCoordModifier == -1)){
-                            toAdd = mapThreeDime[newYCoord][newXCoord][historyPrevious];
-                            neighboursValue = neighboursValue + toAdd;
-                        }else {
-                            toAdd = mapThreeDime[newYCoord][newXCoord][historyPrevious];
-                            neighboursValue = neighboursValue + toAdd;
-                        }
+        // System.out.print(" cell number " + cellCount);
+        // System.out.print(" history current " + historyCurrent);
+        // System.out.print(" end " + end);
+        // System.out.print(" size " + size);
+        // System.out.print(" neighboursValue before starting " + neighboursValue);
+         // System.out.print(" to add " + toAdd);
+        
+        int round = 0;
+        
+        for(int yCoordModifier = -1; yCoordModifier < 2; yCoordModifier++){
+            for(int xCoordModifier = -1; xCoordModifier < 2; xCoordModifier++){
+                int newYCoord = yCoordModifier + yCoord;
+                int newXCoord = xCoordModifier + xCoord;
+                
+               // System.out.print(" round " + round);
+               // System.out.print(" yCoordMod " + yCoordModifier);
+               // System.out.print(" xCoordMod " + xCoordModifier);
+               // System.out.print(" YCoord " + yCoord);
+               // System.out.print(" xCoord " + xCoord);
+                //System.out.print(" newYCoord " + newYCoord);
+                //System.out.print(" newxCoord " + newXCoord);
+                if(newYCoord < 0 || newXCoord  < 0 || newYCoord > end || newXCoord > end){
+                    //System.out.print(" this was an edge");
+                    neighboursValue = neighboursValue + boundedFence;
+                    //System.out.print(" neighboursValue "+ neighboursValue);
+                }else{
+                    if(yCoordModifier == -1 || (yCoordModifier == 0 && xCoordModifier == -1)){
+                        //System.out.print(" previous History");
+                        //System.out.print(" map/grid  value to add " + mapThreeDime[newYCoord][newXCoord][historyPrevious]);
+                        //System.out.print(" neighboursValue before adding new value "+ neighboursValue);
+                        neighboursValue += mapThreeDime[newYCoord][newXCoord][historyPrevious];
+                        //System.out.print(" neighboursValue  after adding new value"+ neighboursValue);
+                    }else {
+                        //System.out.print(" current History");
+                        //System.out.print(" map/grid  value to add " + mapThreeDime[newYCoord][newXCoord][historyCurrent]);
+                        //System.out.print(" neighboursValue before adding new value "+ neighboursValue);
+                        neighboursValue += mapThreeDime[newYCoord][newXCoord][historyCurrent];
+                        //System.out.print(" neighboursValue  after adding new value"+ neighboursValue);
                     }
                 }
+                round++;
             }
-            System.out.print(neighboursValue);
+        }
+       // System.out.print(neighboursValue);
+        neighboursValue -= mapThreeDime[yCoord][xCoord][historyCurrent];
+       // System.out.print(neighboursValue);
         // }else{ //if it's not a boundary condition
-            // neighboursValue = notABoundaryCell(yCoord, xCoord, mapThreeDime);
+        // neighboursValue = notABoundaryCell(yCoord, xCoord, mapThreeDime);
         // }
         shallItBeAlive = applyGameRules(yCoord, xCoord, neighboursValue, mapThreeDime, historyCurrent);
-        System.out.println(shallItBeAlive); 
+       // System.out.println(" shallItBeAlive " + shallItBeAlive); 
         return shallItBeAlive;
     }
 
     public int notABoundaryCell(int yCoord, int xCoord, int[][][] mapThreeDime){
+        //=======
+        //public int finiteBoundary(int yCoord, int xCoord, int[][][] mapThreeDime){//pass it the coord of the point, so we know what point we're investigating
+        //>>>>>>> 68b9fe174004af9b30f4cd4f2a0a2fe73bca7b06
         int oneBefore = xCoord - 1;
         int oneAfter = xCoord + 1;
         int oneAbove  = yCoord - 1;
         int oneBelow = yCoord + 1;
         int end = size - 1;
+        //<<<<<<< HEAD
         int historyPrevious = historyCurrent + 1;
         neighboursValue = 0;
         //System.out.println("here");
@@ -277,8 +309,104 @@ public class TheGame
         // System.out.println("neighboursValue After " + neighboursValue);
         //System.out.print("neighboursValue" + neighboursValue);
         System.out.print(neighboursValue);
-        return neighboursValue;
+        //return neighboursValue;
 
+        //=======
+        //int historyPrevious = historyCurrent - 1;
+        
+            //this is the method that is called on every point to find out if it's alive or not alive.        
+            if(yCoord == 0 || xCoord == 0 || yCoord == end || xCoord == end){ //because the boundaries of the map are complicated in terms of arrays
+                topLeft = boundedFence;
+                topMiddle = boundedFence;
+                topRight = boundedFence;
+                left = boundedFence;
+                bottomLeft = boundedFence;
+                bottomRight = boundedFence;
+                right = boundedFence;
+                bottomMiddle = boundedFence;
+                //HELP
+                // for(int yNeighboursCoord = -1; yNeighboursCoord > 1; yNeighboursCoord++){
+                // for(int xNeighboursCoord = -1; xNeighboursCoord > 1; xNeighboursCoord++){
+
+                // }}
+                if(yCoord == 0 && xCoord == 0 ){
+                    bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                    right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                    bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                }else if(yCoord == end && xCoord == end){
+                    left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                    topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                    topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                }else if(yCoord == 0 && xCoord == end){
+                    left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                    bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                    bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                }else if(yCoord == end && xCoord == 0){
+                    right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                    topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                    topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                }else if(yCoord == 0){
+                    left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                    right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                    bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                    bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                    bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                }else if (yCoord == end){
+                    topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                    topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                    topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                    left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                    right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                }else if(xCoord == 0){
+                    topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                    topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+                    right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+                    bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                    bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+                }else if(xCoord == end){
+                    topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+                    topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+                    left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+                    bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+                    bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+                }else{
+                    System.out.println("broken");
+                }
+
+                neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
+            }else{ //if it's not a boundary condition
+                neighboursValue = notABoundaryCell(yCoord, xCoord, mapThreeDime);
+            }
+            shallItBeAlive = applyGameRules(yCoord, xCoord, neighboursValue, mapThreeDime, historyCurrent);
+            return shallItBeAlive;
+        
+    }
+
+    public int notABoundaryCellSimple(int yCoord, int xCoord, int[][][] mapThreeDime){
+
+        int oneBefore = xCoord - 1;
+        int oneAfter = xCoord + 1;
+        int oneAbove  = yCoord - 1;
+        int oneBelow = yCoord + 1;
+
+        //what the next, huge & ineffecient block of code is doing, is essentially get all the values of the surronding squares and adding them together
+        //these are the top row, so they have a y value of one less, and varying x values to cover all three x values above the selected cell
+        topLeft = mapThreeDime[oneAbove][oneBefore][historyCurrent + 1];
+        topMiddle = mapThreeDime[oneAbove][xCoord][historyCurrent + 1];
+        topRight = mapThreeDime[oneAbove][oneAfter][historyCurrent + 1];
+        //for the two below, they have the same y value but different x values, as they are in the same row but not same column
+        left = mapThreeDime[yCoord][oneBefore][historyCurrent + 1];
+        //for the four above, we have already been throguh and tested their aliveness, and add that to their history, so we are actuall drawing on the history one in the past
+        right = mapThreeDime[yCoord][oneAfter][historyCurrent];
+        //these are all in the row below, so they have vrying x values and all a y value of one more, for the row just below
+        bottomLeft = mapThreeDime[oneBelow][oneBefore][historyCurrent];
+        bottomMiddle = mapThreeDime[oneBelow][xCoord ][historyCurrent];
+        bottomRight = mapThreeDime[oneBelow][oneAfter][historyCurrent];
+
+        neighboursValue = bottomRight + bottomMiddle + bottomLeft + left + right + topLeft + topMiddle + topRight;
+
+        return neighboursValue;
+        //>>>>>>> 68b9fe174004af9b30f4cd4f2a0a2fe73bca7b06
     }
 
     public int wrappingBoundary(int yCoord, int xCoord, int[][][] mapThreeDime){//pass it the coord of the point, so we know what point we're investigating{
