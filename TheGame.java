@@ -77,6 +77,10 @@ public class TheGame
     boolean selectionScreen;
     //----
 
+    //OTHER VARIABLES
+    String fileName;
+    //----
+
     /**
      * Constructor for objects of class TheGame
      */
@@ -92,9 +96,9 @@ public class TheGame
         System.out.println("                2. Load a grid");
         System.out.println("                3. Quit");
 
-        //DECIDE
+        //DECIDE   doingWhichLoadedFile
         int whatWeAreDoing = doingMenuOption(1); // deciding which menu option you've selected 
-
+        System.out.println(whatWeAreDoing);
         //GAME IF STATEMENT
         if(whatWeAreDoing == 1 || whatWeAreDoing == 2){ // IF YOU WANT TO PLAY THE GAME
 
@@ -104,6 +108,8 @@ public class TheGame
                 System.out.println("do you want to load a game from a file");
                 goingThrough = yesOrNoQuestionMethod(0);
 
+                System.out.println("Please type the name of the file (don't forget .txt on the end!");
+                fileName = keyboard.nextLine();
                 setup(goingThrough, fromAGrid); 
                 fileType = 0; 
                 // int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
@@ -117,23 +123,30 @@ public class TheGame
                 System.out.println("                2. Random grid of ones and zeroes");
                 System.out.println("                3. Glider ");
                 System.out.println("                4. something Else ");
+                System.out.println();
+                System.out.println("you can navigate the menu by typing up (or 'u') or down (d) then pressing enter (e)");
+                System.out.println("(the arrowkeys themselves don't work, sorry)");
+                System.out.println("or simply inputting the number of your choice");
 
                 fileType = doingWhichLoadedFile(1); 
 
-                System.out.println("do you want to run the default game?");
-                goingThrough = yesOrNoQuestionMethod(0);
-                if(goingThrough == 1){
-                    numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
-                    timeWaiting = 2;
-                    size = 10;
-                    heightOfGrid = size;
-                    widthOfGrid = size;
-                    howManyGenerationsAreWeDoing = 1;
-                    numberOfHistoriesRecorded  = 5;
-                    //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
-                }else{
-                    setup(goingThrough, false);
-                }           
+                if(fileType == 1 || fileType == 2){
+
+                    System.out.println("do you want to run the default game?");
+                    goingThrough = yesOrNoQuestionMethod(0);
+                    if(goingThrough == 1){
+                        numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
+                        timeWaiting = 2;
+                        size = 10;
+                        heightOfGrid = size;
+                        widthOfGrid = size;
+                        howManyGenerationsAreWeDoing = 1;
+                        numberOfHistoriesRecorded  = 5;
+                        //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                    }else{
+                        setup(goingThrough, false);
+                    }      
+                }
             }
         }else if(whatWeAreDoing == 3){
             System.out.println("Quitting... ");
@@ -162,6 +175,7 @@ public class TheGame
                 populateBoardWithRandom(mapThreeDime);
                 break;
             case 3:
+                populateBoardWithAPreset(mapThreeDime, 1);
                 break;
             case 4:
                 break;
@@ -414,9 +428,6 @@ public class TheGame
         }else if (userInput.equals("3")){
             System.out.println("selected 3");
             return 3;
-        }else if (userInput.equals("4")){
-            System.out.println("selected 4");
-            return 4;
         }else if (userInput.equals("up") || userInput.equals("u")){
             System.out.println("moved selection up");
             if (selected == 1){
@@ -428,7 +439,7 @@ public class TheGame
             doingMenuOption(1);
         }else if (userInput.equals("down") || userInput.equals("d")){
             System.out.println("moved selection down");
-            if (selected == 4){
+            if (selected == 3){
                 System.out.println("there are no further options this way");
             }else{
                 selected++;
@@ -495,10 +506,9 @@ public class TheGame
         Scanner keyboard = new Scanner(System.in);
 
         howManyGenerationsAreWeDoing = returnInteger("how many generations should I run? (max = 1000, min = 1)", 1, 1000);
-        keyboard.nextLine();
 
         timeWaiting = returnInteger("what should be the pause time between them? It's in seconds. Min is 0 seconds and the max is 60s (one min)", 0, 60);
-        keyboard.nextLine();
+
         if(fromAGrid == false){
             System.out.println("how big do you want this grid to be");
             size = returnInteger("how big do you want this grid to be. min is 5 x 5 and max is 100 x 100", 5, 100);
@@ -512,7 +522,6 @@ public class TheGame
         }
 
         numberOfHistoriesRecorded = returnInteger("how many histories should I record? Min = 5, Max = 20", 5, 20);
-        keyboard.nextLine();
     }
 
     public void populateBoardWithRandom(int[][][] mapThreeDime){
@@ -533,15 +542,18 @@ public class TheGame
         }
     }
 
-    public void populateBoardWithThings(int[][][] mapThreeDime,int xToChange, int yToChange){
+    public void populateBoardWithAPreset(int[][][] mapThreeDime,int presetType){
         int h = 0;
         for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
             for(int x = 0; x < widthOfGrid; x++){
-                if(x == xToChange && y == yToChange){
-                    mapThreeDime[y][x][h] = 1;
-                }
+                // if( ){
+                    // mapThreeDime[y][x][h] = 1;
+                // }
             }
         }
+
+        
+        printIt(0, mapThreeDime);
     }
 
     public void changeCells(boolean selectionScreen, int[][][] mapThreeDime){ //add comments 
@@ -594,7 +606,7 @@ public class TheGame
     public int readingAFile(){
         Scanner keyboardInput = new Scanner(System.in);
         System.out.println("reading a file");
-        File myFile = new File("hasAGrid.txt");
+        File myFile = new File(fileName);
         int awesome = 0;
 
         try {
@@ -602,7 +614,6 @@ public class TheGame
             while (readTheFile.hasNextLine()){
                 System.out.println(readTheFile.nextLine());
                 awesome++;
-                System.out.println(awesome);
             }
             return awesome;
         }catch(IOException e){
@@ -615,8 +626,7 @@ public class TheGame
 
     public void populateBoardFromAFile(int[][][] mapThreeDime){
         Scanner keyboardInput = new Scanner(System.in);
-        System.out.println("reading a file");
-        File myFile = new File("hasAGrid.txt");
+        File myFile = new File(fileName);
 
         try {
             Scanner readTheFile = new Scanner(myFile);
@@ -634,7 +644,7 @@ public class TheGame
         }catch(IOException e){
             //and if it doesn't work
             e.printStackTrace();
-            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I just don't have it. Sorry :( ");
 
         }
 
