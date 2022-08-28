@@ -4,7 +4,7 @@
  *
  * @author Frances
  * @version 3.4.2
- * (term 3, week 4, day 2 (tuesday))
+ * (term 3, week 6, day 2 (tuesday))
  * 
  * This is a project. The purpose of this code is to run Conway's game of life. 
  * It is for a term 2 & 3 project, for NCEA & whs computer science
@@ -13,14 +13,13 @@
  */
 
 //IMPORTS
-import java.util.concurrent.TimeUnit;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Timer;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
+import java.util.concurrent.TimeUnit; //import for the timer between printing generations
+import java.util.Random; //import to randomly populate the board 
+import java.util.Scanner; //import to take input
+import java.util.Timer; //another import for the timer between printing generations
+import java.io.File; //import for handling files (to save and load grids from file)
+import java.io.IOException; //import for handling exceptions (used when working with files and input)
+import java.io.FileWriter; //import for writing grids into files (to save and load later)
 //------ 
 
 public class TheGame 
@@ -59,7 +58,10 @@ public class TheGame
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
             { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-        };    
+        };  
+
+    int[][] gliderPreset = {{1, 2, 0, 1, 2},{-2, -1, 0, 0, 0}}; 
+    int[][] pulsarPreset = {{-4, -3, -2, 2, 3, 4, -6, -1, 1, 6, -6, -1, 1, 6, -6, -1, 1, 6, -4, -3, -2, 2, 3, 4, -4, -3, -2, 2, 3, 4, -6, -1, 1, 6, -6, -1, 1, 6, -6, -1, 1, 6, -4, -3, -2, 2, 3, 4},{6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -2, -3, -3, -3, -3, -4, -4, -4, -4, -6, -6, -6, -6, -6, -6}}; 
     //---------
 
     //INTERGER VARIABLES
@@ -88,7 +90,6 @@ public class TheGame
     int bottomMiddle = 0;
     int bottomRight = 0;
     int neighboursValue = 0;
-    int cellCount = -1; //HELP (remove when donedebuggin)
     //-------
 
     //BOOLEAN VARIABLES
@@ -98,15 +99,33 @@ public class TheGame
     boolean selectionScreen;
     //----
 
+    //STRING VARIABLES
+    String deadCellSymbol;
+    String aliveCellSymbol;
+    //-----
+
+    int finiteBoundaryType = 1; 
+    int wrappingBoundaryType = 2;
+    int infiniteBoundaryType = 3; 
+    int heightOfGridPrinting;
+    int widthOfGridPrinting;
+    int beginning;
+    int border = 10;
+
+    int count = 0; //HELP (remove when testing done)
+    int workingTho = 0;
+    int workingThoSecondary = 0;
+    int otherCount = 0;
+
     /**
      * Constructor for objects of class TheGame
      */
     public TheGame()
     {
-        Scanner keyboard = new Scanner(System.in); // intialises the scanner
-        int goingThrough;
+        Scanner keyboard = new Scanner(System.in);
+        int goingThrough; //used when asking yes or no questions 
 
-        //MENU/START-UP TEXT
+        //MENU START-UP TEXT
         System.out.println("                Welcome to the menu");
         System.out.println("                There are a couple options to chose from");
         System.out.println("                1. Read from a file");
@@ -115,7 +134,6 @@ public class TheGame
 
         //DECIDE
         int whatWeAreDoing = doingMenuOption(1, 1); // deciding which menu option you've selected 
-
         System.out.println(whatWeAreDoing);
         //GAME IF STATEMENT
         if(whatWeAreDoing == 1 || whatWeAreDoing == 2){ // IF YOU WANT TO PLAY THE GAME
@@ -125,21 +143,21 @@ public class TheGame
                 fromAGrid = true; // lets the game know it's from a grid
                 System.out.println("do you want to load a game from a file");
                 goingThrough = yesOrNoQuestionMethod(0);
-
-                setup(goingThrough, fromAGrid); //HELP
                 fileType = 0; 
-            }else if (whatWeAreDoing == 2){ // if you are loading a file 
+                setup(goingThrough, fileType); //HELP maybe ab from a gri dint?
 
+            }else if (whatWeAreDoing == 2){ // if you are loading a file 
+                // MENU FOR LOADING A GRID 
                 System.out.println("                Welcome to the menu of grid options to load");
                 System.out.println("                There are a couple options to chose from");
                 System.out.println("                1. Default (for trialling/testing)");
                 System.out.println("                2. Random grid of ones and zeroes");
-                System.out.println("                3. Glider ");
-                System.out.println("                4. something Else ");
+                System.out.println("                3. Populate with a Glider ");
+                System.out.println("                4. Populate with a pulsar ");
 
-                fileType = doingMenuOption(1, 2); 
+                fileType = doingMenuOption(1, 2); //deciding which filetype to run
 
-                System.out.println("do you want to run the default game?");
+                System.out.println("do you want to run the default game?"); //gives an option to set all values to a set default, useful in debugging //HELP (probs remove default)
                 goingThrough = yesOrNoQuestionMethod(0);
                 if(goingThrough == 1){
                     numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
@@ -147,20 +165,17 @@ public class TheGame
                     size = 10;
                     heightOfGrid = size;
                     widthOfGrid = size;
-                    howManyGenerationsAreWeDoing = 20;
-                    numberOfHistoriesRecorded  = 20;
-                    boundaryType = 1;
-                    //int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+                    howManyGenerationsAreWeDoing = 5;
+                    numberOfHistoriesRecorded  = 5;
+                    boundaryType = 3;
                 }else{
-                    setup(goingThrough, false);
+                    setup(goingThrough, fileType);
                 }           
             }
-        }else if(whatWeAreDoing == 3){
-            System.out.println("Quitting... ");
-
+        }else if(whatWeAreDoing == 3){ //this means if the user chooses to quit 
             System.out.println("Just checking, do you want to quit?");
             thisIsRunning = false;
-            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough //HELP
             if(goingThrough == 1){ //if it's one, thats a yes, and do 
                 thisIsRunning = false; //so they want to quit and it stops
             }else{
@@ -170,10 +185,10 @@ public class TheGame
             }
         }
 
-        int mapThreeDime[][][] = new int[size][size][numberOfHistoriesRecorded];
+        int mapThreeDime[][][] = new int[heightOfGrid][widthOfGrid][numberOfHistoriesRecorded];//initialises array for grid. Occurs here, because set up was executed above
         boolean doingThis = true;
 
-        switch (fileType){
+        switch (fileType){ //HELP (write comment)
             case 0:
                 populateBoardFromAFile(mapThreeDime);
                 break;
@@ -183,8 +198,12 @@ public class TheGame
                 populateBoardWithRandom(mapThreeDime);
                 break;
             case 3:
+                populateBoardWithAGlider(mapThreeDime, 0, 0, 1);
+                printIt(0, mapThreeDime);
                 break;
             case 4:
+                populateBoardWithAGlider(mapThreeDime, 0, 0, 2);
+                printIt(0, mapThreeDime);
                 break;
         }
         changeCells(doingThis, mapThreeDime); 
@@ -205,26 +224,33 @@ public class TheGame
         System.out.println("CODE THIS");
         runHistories(mapThreeDime);
         System.out.println("Do you want to save your game to a file?");
+        goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+        if(goingThrough == 1){ //if it's one, thats a yes, and do 
+            writingToAFile(mapThreeDime);
+        }else{
+            System.out.println("All goods! Thanks for playing!");
+        }
     }
 
-    //<<<<<<< HEAD
     public int finiteBoundary(int yCoord, int xCoord, int[][][] mapThreeDime){
         int end = size - 1;
         historyCurrent = 0;
         int toAdd = 0;
         int historyPrevious = historyCurrent + 1;
         neighboursValue = 0;
-        cellCount++;
         int round = 0;
-
         for(int yCoordModifier = -1; yCoordModifier < 2; yCoordModifier++){
             for(int xCoordModifier = -1; xCoordModifier < 2; xCoordModifier++){
                 int newYCoord = yCoordModifier + yCoord;
                 int newXCoord = xCoordModifier + xCoord;
-
+                otherCount++;
                 if(newYCoord < 0 || newXCoord  < 0 || newYCoord > end || newXCoord > end){
-                    toAdd = wrappingBoundary(yCoord, xCoord, newYCoord, newXCoord, yCoordModifier, xCoordModifier, mapThreeDime);
-                    neighboursValue += toAdd;
+                    if(boundaryType == wrappingBoundaryType){
+                        toAdd = wrappingBoundary(yCoord, xCoord, newYCoord, newXCoord, yCoordModifier, xCoordModifier, mapThreeDime);
+                        neighboursValue += toAdd;
+                    }else if (boundaryType == finiteBoundaryType || boundaryType == infiniteBoundaryType){ //HELP (unless this does help, remove
+                        neighboursValue += boundedFence;
+                    }
                 }else{
                     if(yCoordModifier == -1 || (yCoordModifier == 0 && xCoordModifier == -1)){
                         neighboursValue += mapThreeDime[newYCoord][newXCoord][historyPrevious];
@@ -236,7 +262,10 @@ public class TheGame
             }
         }
         neighboursValue -= mapThreeDime[yCoord][xCoord][historyCurrent];
+        workingThoSecondary += neighboursValue;
         shallItBeAlive = applyGameRules(yCoord, xCoord, neighboursValue, mapThreeDime, historyCurrent);
+        count++;
+        workingTho += shallItBeAlive;
         return shallItBeAlive;
     }
 
@@ -245,82 +274,41 @@ public class TheGame
         historyCurrent = 0;
         int toAdd = 0;
         int historyPrevious = historyCurrent + 1;
-        neighboursValue = 0;
-        cellCount++;
         int round = 0;
         int length = size;
         int boundaryNeighbour = 0;
-        System.out.println(cellCount);
         //turn into a switch statement, which checks through all options
         if(newYCoord < 0){
-            System.out.println("newYCoord less than 0 ");
-            System.out.println("length "+  length);
-            System.out.println("newYCoord before " + newYCoord);
-            newYCoord += length;
-            System.out.println("length "+  length);
-            System.out.println("newYCoord after " + newYCoord);
-            
+            newYCoord = end;            
         }else if (newYCoord > end){
-            System.out.println("newYCoord more than end ");
-            System.out.println("length "+  length);
-            System.out.println("newYCoord after " + newYCoord);
-            newYCoord -= length;
-            System.out.println("length "+  length);
-            System.out.println("newYCoord after " + newYCoord);
+            newYCoord = 0;
         }
-        
         if (newXCoord > end){
-            System.out.println("newXCoord more than end ");
-            System.out.println("length "+  length);
-            System.out.println("newXCoord before " + newXCoord);
-            newXCoord -= length;
-            System.out.println("length "+  length);
-            System.out.println("newYCoord after " + newXCoord);
-        }else if (newXCoord  < 0){
-            System.out.println("newXCoord less than 0 ");
-            System.out.println("length "+  length);
-            System.out.println("newXCoord before " + newXCoord);
-            newXCoord += length;
-            System.out.println("length "+  length);
-            System.out.println("newXCoord after " + newXCoord);
+            newXCoord = 0;
+        }else if (newXCoord < 0){
+            newXCoord = end;
         }
-
-        if(yCoordModifier == -1 || (yCoordModifier == 0 && xCoordModifier == -1)){
-            System.out.println("previous history");
-            System.out.println("boundaryNeighbour before "+  boundaryNeighbour);
-            System.out.println("mapThreeDime[newYCoord][newXCoord][historyPrevious] before " + mapThreeDime[newYCoord][newXCoord][historyPrevious]);
+        if(newYCoord < yCoord || (newYCoord == yCoord && newXCoord < xCoord)){
             boundaryNeighbour += mapThreeDime[newYCoord][newXCoord][historyPrevious];
-            System.out.println("boundaryNeighbour after "+  boundaryNeighbour);
-            System.out.println("mapThreeDime[newYCoord][newXCoord][historyPrevious] after " + mapThreeDime[newYCoord][newXCoord][historyPrevious]);
         }else {
-            System.out.println("current history");
-            System.out.println("boundaryNeighbour before "+  boundaryNeighbour);
-            System.out.println("mapThreeDime[newYCoord][newXCoord][historyCurrent] before " + mapThreeDime[newYCoord][newXCoord][historyCurrent]);
             boundaryNeighbour += mapThreeDime[newYCoord][newXCoord][historyCurrent];
-            System.out.println("boundaryNeighbour after "+  boundaryNeighbour);
-            System.out.println("mapThreeDime[newYCoord][newXCoord][historyCurrent] after " + mapThreeDime[newYCoord][newXCoord][historyCurrent]);
         }
-        System.out.println("boundaryNeighbour at end "+  boundaryNeighbour);
         return boundaryNeighbour;
     }
 
     public int applyGameRules(int yCoord, int xCoord, int neighboursValue, int[][][] mapThreeDime, int historyCurrent){
         int shallItBeAlive = 2;
-
         //and now, below are the conway's rules. These are pretty much directly translated into code
         if (mapThreeDime[yCoord][xCoord][historyCurrent] == 1){ //if the selected cell is currently alive
             //System.out.println("Alive");
             if(neighboursValue < 2 || neighboursValue > 3){ // if the neighboursValue is less than two, the cell will die (underpopulation) or if it's more than three, the cell will die (overpopulation)
-                //System.out.println("dead");
                 shallItBeAlive = 0; //assigns the shallItBeAlive the 'dead' value
                 historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime); //passes the dead/alvie info and the selected cell location info to the history replacer
             }else if(neighboursValue == 2 || neighboursValue == 3){ //if it's 2 or three, the cell remains alive 
-                //System.out.println("alive");
                 shallItBeAlive = 1; //assigns the shallItBeAlive the 'living' value
                 historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime); //passes the dead/alvie info and the selected cell location info to the history replacer
             }
         }else if(mapThreeDime[yCoord][xCoord][historyCurrent] == 0){ //if the selected cell is currently dead
-            //System.out.println("dead");
             if(neighboursValue == 3){ // and it has three live neighbours, it becomes alive 
                 shallItBeAlive = 1; //assigns the shallItBeAlive the 'living' value
                 historyReplacer(yCoord, xCoord, shallItBeAlive, mapThreeDime);//passes the dead/alvie info and the selected cell location info to the history replacer
@@ -333,42 +321,21 @@ public class TheGame
             shallItBeAlive = 2; //returns an unreal value for this context (neither dead or alive, will break the code (hopefull) so the error is conveyed)
         }
         //this is a return statement for if none of the above options happen. It is an unreal statement (in context) and will break the code
-
         return shallItBeAlive;
-
     }
 
-    //this method has an awful lot of comments, and I'm sorry, but even I find this confusing, and I wrote the code. 
-    public void historyReplacer(int yCoord, int xCoord, int living, int[][][] mapThreeDime){ //this moves all the histories of a given point back one.  //HELP (wayyy overcommented)
-        //the histories are c if the array is defined as int array[a][b][c]
-        //they keep a record of everything a given point has been for the last few iterations
-        //the var numberOfHistoriesRecorded dictates how many iteration back the histories are kept
-        //this takes the new alive or dead value and moves it back one, and all the subsquent histories back one
-        // and the last history gets deleted/written over and not kept 
-
-        //it begins with getting the passed value of living, which is the most recent value of if the point is alive or not
-        // and assigns it to the var toMove
-        //which controls what is being moved
-        int toMove = living; //above happens here. For example, if living = 1, cell is alive, and toMove now = 1
-        int assign; //then we just intialize assign to be used later.
-        int lastOne = numberOfHistoriesRecorded - 1; //this is a var set up to have a flexible history, and represents the actual position of the last history
-        //eg, if you record 5 history iterations, 4 is the position of the last history in the array. 
-        for(int h = 0; h < numberOfHistoriesRecorded; h++){ //here, h represents history. it cycles through h until it gets to the end of the histories
-            //when h = 0, toMove is the newest given value, living.
-            //if a= 1 and b =1, and the histories are 1,0,0,1,0
-            // the program collects the first one, and then writes over it with the living value
-            // that collected one is then moved to a different var, and the net value, the 0 is collected
-            // then written over, by the one, and the cycle repeats
-            //until the last one, when we don't collect the value,
-            // and in the first one, the collected value that will be using for writing over is the living value. 
-            if(h == lastOne){ //if this is the last history
-                assign = toMove; //the assign variable is the thing you are moving
-                mapThreeDime[yCoord][xCoord][h] = assign; //and that value is now in the next posiiton along
-                //we don't assign toMove a new value because this is the last one, so there is no value after it, no value to be moved.
+    public void historyReplacer(int yCoord, int xCoord, int living, int[][][] mapThreeDime){ 
+        int toMove = living;
+        int assign; 
+        int lastOne = numberOfHistoriesRecorded - 1; 
+        for(int h = 0; h < numberOfHistoriesRecorded; h++){ 
+            if(h == lastOne){ 
+                assign = toMove; 
+                mapThreeDime[yCoord][xCoord][h] = assign; 
             }else{
-                assign = toMove; //assign is equal to the value we are moving around.
-                toMove = mapThreeDime[yCoord][xCoord][h]; //now we get the next value that we'll move around, and assign that to toMove
-                mapThreeDime[yCoord][xCoord][h] = assign; //and we write over that just-collected value with assign value. 
+                assign = toMove; 
+                toMove = mapThreeDime[yCoord][xCoord][h]; 
+                mapThreeDime[yCoord][xCoord][h] = assign; 
             }
         }
     }
@@ -377,8 +344,7 @@ public class TheGame
         Scanner keyboard = new Scanner(System.in); //initializes scanner
         //takes userInput, mainuplates it into the simplest form, so it can compare to the simplest form in the if statement
         String userInput = keyboard.nextLine(); //creates 'userInput' as a string variable, assigns it the just receieved input
-        userInput = userInput.toLowerCase().trim(); //converts it to lowercase
-        //userInput = userInput.trim(); //removes whitespace
+        userInput = userInput.toLowerCase().trim(); //converts it to lowercase and trims it 
 
         if(userInput.equals("yes")||userInput.equals("y")){ //if it receives yes
             yesOrNo = 1;
@@ -402,42 +368,29 @@ public class TheGame
 
     public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime, int boundaryType){
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
-            //System.out.println('\u000c'); //clears the screen
+            //System.out.println('\u000c'); //clears the screen /HELP (should probablty reinstate)
             int notDead = 0;
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); 
             //the main loop which actually runs game (one loop is one generation)
             for(int y = 0; y < heightOfGrid; y++){ //this runs through the y values (and stops when reached height of the grid)
                 for(int x = 0; x < widthOfGrid; x++){ // same as above but for x and width not height 
-                    if(boundaryType == 1){
-                        notDead = finiteBoundary(y, x, mapThreeDime); //calls the isItAlive method, and asks if the point is alive 
-                    }else if(boundaryType == 2){
-                        //notDead = wrappingBoundary(y, x, mapThreeDime);
-                    }
-                    int h = 0; //dealing with just history = 0, or the current history/working grid. 
-                    if(notDead == 1){ //if it's living 
-                        System.out.print(" " + "X" + " ");//prints out the value
-                    }else if (notDead == 0){ //does literally the exact same thing as above why is this an if statement. 
-                        System.out.print(" " + " " + " ");
-                    }else{ //else do nothing. 
-                        //HELP
-                    }
+                    notDead = finiteBoundary(y, x, mapThreeDime); //calls the isItAlive method, and asks if the point is alive 
+
                 }
-                System.out.println(); 
+                //ystem.out.println(); 
             }
+            printIt(0, mapThreeDime);
             slowPrint(timeWaiting);
             numberOfGenerations++; //adds one to the generation number, lets us know one full generation has been done. 
         }
     }
 
-    public int doingMenuOption(int whichOption, int whichMenu){
+    public int doingMenuOption(int selected, int whichMenu){
         Scanner keyboard = new Scanner(System.in);
         String userInput = keyboard.nextLine();
-        userInput = userInput.toLowerCase();
-        userInput = userInput.trim();
-        selected = whichOption;
+        userInput = userInput.toLowerCase().trim();
         System.out.println("currently you have option " + selected + " selected");
-
         if (userInput.equals("1")){
             System.out.println("selected option" + selected);
             selected = 1;
@@ -479,25 +432,47 @@ public class TheGame
         return selected;
     }
 
-    public void setup(int goingThrough, boolean fromAGrid){
+    public void setup(int goingThrough, int fileType){
         Scanner keyboard = new Scanner(System.in);
-
         howManyGenerationsAreWeDoing = returnInteger("how many generations should I run? (max = 1000, min = 1)", 1, 1000);
-
         timeWaiting = returnInteger("what should be the pause time between them? It's in seconds. Min is 0 seconds and the max is 60s (one min)", 0, 60);
-
         boundaryType = returnInteger("what bounary do you want? Type 1 for finite, 2 for wrapping, and 3 for infinite", 1, 3);
-        if(fromAGrid == false){
-            size = returnInteger("how big do you want this grid to be. min is 5 x 5 and max is 100 x 100", 5, 100);
-            keyboard.nextLine();
-            heightOfGrid = size;
-            widthOfGrid = size;
-        }else if (fromAGrid == true){
+        if(fileType == 0){
             size = readingAFile(); 
+        }else if (fileType != 0){
+            if(fileType == 3){
+                size = returnInteger("how big do you want this grid to be. min is 10 x 10 and max is 100 x 100  (because you chose a glider preset)", 10, 100);
+            }else if(fileType == 4){
+                size = returnInteger("how big do you want this grid to be. min is 20 x 20 and max is 100 x 100  (because you chose a glider preset)", 20, 100);
+            }else {
+                size = returnInteger("how big do you want this grid to be. min is 5 x 5 and max is 100 x 100", 5, 100);
+            }
+
+        }
+        if(boundaryType == infiniteBoundaryType){
+            int sizeWithBorder = size + border + border;
+            int smallerSize = size;
+            heightOfGrid = sizeWithBorder;
+            widthOfGrid = sizeWithBorder; 
+            size = sizeWithBorder;
+        }else {
             heightOfGrid = size;
-            widthOfGrid = size;
+            widthOfGrid = size; 
         }
         numberOfHistoriesRecorded = returnInteger("how many histories should I record? Min = 5, Max = 20", 5, 20);
+        if(boundaryType == infiniteBoundaryType){//HELP
+            beginning = border;
+            heightOfGridPrinting = heightOfGrid - border;
+            widthOfGridPrinting = widthOfGrid - border;
+        }else{
+            beginning = 0;
+            heightOfGridPrinting = heightOfGrid;
+            widthOfGridPrinting = widthOfGrid;
+        }
+        System.out.println("and what would you like to represent the alive cells? I recommend ' X '");
+        aliveCellSymbol = keyboard.nextLine();
+        System.out.println("and what would you like to represent the alive cells? I recommend '   ' (AKA three spaces)");
+        deadCellSymbol = keyboard.nextLine();
     }
 
     public void populateBoardWithRandom(int[][][] mapThreeDime){
@@ -505,33 +480,43 @@ public class TheGame
         int goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
         if(goingThrough == 1){ //if it's one, thats a yes, and do 
             System.out.println("beginning at.."); //tells the user what's happening 
-            for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                for(int x = 0; x < widthOfGrid; x++){
+            for(int y = beginning; y < heightOfGridPrinting; y++){ //nested loop, to go through the array
+                for(int x = beginning; x < widthOfGridPrinting; x++){
                     int h = 0; //only affect the first history, aka the working history, the current grid
                     mapThreeDime[y][x][h] = (int)(Math.floor(Math.random()*(1-0+1)+0));; //assign it a random number (either one or zero)
                     System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
                 }
                 System.out.println(); //next line 
             }
-        }else{ //if you recieved a no answer
+        }else{ //if you recieved a no answer /HELP
 
         }
     }
 
-    public void populateBoardWithThings(int[][][] mapThreeDime,int xToChange, int yToChange){
+    public void populateBoardWithAGlider(int[][][] mapThreeDime,int xToChange, int yToChange, int presetType){
         int h = 0;
-        for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-            for(int x = 0; x < widthOfGrid; x++){
-                if(x == xToChange && y == yToChange){
-                    mapThreeDime[y][x][h] = 1;
-                }
+        int length = 0;
+        if(presetType == 1){
+            length = 5;
+        }else if (presetType == 2){
+            length = 48;
+        }
+        int locale = Math.floorDiv(size, 2);
+        for(int y = 0; y < length; y++){ //nested loop, to go through the array
+            //for(int x = 0; x < 1; x++){
+            if(presetType == 1){
+                xToChange = locale + gliderPreset[0][y];
+                yToChange = locale + gliderPreset[1][y];
+            }else if (presetType == 2){
+                xToChange = locale + pulsarPreset[0][y];
+                yToChange = locale + pulsarPreset[1][y];
             }
+            mapThreeDime[yToChange][xToChange][h] = 1;
         }
     }
 
     public void changeCells(boolean selectionScreen, int[][][] mapThreeDime){ //add comments 
         Scanner keyboard = new Scanner(System.in);
-        System.out.println("running change cells");
         int lastRow = 1;
 
         System.out.println("would you like to edit the grid?");
@@ -543,13 +528,10 @@ public class TheGame
             int h = 0;
             if(editingStill == 1){     
                 int rowSelection = returnInteger("Please select row: ", lastRow, size);
-
                 int columnSelection = returnInteger("Please select column: ", lastRow, size);
-
                 int changeTo = returnInteger("do you want it alive (1) or dead (0)?", 0, 1) ;
 
                 mapThreeDime[rowSelection-1][columnSelection-1][h] = changeTo;
-
                 printIt(0, mapThreeDime);
                 System.out.println();
 
@@ -562,16 +544,21 @@ public class TheGame
     }
 
     public void printIt(int h, int[][][] mapThreeDime){
-        for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
-            for(int x = 0; x < widthOfGrid; x++){
-                System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+        for(int y = beginning; y < heightOfGridPrinting; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+            for(int x = beginning; x < widthOfGridPrinting; x++){
+                int cellValue = mapThreeDime[y][x][h];
+                if(cellValue == 1){ //if it's living 
+                    System.out.print(aliveCellSymbol);//prints out the value
+                }else if (cellValue == 0){ //does literally the exact same thing as above why is this an if statement. 
+                    System.out.print(deadCellSymbol);
+                }
             }
             System.out.println(); //next line 
         }
     }
 
-    public int readingAFile(){ //gets the size of the file so the array for the grid can be intialised
-        Scanner keyboardInput = new Scanner(System.in);
+    public int readingAFile(){ //gets the size of the file so the array for the grid can be intialised //HELP DO I use this method? If so, why is the file name hardcoded? 
+        Scanner keyboard = new Scanner(System.in);
         System.out.println("reading a file");
         File myFile = new File("hasAGrid.txt");
         int awesome = 0;
@@ -592,11 +579,11 @@ public class TheGame
         }
     }
 
-    public void populateBoardFromAFile(int[][][] mapThreeDime){
-        Scanner keyboardInput = new Scanner(System.in);
+    public void populateBoardFromAFile(int[][][] mapThreeDime){ // HELP need this to be a bit diff if for infinte
+        Scanner keyboard = new Scanner(System.in);
         System.out.println("populating board from a file");
         File myFile = new File("hasAGrid.txt");
-        keyboardInput.nextLine();
+        keyboard.nextLine();
 
         try {
             Scanner readTheFile = new Scanner(myFile);
@@ -611,16 +598,16 @@ public class TheGame
                     System.out.println(); //next line 
                 }
             }
-        }catch(IOException e){
-            //and if it doesn't work
+        }catch(IOException e){//and if it doesn't work
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
         }
     }
 
+    //This method pritns out all the 'histories' and is very useful/predomindantly used for debugging
     public void runHistories(int[][][] mapThreeDime){
         System.out.println("run history?");
-        System.out.println("remeber, this one (just below) is the most recent history, the fourth is the LEAST recent or FIRST iteration");//the following is just five for loops which all print out the grid at different points
+        System.out.println("remeber, this one (just below) is the most recent history, the last one is the LEAST recent or FIRST iteration");// this is slightly 
         for(int c = 0; c < numberOfHistoriesRecorded; c++){
             System.out.println("history just happned " + c);
             for(int a = 0; a < heightOfGrid; a++){
@@ -632,24 +619,96 @@ public class TheGame
         }
     }
 
-    public int returnInteger(String question, int minParameter, int maxParameter){
+    //Method used when asking for an int input
+    public int returnInteger(String question, int minParameter, int maxParameter){//allows for flexbility/games doesn't crash if a question recieves a non-int input
         Scanner keyboard = new Scanner(System.in);
         int intReceived = 0;
         try {
-            System.out.println(question);
+            System.out.println(question); //it will reprint the question everytime so the user is reminded of what to input
             intReceived = keyboard.nextInt();
-            if(intReceived >= minParameter && intReceived <= maxParameter){
-                return intReceived;
+            if(intReceived >= minParameter && intReceived <= maxParameter){ //this means I can just have one method for validity & within parameters
+                return intReceived; //will only return the inputted int if it is both within the Parameters and is valid
             }else{
                 System.out.println("Sorry, that doesn't seem quite right? Check you inputted a number that fits the parameters.");
-                intReceived = returnInteger(question, minParameter, maxParameter);
+                intReceived = returnInteger(question, minParameter, maxParameter); //calls method again until it receives a valid input
                 return intReceived;
             }
-        }catch(Exception e){
+        }catch(Exception e){ 
             System.out.println("Sorry, that doesn't seem quite right? Check you inputted a number that fits the parameters.");
             intReceived = returnInteger(question, minParameter, maxParameter);
             return intReceived;
         }
+    }
+
+    public void saveGridToAFile(int[][][] mapThreeDime){ // HELP need this to be a bit diff if for infinte
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("populating board from a file");
+        File myFile = new File("hasAGrid.txt");
+        keyboard.nextLine();
+
+        try {
+            Scanner readTheFile = new Scanner(myFile);
+            while (readTheFile.hasNext()){
+                //System.out.println(readTheFile.nextInt());
+                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+                    for(int x = 0; x < widthOfGrid; x++){
+                        int h = 0; //only affect the first history, aka the working history, the current grid
+                        mapThreeDime[y][x][h] = readTheFile.nextInt();
+                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
+                    }
+                    System.out.println(); //next line 
+                }
+            }
+        }catch(IOException e){//and if it doesn't work
+            e.printStackTrace();
+            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+        }
+    }
+
+    public void writingToAFile(int [][][] mapThreeDime){
+        Scanner keyboardInput = new Scanner(System.in);
+        int awesome = 0;
+        boolean areWeWriting = true;
+        int h = 0;
+        try{
+            File workingFile = new File ("thisIWillWriteTo.txt");
+            FileWriter newWriterThing = new FileWriter(workingFile);
+
+            for(int y = beginning; y < heightOfGridPrinting; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
+                for(int x = beginning; x < widthOfGridPrinting; x++){
+                    int cellValue = mapThreeDime[y][x][h];
+                    newWriterThing.write(" ");
+                    if(cellValue == 1){
+                        newWriterThing.write("1");
+                    }else if (cellValue == 0){
+                        newWriterThing.write("0");
+                    }
+                    newWriterThing.write(" ");
+                }
+                newWriterThing.write("\n");
+            }
+            newWriterThing.flush();
+            newWriterThing.close();
+        }catch(IOException e){
+            System.out.println("broken");
+        }
+
+        // System.out.println("please type a full file name (with the type also)");
+        // System.out.println("hint = try test.txt");
+        // String fileName = keyboardInput.nextLine();
+        // File myFile = new File(fileName);
+        // try {
+            // //trying something hopefull it works
+            // Scanner readTheFile = new Scanner(myFile);
+            // while (readTheFile.hasNextLine()){
+                // System.out.println(readTheFile.nextLine());
+            // }
+        // }
+        // catch(IOException e){
+            // //and if it doesn't work
+            // e.printStackTrace();
+            // System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
+        // }
     }
 }
 
