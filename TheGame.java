@@ -1,15 +1,24 @@
 
 /**
- *CONWAYS GAME OF LIFE
+ * CONWAYS GAME OF LIFE
  *
- * @author Frances
+ * @author Frances Till
  * @version 3.4.2
- * (term 3, week 6, day 2 (tuesday))
+ * (term 3, week 6, day 1 (monday))
  * 
- * This is a project. The purpose of this code is to run Conway's game of life. 
- * It is for a term 2 & 3 project, for NCEA & whs computer science
+ * The purpose of this code is to run Conway's Game of Life. 
+ * It is for a term 2 & 3 project, for NCEA Computer Science (AS91896)
+ * This code is written 100% in java. 
+ * All credit for the rules of the game go to John Conway. 
+ * Furhter information about Conway's game can be found here: 
+ * https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
  * 
- * This code //HELP
+ * This code is run in terminal, typically doesn't need any extra components or files to run, 
+ * except for interactions between the game and external .txt files. 
+ * if you want to read files and write to files;
+ * you need to place those files in the same location as this code
+ * Those files should be text files. (.txt suffixes)
+ * 
  */
 
 //IMPORTS
@@ -27,59 +36,70 @@ public class TheGame
     //VARIABLES 
 
     //ARRAYS
-    private int mapTwo[][] = new int[10][10]; //control-type 2d array for a map to be used while testing.  
 
-    int[][] map = //previous map used, 2D, array creator
-        { 
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-        };
+    int mapThreeDime[][][];// = new int[10][10][5]; //makes the 3D grid when populating happens in a loop 
 
-    int mapThreeDime[][][];// = new int[10][10][5]; //makes the 3D grid when populating happens in a loop
+    //PRESETS BELOW
+    //Note - both of these presets are prediscovered patterns widley known about. 
+    // These are generally referred to as oscillators. 
+    //A full list of osiclaltors, and those who discovered them, can be found here
+    //https://conwaylife.com/wiki/Oscillator
 
-    int[][][] mapThreeDimeMade= //makes the 3D grid when we want to hand-populate for control and testing purposes
-
-        { 
-            { {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {1,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-            { {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0} },
-        };  
-
+    //pattern to apply for the glider pattern preset when loading a file
+    //about this specifc oscillator:  https://conwaylife.com/wiki/Glider
     int[][] gliderPreset = {{1, 2, 0, 1, 2},{-2, -1, 0, 0, 0}}; 
+
+    //pattern to apply for the pulsar pattern preset when loading a file
+    //about this specifc oscillator:  https://conwaylife.com/wiki/Pulsar
     int[][] pulsarPreset = {{-4, -3, -2, 2, 3, 4, -6, -1, 1, 6, -6, -1, 1, 6, -6, -1, 1, 6, -4, -3, -2, 2, 3, 4, -4, -3, -2, 2, 3, 4, -6, -1, 1, 6, -6, -1, 1, 6, -6, -1, 1, 6, -4, -3, -2, 2, 3, 4},{6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -2, -3, -3, -3, -3, -4, -4, -4, -4, -6, -6, -6, -6, -6, -6}}; 
     //---------
 
-    //INTERGER VARIABLES
-    int size;
-    int timeWaiting;
-    int howManyGenerationsAreWeDoing;
-    int selected = 1;
-    int numberOfGenerations = 0; 
-    int widthOfGrid = 10; //dictates grid width
-    int heightOfGrid = 10; //dictates grid width
-    int numberOfHistoriesRecorded = 5; //dictates number of histories (controls the 3D part of the 3D array)
-    int fileType;
-    int boundaryType;
+    //INTEGER VARIABLES
+
+    //NON-SETUP SINGULAR VARIABLES
+    int selected = 1; //refers to menu option selected
+    int numberOfGenerations = 0; // run so far (counts up in running the game)
+    int placeHolder = 0; //used when passing place holder values through methods //help
+    int border = 10;
+    //------
+
+    //SINGULAR SETUP INTEGER VARIABLES
+    int size; //of the grid 
+    int timeWaiting; //between generations 
+    int howManyGenerationsAreWeDoing; 
+    int widthOfGrid = 10; 
+    int heightOfGrid = 10; 
+    int numberOfHistoriesRecorded = 5; 
+    int heightOfGridPrinting;
+    int widthOfGridPrinting;
+    int beginning;
+    //-----
+
+    //BOUNDARYTYPE INTEGERS
+    //intialised in the setup method, reference what boundary the grid will run
+    int boundaryType; 
+    int finiteBoundaryType = 1; 
+    int wrappingBoundaryType = 2;
+    int infiniteBoundaryType = 3; 
+    //----
+
+    //FILETYPE INTEGERS 
+    //intialised in first & second menu, reference how the grid will be populated
+    int fileType; 
+    int populateFromAGridFileType = 0;
+    int leaveBlankFileType = 1;
+    int populateWithRandomFileType = 2; 
+    int populateWithAGliderFileType = 3;
+    int populateWithAPulsarFileType = 4;
+
+    //PRESETS FOR FILETYPES 3 & 4
+    int gliderPresetType = 1;
+    int pulsarPresetType = 2;
     //------
 
     //INTERGER VALUES FOR RULES
-    int historyCurrent = 0; //this is semantics, but for most of this, are dealing with the history value of 0, or the current grid alyout. 
-    int shallItBeAlive; 
+    int historyCurrent = 0; 
+    int shallItBeAlive;  
     int boundedFence = 0;
     int topLeft = 0;
     int topMiddle = 0;
@@ -90,32 +110,19 @@ public class TheGame
     int bottomMiddle = 0;
     int bottomRight = 0;
     int neighboursValue = 0;
-    //-------
+    //------
 
     //BOOLEAN VARIABLES
-    boolean going = true;
-    boolean thisIsRunning = false;
-    boolean fromAGrid = false;
-    boolean selectionScreen;
+    boolean thisIsRunning = true; //this is turned to true if the user chooses not to quit
+    boolean selectionScreen; 
     //----
 
     //STRING VARIABLES
+    //intialised in setup
     String deadCellSymbol;
     String aliveCellSymbol;
+    String fileNameAsAString;
     //-----
-
-    int finiteBoundaryType = 1; 
-    int wrappingBoundaryType = 2;
-    int infiniteBoundaryType = 3; 
-    int heightOfGridPrinting;
-    int widthOfGridPrinting;
-    int beginning;
-    int border = 10;
-
-    int count = 0; //HELP (remove when testing done)
-    int workingTho = 0;
-    int workingThoSecondary = 0;
-    int otherCount = 0;
 
     /**
      * Constructor for objects of class TheGame
@@ -126,6 +133,9 @@ public class TheGame
         int goingThrough; //used when asking yes or no questions 
 
         //MENU START-UP TEXT
+        System.out.println("HI! This is my AS91896 project, Conway's Game Of Life");
+        System.out.println("All credit for the rules and idea to Jonh Conway.");
+        System.out.println("More information can be found here: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life");
         System.out.println("                Welcome to the menu");
         System.out.println("                There are a couple options to chose from");
         System.out.println("                1. Read from a file");
@@ -135,17 +145,15 @@ public class TheGame
         //DECIDE
         int whatWeAreDoing = doingMenuOption(1, 1); // deciding which menu option you've selected 
         System.out.println(whatWeAreDoing);
+
         //GAME IF STATEMENT
         if(whatWeAreDoing == 1 || whatWeAreDoing == 2){ // IF YOU WANT TO PLAY THE GAME
 
             if(whatWeAreDoing == 1){ // if we are loading a file specifcally from a file
-                System.out.println("reading from a file");
-                fromAGrid = true; // lets the game know it's from a grid
-                System.out.println("do you want to load a game from a file");
-                goingThrough = yesOrNoQuestionMethod(0);
-                fileType = 0; 
-                setup(goingThrough, fileType); //HELP maybe ab from a gri dint?
-
+                System.out.println("Now, the grid will be populated from a gien text file");
+                fileNameAsAString = getFileName("Please input the text file name. Remeber .txt at the end!");
+                fileType = populateFromAGridFileType; 
+                setup(fileType); 
             }else if (whatWeAreDoing == 2){ // if you are loading a file 
                 // MENU FOR LOADING A GRID 
                 System.out.println("                Welcome to the menu of grid options to load");
@@ -155,80 +163,58 @@ public class TheGame
                 System.out.println("                3. Populate with a Glider ");
                 System.out.println("                4. Populate with a pulsar ");
 
-                fileType = doingMenuOption(1, 2); //deciding which filetype to run
-
-                System.out.println("do you want to run the default game?"); //gives an option to set all values to a set default, useful in debugging //HELP (probs remove default)
-                goingThrough = yesOrNoQuestionMethod(0);
-                if(goingThrough == 1){
-                    numberOfGenerations = 0; //controls how many times the game loops/how many generations there are.
-                    timeWaiting = 2;
-                    size = 10;
-                    heightOfGrid = size;
-                    widthOfGrid = size;
-                    howManyGenerationsAreWeDoing = 5;
-                    numberOfHistoriesRecorded  = 5;
-                    boundaryType = 3;
-                }else{
-                    setup(goingThrough, fileType);
-                }           
+                fileType = doingMenuOption(placeHolder, 2); //deciding which filetype to run
+                setup(fileType); 
             }
         }else if(whatWeAreDoing == 3){ //this means if the user chooses to quit 
-            System.out.println("Just checking, do you want to quit?");
-            thisIsRunning = false;
-            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough //HELP
-            if(goingThrough == 1){ //if it's one, thats a yes, and do 
-                thisIsRunning = false; //so they want to quit and it stops
-            }else{
-                System.out.println("I've receieved you don't know what to quit, but the next bit isn't coded yet");
-                thisIsRunning = true; //they don't want to quit or its invalid, deal with
-
-            }
+            System.out.println("You've chosen to quit, so thanks for opening the game, have a great day!");
+            System.out.println("~ Game Over ~");
+            thisIsRunning = false;  
         }
-
         int mapThreeDime[][][] = new int[heightOfGrid][widthOfGrid][numberOfHistoriesRecorded];//initialises array for grid. Occurs here, because set up was executed above
-        boolean doingThis = true;
+        if(thisIsRunning == true){
+            switch (fileType){ //HELP (write comment)
+                case 0: //populateFromAGridFileType
+                    populateBoardFromAFile(mapThreeDime);
+                    break;
+                case 1: //leaveBlankFileType
+                    break;
+                case 2: //populateWithRandomFileType
+                    populateBoardWithRandom(mapThreeDime);
+                    break;
+                case 3: //populateWithAGliderFileType
+                    populateBoardWithAGlider(mapThreeDime, placeHolder, placeHolder, 1);
+                    printIt(0, mapThreeDime);
+                    break;
+                case 4: //populateWithAPulsarFileType
+                    populateBoardWithAGlider(mapThreeDime, placeHolder, placeHolder, 2);
+                    printIt(0, mapThreeDime);
+                    break;
+            }
 
-        switch (fileType){ //HELP (write comment)
-            case 0:
-                populateBoardFromAFile(mapThreeDime);
-                break;
-            case 1:
-                break;
-            case 2:
-                populateBoardWithRandom(mapThreeDime);
-                break;
-            case 3:
-                populateBoardWithAGlider(mapThreeDime, 0, 0, 1);
-                printIt(0, mapThreeDime);
-                break;
-            case 4:
-                populateBoardWithAGlider(mapThreeDime, 0, 0, 2);
-                printIt(0, mapThreeDime);
-                break;
-        }
-        changeCells(doingThis, mapThreeDime); 
-
-        thisIsRunning = true;
-        runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime, boundaryType);
-        runHistories(mapThreeDime);
-
-        System.out.println("Thanks for playing! The game is over now, unless you would like to run a few more generations of your game?");
-        System.out.println("Do you want to run a few more generations?");
-        goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-        if(goingThrough == 1){ //if it's one, thats a yes, and do 
-            howManyGenerationsAreWeDoing = returnInteger("how many more generations should I run? (max = 1000, min = 1)", 1, 1000);
+            changeCells(mapThreeDime); // allows the user to edit indivual cells
             runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime, boundaryType);
-        }else{
-            System.out.println("Alrighty, we won't run the game anymore");
-        }
-        System.out.println("CODE THIS");
-        runHistories(mapThreeDime);
-        System.out.println("Do you want to save your game to a file?");
-        goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-        if(goingThrough == 1){ //if it's one, thats a yes, and do 
-            writingToAFile(mapThreeDime);
-        }else{
-            System.out.println("All goods! Thanks for playing!");
+            //runHistories(mapThreeDime);//HELP
+
+            System.out.println("Thanks for playing! The game is over now, unless you would like to run a few more generations of your game?"); // HELP
+            System.out.println("Do you want to run a few more generations?");
+            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+            if(goingThrough == 1){ //if it's one, thats a yes, and do 
+                howManyGenerationsAreWeDoing = returnInteger("how many more generations should I run? (max = 1000, min = 1)", 1, 1000);
+                runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime, boundaryType);
+            }else{
+                System.out.println("Alrighty, we won't run the game anymore");
+            }
+
+            runHistories(mapThreeDime);
+            System.out.println("Do you want to save your game to a file?");
+            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+            if(goingThrough == 1){ //if it's one, thats a yes, and do 
+                fileNameAsAString = getFileName("Please input the text file name. Remeber .txt at the end!");
+                writingToAFile(mapThreeDime);
+            }else{
+                System.out.println("All goods! Thanks for playing!");
+            }
         }
     }
 
@@ -243,7 +229,6 @@ public class TheGame
             for(int xCoordModifier = -1; xCoordModifier < 2; xCoordModifier++){
                 int newYCoord = yCoordModifier + yCoord;
                 int newXCoord = xCoordModifier + xCoord;
-                otherCount++;
                 if(newYCoord < 0 || newXCoord  < 0 || newYCoord > end || newXCoord > end){
                     if(boundaryType == wrappingBoundaryType){
                         toAdd = wrappingBoundary(yCoord, xCoord, newYCoord, newXCoord, yCoordModifier, xCoordModifier, mapThreeDime);
@@ -262,10 +247,7 @@ public class TheGame
             }
         }
         neighboursValue -= mapThreeDime[yCoord][xCoord][historyCurrent];
-        workingThoSecondary += neighboursValue;
         shallItBeAlive = applyGameRules(yCoord, xCoord, neighboursValue, mapThreeDime, historyCurrent);
-        count++;
-        workingTho += shallItBeAlive;
         return shallItBeAlive;
     }
 
@@ -367,7 +349,7 @@ public class TheGame
     }
 
     public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime, int boundaryType){
-        while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing && going == true){ //this is the loop which actually runs the conway game 
+        while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing){ //this is the loop which actually runs the conway game 
             //System.out.println('\u000c'); //clears the screen /HELP (should probablty reinstate)
             int notDead = 0;
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
@@ -432,22 +414,21 @@ public class TheGame
         return selected;
     }
 
-    public void setup(int goingThrough, int fileType){
+    public void setup(int fileType){ //HELP (clean this method up a little) 
         Scanner keyboard = new Scanner(System.in);
         howManyGenerationsAreWeDoing = returnInteger("how many generations should I run? (max = 1000, min = 1)", 1, 1000);
         timeWaiting = returnInteger("what should be the pause time between them? It's in seconds. Min is 0 seconds and the max is 60s (one min)", 0, 60);
         boundaryType = returnInteger("what bounary do you want? Type 1 for finite, 2 for wrapping, and 3 for infinite", 1, 3);
-        if(fileType == 0){
+        if(fileType == populateFromAGridFileType){
             size = readingAFile(); 
-        }else if (fileType != 0){
-            if(fileType == 3){
+        }else if (fileType != populateFromAGridFileType){
+            if(fileType == populateWithAGliderFileType){
                 size = returnInteger("how big do you want this grid to be. min is 10 x 10 and max is 100 x 100  (because you chose a glider preset)", 10, 100);
-            }else if(fileType == 4){
+            }else if(fileType == populateWithAPulsarFileType){
                 size = returnInteger("how big do you want this grid to be. min is 20 x 20 and max is 100 x 100  (because you chose a glider preset)", 20, 100);
-            }else {
+            }else{
                 size = returnInteger("how big do you want this grid to be. min is 5 x 5 and max is 100 x 100", 5, 100);
             }
-
         }
         if(boundaryType == infiniteBoundaryType){
             int sizeWithBorder = size + border + border;
@@ -459,7 +440,7 @@ public class TheGame
             heightOfGrid = size;
             widthOfGrid = size; 
         }
-        numberOfHistoriesRecorded = returnInteger("how many histories should I record? Min = 5, Max = 20", 5, 20);
+        numberOfHistoriesRecorded = returnInteger("how many histories should I record? Min = 5, Max = 20", 5, 20); //HELP
         if(boundaryType == infiniteBoundaryType){//HELP
             beginning = border;
             heightOfGridPrinting = heightOfGrid - border;
@@ -493,29 +474,31 @@ public class TheGame
         }
     }
 
-    public void populateBoardWithAGlider(int[][][] mapThreeDime,int xToChange, int yToChange, int presetType){
+    public void populateBoardWithAGlider(int[][][] mapThreeDime,int xToChange, int yToChange, int presetType){ //this is the method for both presets 
         int h = 0;
         int length = 0;
-        if(presetType == 1){
+        int xCoords = 0;
+        int yCoords = 1;
+        if(presetType == gliderPresetType){
             length = 5;
-        }else if (presetType == 2){
+        }else if (presetType == pulsarPresetType){
             length = 48;
         }
         int locale = Math.floorDiv(size, 2);
-        for(int y = 0; y < length; y++){ //nested loop, to go through the array
+        for(int cellNumber = 0; cellNumber < length; cellNumber++){ //nested loop, to go through the array
             //for(int x = 0; x < 1; x++){
             if(presetType == 1){
-                xToChange = locale + gliderPreset[0][y];
-                yToChange = locale + gliderPreset[1][y];
+                xToChange = locale + gliderPreset[xCoords][cellNumber];
+                yToChange = locale + gliderPreset[yCoords][cellNumber];
             }else if (presetType == 2){
-                xToChange = locale + pulsarPreset[0][y];
-                yToChange = locale + pulsarPreset[1][y];
+                xToChange = locale + pulsarPreset[xCoords][cellNumber];
+                yToChange = locale + pulsarPreset[yCoords][cellNumber];
             }
             mapThreeDime[yToChange][xToChange][h] = 1;
         }
     }
 
-    public void changeCells(boolean selectionScreen, int[][][] mapThreeDime){ //add comments 
+    public void changeCells(int[][][] mapThreeDime){ //add comments 
         Scanner keyboard = new Scanner(System.in);
         int lastRow = 1;
 
@@ -524,7 +507,6 @@ public class TheGame
 
         printIt(0, mapThreeDime);
         while (editingStill == 1){
-            selectionScreen = true;
             int h = 0;
             if(editingStill == 1){     
                 int rowSelection = returnInteger("Please select row: ", lastRow, size);
@@ -538,7 +520,6 @@ public class TheGame
                 System.out.println("would you like to keep editing the grid?");
                 editingStill = yesOrNoQuestionMethod(1);
             }else if (editingStill == 0){
-                selectionScreen = false;
             }
         }
     }
@@ -560,7 +541,7 @@ public class TheGame
     public int readingAFile(){ //gets the size of the file so the array for the grid can be intialised //HELP DO I use this method? If so, why is the file name hardcoded? 
         Scanner keyboard = new Scanner(System.in);
         System.out.println("reading a file");
-        File myFile = new File("hasAGrid.txt");
+        File myFile = new File(fileNameAsAString);
         int awesome = 0;
 
         try {
@@ -582,7 +563,7 @@ public class TheGame
     public void populateBoardFromAFile(int[][][] mapThreeDime){ // HELP need this to be a bit diff if for infinte
         Scanner keyboard = new Scanner(System.in);
         System.out.println("populating board from a file");
-        File myFile = new File("hasAGrid.txt");
+        File myFile = new File(fileNameAsAString);
         keyboard.nextLine();
 
         try {
@@ -640,38 +621,13 @@ public class TheGame
         }
     }
 
-    public void saveGridToAFile(int[][][] mapThreeDime){ // HELP need this to be a bit diff if for infinte
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("populating board from a file");
-        File myFile = new File("hasAGrid.txt");
-        keyboard.nextLine();
-
-        try {
-            Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNext()){
-                //System.out.println(readTheFile.nextInt());
-                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                    for(int x = 0; x < widthOfGrid; x++){
-                        int h = 0; //only affect the first history, aka the working history, the current grid
-                        mapThreeDime[y][x][h] = readTheFile.nextInt();
-                        System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
-                    }
-                    System.out.println(); //next line 
-                }
-            }
-        }catch(IOException e){//and if it doesn't work
-            e.printStackTrace();
-            System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
-        }
-    }
-
     public void writingToAFile(int [][][] mapThreeDime){
-        Scanner keyboardInput = new Scanner(System.in);
+        Scanner keyboard = new Scanner(System.in);
         int awesome = 0;
         boolean areWeWriting = true;
         int h = 0;
         try{
-            File workingFile = new File ("thisIWillWriteTo.txt");
+            File workingFile = new File (fileNameAsAString);
             FileWriter newWriterThing = new FileWriter(workingFile);
 
             for(int y = beginning; y < heightOfGridPrinting; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
@@ -692,23 +648,26 @@ public class TheGame
         }catch(IOException e){
             System.out.println("broken");
         }
-
-        // System.out.println("please type a full file name (with the type also)");
-        // System.out.println("hint = try test.txt");
-        // String fileName = keyboardInput.nextLine();
-        // File myFile = new File(fileName);
-        // try {
-            // //trying something hopefull it works
-            // Scanner readTheFile = new Scanner(myFile);
-            // while (readTheFile.hasNextLine()){
-                // System.out.println(readTheFile.nextLine());
-            // }
-        // }
-        // catch(IOException e){
-            // //and if it doesn't work
-            // e.printStackTrace();
-            // System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
-        // }
     }
+    
+    public String getFileName(String parametersStatement){
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println(parametersStatement);
+        System.out.println("For any markers = the files supplied are 'hasAGrid.txt' which can be used to populate a file" );
+        System.out.println("and 'thisIWillWriteTo.txt' which can be used to populate with a grid to save it" );
+        System.out.println("but of course any supplied grid will also work!" );
+        System.out.println("P.S. pls can I have an E :)");
+        String fileNameString = keyboard.nextLine();
+        File namedFile = new File(fileNameString);
+        if(namedFile.exists()){
+            return fileNameString;
+        }else {
+            System.out.println("I'm sorry, that doesn't seem to have worked. Please check the parameters and your spelling and try again");
+            fileNameString = getFileName(parametersStatement);
+            return fileNameString;
+        }
+        }
+    
 }
+
 
