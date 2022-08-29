@@ -78,23 +78,23 @@ public class TheGame
     //BOUNDARYTYPE INTEGERS
     //intialised in the setup method, reference what boundary the grid will run
     int boundaryType; 
-    int finiteBoundaryType = 1; 
-    int wrappingBoundaryType = 2;
-    int infiniteBoundaryType = 3; 
+    final int FINITEBOUNDARYTYPE = 1; 
+    final int WRAPPINGBOUNDARYTYPE = 2;
+    final int INFINITEBOUNDARYTYPE = 3; 
     //----
 
     //FILETYPE INTEGERS 
     //intialised in first & second menu, reference how the grid will be populated
     int fileType; 
-    int populateFromAGridFileType = 0;
-    int leaveBlankFileType = 1;
-    int populateWithRandomFileType = 2; 
-    int populateWithAGliderFileType = 3;
-    int populateWithAPulsarFileType = 4;
+    final int POPULATEFROMAGRIDFILETYPE = 0;
+    final int LEAVEBLANKFILETYPE = 1;
+    final int POPULATEWITHRANDOMFILETYPE = 2; 
+    final int POPULATEWITHAGLIDERFILETYPE = 3;
+    final int POPULATEWITHAPULSARFILETYPE = 4;
 
     //PRESETS FOR FILETYPES 3 & 4
-    int gliderPresetType = 1;
-    int pulsarPresetType = 2;
+    final int GLIDERPRESETTYPE = 1;
+    final int PULSARPRESETTYPE = 2;
     //------
 
     //INTERGER VALUES FOR RULES
@@ -151,14 +151,14 @@ public class TheGame
 
             if(whatWeAreDoing == 1){ // if we are loading a file specifcally from a file
                 System.out.println("Now, the grid will be populated from a gien text file");
-                fileNameAsAString = getFileName("Please input the text file name. Remeber .txt at the end!");
-                fileType = populateFromAGridFileType; 
+                fileNameAsAString = getFileName("Please input the text file name. Remeber .txt at the end!", true);
+                fileType = POPULATEFROMAGRIDFILETYPE; 
                 setup(fileType); 
             }else if (whatWeAreDoing == 2){ // if you are loading a file 
                 // MENU FOR LOADING A GRID 
                 System.out.println("                Welcome to the menu of grid options to load");
                 System.out.println("                There are a couple options to chose from");
-                System.out.println("                1. Default (for trialling/testing)");
+                System.out.println("                1. A Blank grid (for new creations)");
                 System.out.println("                2. Random grid of ones and zeroes");
                 System.out.println("                3. Populate with a Glider ");
                 System.out.println("                4. Populate with a pulsar ");
@@ -174,19 +174,19 @@ public class TheGame
         int mapThreeDime[][][] = new int[heightOfGrid][widthOfGrid][numberOfHistoriesRecorded];//initialises array for grid. Occurs here, because set up was executed above
         if(thisIsRunning == true){
             switch (fileType){ //HELP (write comment)
-                case 0: //populateFromAGridFileType
+                case 0: //POPULATEFROMAGRIDFILETYPE
                     populateBoardFromAFile(mapThreeDime);
                     break;
-                case 1: //leaveBlankFileType
+                case 1: //LEAVEBLANKFILETYPE
                     break;
-                case 2: //populateWithRandomFileType
+                case 2: //POPULATEWITHRANDOMFILETYPE
                     populateBoardWithRandom(mapThreeDime);
                     break;
-                case 3: //populateWithAGliderFileType
+                case 3: //POPULATEWITHAGLIDERFILETYPE
                     populateBoardWithAGlider(mapThreeDime, placeHolder, placeHolder, 1);
                     printIt(0, mapThreeDime);
                     break;
-                case 4: //populateWithAPulsarFileType
+                case 4: //POPULATEWITHAPULSARFILETYPE
                     populateBoardWithAGlider(mapThreeDime, placeHolder, placeHolder, 2);
                     printIt(0, mapThreeDime);
                     break;
@@ -196,6 +196,24 @@ public class TheGame
             runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime, boundaryType);
             //runHistories(mapThreeDime);//HELP
 
+            //runHistories(mapThreeDime);
+            System.out.println("Do you want to save your game to a file?");
+            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+            if(goingThrough == 1){ //if it's one, thats a yes, and do 
+                fileNameAsAString = getFileName("Please input the text file name. Remeber .txt at the end!", false);
+                System.out.println("Do you wan to save the end of the game, or the start?");
+                System.out.println("Do you wan to save the end of the game? (saying no means the start will be saved)");
+                goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
+                if(goingThrough == 1){
+                    writingToAFile(mapThreeDime, 0);
+                }else{
+                    int history = numberOfHistoriesRecorded - 1;
+                    writingToAFile(mapThreeDime, history);
+                }
+            }else{
+                System.out.println("All goods! Thanks for playing!");
+            }
+
             System.out.println("Thanks for playing! The game is over now, unless you would like to run a few more generations of your game?"); // HELP
             System.out.println("Do you want to run a few more generations?");
             goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
@@ -204,16 +222,6 @@ public class TheGame
                 runGame(thisIsRunning, numberOfGenerations, howManyGenerationsAreWeDoing, mapThreeDime, boundaryType);
             }else{
                 System.out.println("Alrighty, we won't run the game anymore");
-            }
-
-            runHistories(mapThreeDime);
-            System.out.println("Do you want to save your game to a file?");
-            goingThrough = yesOrNoQuestionMethod(0); //calls the method which handles yes or no questions, assigns the value to goingthrough
-            if(goingThrough == 1){ //if it's one, thats a yes, and do 
-                fileNameAsAString = getFileName("Please input the text file name. Remeber .txt at the end!");
-                writingToAFile(mapThreeDime);
-            }else{
-                System.out.println("All goods! Thanks for playing!");
             }
         }
     }
@@ -230,10 +238,10 @@ public class TheGame
                 int newYCoord = yCoordModifier + yCoord;
                 int newXCoord = xCoordModifier + xCoord;
                 if(newYCoord < 0 || newXCoord  < 0 || newYCoord > end || newXCoord > end){
-                    if(boundaryType == wrappingBoundaryType){
+                    if(boundaryType == WRAPPINGBOUNDARYTYPE){
                         toAdd = wrappingBoundary(yCoord, xCoord, newYCoord, newXCoord, yCoordModifier, xCoordModifier, mapThreeDime);
                         neighboursValue += toAdd;
-                    }else if (boundaryType == finiteBoundaryType || boundaryType == infiniteBoundaryType){ //HELP (unless this does help, remove
+                    }else if (boundaryType == FINITEBOUNDARYTYPE || boundaryType == INFINITEBOUNDARYTYPE){ //HELP (unless this does help, remove
                         neighboursValue += boundedFence;
                     }
                 }else{
@@ -350,7 +358,7 @@ public class TheGame
 
     public void runGame(boolean thisIsRunning, int numberOfGenerations, int howManyGenerationsAreWeDoing, int[][][] mapThreeDime, int boundaryType){
         while(thisIsRunning == true && numberOfGenerations < howManyGenerationsAreWeDoing){ //this is the loop which actually runs the conway game 
-            //System.out.println('\u000c'); //clears the screen /HELP (should probablty reinstate)
+            System.out.println('\u000c'); // clears the terminal screen
             int notDead = 0;
             System.out.println("running " + numberOfGenerations); //tells user what generation they are on
             System.out.println(); 
@@ -418,19 +426,23 @@ public class TheGame
         Scanner keyboard = new Scanner(System.in);
         howManyGenerationsAreWeDoing = returnInteger("how many generations should I run? (max = 1000, min = 1)", 1, 1000);
         timeWaiting = returnInteger("what should be the pause time between them? It's in seconds. Min is 0 seconds and the max is 60s (one min)", 0, 60);
-        boundaryType = returnInteger("what bounary do you want? Type 1 for finite, 2 for wrapping, and 3 for infinite", 1, 3);
-        if(fileType == populateFromAGridFileType){
-            size = readingAFile(); 
-        }else if (fileType != populateFromAGridFileType){
-            if(fileType == populateWithAGliderFileType){
+        boundaryType = returnInteger("what boundary do you want? Type 1 for finite, 2 for wrapping, and 3 for infinite", 1, 3);
+        System.out.println("and what would you like to represent the alive cells? I recommend ' X '");
+        aliveCellSymbol = keyboard.nextLine();
+        System.out.println("and what would you like to represent the alive cells? I recommend '   ' (AKA three spaces)");
+        deadCellSymbol = keyboard.nextLine();
+        if(fileType == POPULATEFROMAGRIDFILETYPE){
+            size = readingAFile(fileNameAsAString, 1); 
+        }else if (fileType != POPULATEFROMAGRIDFILETYPE){
+            if(fileType == POPULATEWITHAGLIDERFILETYPE){
                 size = returnInteger("how big do you want this grid to be. min is 10 x 10 and max is 100 x 100  (because you chose a glider preset)", 10, 100);
-            }else if(fileType == populateWithAPulsarFileType){
+            }else if(fileType == POPULATEWITHAPULSARFILETYPE){
                 size = returnInteger("how big do you want this grid to be. min is 20 x 20 and max is 100 x 100  (because you chose a glider preset)", 20, 100);
             }else{
                 size = returnInteger("how big do you want this grid to be. min is 5 x 5 and max is 100 x 100", 5, 100);
             }
         }
-        if(boundaryType == infiniteBoundaryType){
+        if(boundaryType == INFINITEBOUNDARYTYPE){
             int sizeWithBorder = size + border + border;
             int smallerSize = size;
             heightOfGrid = sizeWithBorder;
@@ -439,9 +451,8 @@ public class TheGame
         }else {
             heightOfGrid = size;
             widthOfGrid = size; 
-        }
-        numberOfHistoriesRecorded = returnInteger("how many histories should I record? Min = 5, Max = 20", 5, 20); //HELP
-        if(boundaryType == infiniteBoundaryType){//HELP
+        } 
+        if(boundaryType == INFINITEBOUNDARYTYPE){//HELP
             beginning = border;
             heightOfGridPrinting = heightOfGrid - border;
             widthOfGridPrinting = widthOfGrid - border;
@@ -450,10 +461,7 @@ public class TheGame
             heightOfGridPrinting = heightOfGrid;
             widthOfGridPrinting = widthOfGrid;
         }
-        System.out.println("and what would you like to represent the alive cells? I recommend ' X '");
-        aliveCellSymbol = keyboard.nextLine();
-        System.out.println("and what would you like to represent the alive cells? I recommend '   ' (AKA three spaces)");
-        deadCellSymbol = keyboard.nextLine();
+        numberOfHistoriesRecorded = howManyGenerationsAreWeDoing + 1;
     }
 
     public void populateBoardWithRandom(int[][][] mapThreeDime){
@@ -479,9 +487,9 @@ public class TheGame
         int length = 0;
         int xCoords = 0;
         int yCoords = 1;
-        if(presetType == gliderPresetType){
+        if(presetType == GLIDERPRESETTYPE){
             length = 5;
-        }else if (presetType == pulsarPresetType){
+        }else if (presetType == PULSARPRESETTYPE){
             length = 48;
         }
         int locale = Math.floorDiv(size, 2);
@@ -538,20 +546,34 @@ public class TheGame
         }
     }
 
-    public int readingAFile(){ //gets the size of the file so the array for the grid can be intialised //HELP DO I use this method? If so, why is the file name hardcoded? 
+    public int readingAFile(String fileNameAsAString, int intsOrLines){ //gets the size of the file so the array for the grid can be intialised //HELP DO I use this method? If so, why is the file name hardcoded? 
         Scanner keyboard = new Scanner(System.in);
         System.out.println("reading a file");
         File myFile = new File(fileNameAsAString);
-        int awesome = 0;
+        int numberOfLines = 0;
+        int numberOfInts = 0;
 
         try {
-            Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNextLine()){
-                System.out.println(readTheFile.nextLine());
-                awesome++;
-                System.out.println(awesome);
+            if(intsOrLines == 1){
+                Scanner readTheFileLines = new Scanner(myFile);
+                while (readTheFileLines.hasNextLine()){
+                    System.out.println(readTheFileLines.nextLine());
+                    System.out.println('\u000c');
+                    numberOfLines++;
+                }
+                System.out.println('\u000c');
+                return numberOfLines;
+            }else if (intsOrLines == 2){
+                Scanner readTheFileInts = new Scanner(myFile);
+                while (readTheFileInts.hasNextInt()){
+                    System.out.print(readTheFileInts.nextInt());
+                    System.out.println('\u000c');
+                    numberOfInts++;
+                }
+                System.out.println('\u000c');
+                return numberOfInts;
             }
-            return awesome;
+            return numberOfLines;
         }catch(IOException e){
             //and if it doesn't work
             e.printStackTrace();
@@ -564,14 +586,15 @@ public class TheGame
         Scanner keyboard = new Scanner(System.in);
         System.out.println("populating board from a file");
         File myFile = new File(fileNameAsAString);
-        keyboard.nextLine();
 
+        int x = 0; //intialised up here so they can be used to check the whole array has been populated
+        int y = 0; 
         try {
             Scanner readTheFile = new Scanner(myFile);
-            while (readTheFile.hasNext()){
+            while (readTheFile.hasNextInt()){
                 //System.out.println(readTheFile.nextInt());
-                for(int y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
-                    for(int x = 0; x < widthOfGrid; x++){
+                for(y = 0; y < heightOfGrid; y++){ //nested loop, to go through the array
+                    for(x = 0; x < widthOfGrid; x++){
                         int h = 0; //only affect the first history, aka the working history, the current grid
                         mapThreeDime[y][x][h] = readTheFile.nextInt();
                         System.out.print(" " + mapThreeDime[y][x][h] + " "); //print it out nicely. 
@@ -579,6 +602,7 @@ public class TheGame
                     System.out.println(); //next line 
                 }
             }
+
         }catch(IOException e){//and if it doesn't work
             e.printStackTrace();
             System.out.println("yeah, that didn't work. Maybe you typed it wrong, maybe that file does't exist, or maybe I ust don't have it. Sorry. ");
@@ -621,18 +645,17 @@ public class TheGame
         }
     }
 
-    public void writingToAFile(int [][][] mapThreeDime){
+    public void writingToAFile(int [][][] mapThreeDime, int history){
         Scanner keyboard = new Scanner(System.in);
         int awesome = 0;
         boolean areWeWriting = true;
-        int h = 0;
         try{
             File workingFile = new File (fileNameAsAString);
             FileWriter newWriterThing = new FileWriter(workingFile);
 
             for(int y = beginning; y < heightOfGridPrinting; y++){ //nested loop, to go through the array int x = 0; x < widthOfGrid; x++
                 for(int x = beginning; x < widthOfGridPrinting; x++){
-                    int cellValue = mapThreeDime[y][x][h];
+                    int cellValue = mapThreeDime[y][x][history];
                     newWriterThing.write(" ");
                     if(cellValue == 1){
                         newWriterThing.write("1");
@@ -648,26 +671,42 @@ public class TheGame
         }catch(IOException e){
             System.out.println("broken");
         }
+        System.out.println("All saved!");
     }
-    
-    public String getFileName(String parametersStatement){
+
+    public String getFileName(String parametersStatement, boolean forPopulatingAGrid){
         Scanner keyboard = new Scanner(System.in);
         System.out.println(parametersStatement);
         System.out.println("For any markers = the files supplied are 'hasAGrid.txt' which can be used to populate a file" );
         System.out.println("and 'thisIWillWriteTo.txt' which can be used to populate with a grid to save it" );
         System.out.println("but of course any supplied grid will also work!" );
-        System.out.println("P.S. pls can I have an E :)");
         String fileNameString = keyboard.nextLine();
         File namedFile = new File(fileNameString);
         if(namedFile.exists()){
-            return fileNameString;
+            if(forPopulatingAGrid == false){
+                return fileNameString;
+            }else{
+                int areThereAnyLines = readingAFile(fileNameString, 1);
+                if(areThereAnyLines < 5){
+                    System.out.println("I'm sorry, that file doesn't have enough lines in it. Either add some more lines or find another file");
+                    fileNameString = getFileName(parametersStatement, forPopulatingAGrid);
+                    return fileNameString;
+                }
+                int areThereAnyInts = readingAFile(fileNameString, 2);
+                if( areThereAnyInts/areThereAnyLines == areThereAnyLines){
+                    return fileNameString;
+                }else{
+                    System.out.println("I'm sorry, that file doesn't have enough cell values in it. It needs to be a square grid, with as many cells per line as there are lines");
+                    fileNameString = getFileName(parametersStatement, forPopulatingAGrid);
+                    return fileNameString;
+                }
+            }
         }else {
             System.out.println("I'm sorry, that doesn't seem to have worked. Please check the parameters and your spelling and try again");
-            fileNameString = getFileName(parametersStatement);
+            fileNameString = getFileName(parametersStatement, forPopulatingAGrid);
             return fileNameString;
         }
-        }
-    
-}
+    }
 
+}
 
